@@ -1,0 +1,3529 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚀 Đấu Trường Tri Thức Lớp 8 - Ôn Luyện Lớp 8 Gamified</title>
+  <!-- Google Fonts: Quicksand for a soft, friendly, and modern layout -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* DESIGN SYSTEM & CONSTANTS */
+    :root {
+      /* Light Mode Palette */
+      --bg-color-solid: #f1f5f9;
+      --bg-gradient-default: linear-gradient(135deg, #f0f4ff, #e0e7ff, #f3e8ff);
+      
+      --bg-gradient: var(--bg-gradient-default);
+      --card-bg: rgba(255, 255, 255, 0.75);
+      --card-border: rgba(255, 255, 255, 0.6);
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+      
+      /* Common colors */
+      --color-green: #10b981;
+      --color-red: #ef4444;
+      --color-orange: #f59e0b;
+      --color-blue: #0ea5e9;
+      --color-purple: #8b5cf6;
+      --color-pink: #ec4899;
+      
+      --correct-bg: rgba(16, 185, 129, 0.15);
+      --correct-border: #10b981;
+      --incorrect-bg: rgba(239, 68, 68, 0.15);
+      --incorrect-border: #ef4444;
+      
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Dark Mode Palette overrides */
+    [data-theme="dark"] {
+      --bg-color-solid: #0f172a;
+      --bg-gradient-default: linear-gradient(135deg, #0f172a, #1e1b4b, #111827);
+      
+      --card-bg: rgba(15, 23, 42, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #818cf8;
+      --accent-hover: #6366f1;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      
+      --correct-bg: rgba(16, 185, 129, 0.2);
+      --incorrect-bg: rgba(239, 68, 68, 0.2);
+    }
+
+    /* RESET & CORE STYLES */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background 0.5s ease, color 0.3s ease;
+      overflow-x: hidden;
+      padding: 20px;
+      position: relative;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 10;
+    }
+
+    /* GLASSMORPHIC CARD UTILITY */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      transition: var(--transition);
+    }
+
+    /* HEADER STYLES */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--accent), var(--color-purple));
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .brand-title h1 {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(to right, var(--accent), var(--color-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-title p {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* HEADER CONTROLS & STATS */
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-icon {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .btn-icon:hover {
+      transform: translateY(-3px) scale(1.05);
+      border-color: var(--accent);
+    }
+
+    .score-badge {
+      background: linear-gradient(135deg, var(--color-green), #059669);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+      animation: pulse-glow 2s infinite;
+    }
+
+    /* PROFILE & LEVEL CARD */
+    .profile-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+    }
+
+    .profile-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .profile-avatar-container {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .profile-avatar {
+      font-size: 56px;
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+      width: 80px;
+      height: 80px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--accent);
+    }
+
+    .profile-level-badge {
+      position: absolute;
+      bottom: -6px;
+      right: -6px;
+      background: linear-gradient(135deg, var(--accent), var(--color-blue));
+      color: white;
+      font-weight: 700;
+      font-size: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--card-bg);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-details {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 200px;
+    }
+
+    .profile-name-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .profile-school {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .profile-goal {
+      font-size: 13px;
+      color: var(--color-purple);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-edit-profile {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+      align-self: flex-start;
+      margin-left: auto;
+    }
+
+    .btn-edit-profile:hover {
+      background: rgba(100, 116, 139, 0.1);
+      border-color: var(--accent);
+    }
+
+    .xp-bar-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .xp-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .xp-bar-bg {
+      background: rgba(100, 116, 139, 0.15);
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .xp-bar-fill {
+      background: linear-gradient(to right, var(--accent), var(--color-blue));
+      height: 100%;
+      width: 0%;
+      border-radius: 6px;
+      transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* DASHBOARD / HOME STATE */
+    #dashboard-view {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* STATS DASHBOARD ROW */
+    .stats-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      text-align: center;
+    }
+
+    .stat-box {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+    }
+
+    .stat-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* SUBJECTS GRID */
+    .subjects-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .subject-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border-left: 6px solid var(--sub-color, var(--accent));
+      transition: var(--transition);
+    }
+
+    .subject-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .subject-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 150px;
+      height: 150px;
+      background: var(--sub-color);
+      opacity: 0.08;
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+
+    .subject-card:hover::before {
+      transform: scale(1.3);
+      opacity: 0.15;
+    }
+
+    .subject-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .subject-icon {
+      font-size: 32px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+
+    .subject-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .subject-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .subject-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .subject-progress-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .btn-start {
+      background: var(--sub-color);
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+    }
+
+    .subject-card:hover .btn-start {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    /* BADGES CABINET */
+    .badges-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 16px;
+    }
+
+    .badge-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 16px 10px;
+      border-radius: 18px;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.05);
+      filter: grayscale(100%);
+      opacity: 0.5;
+      transition: var(--transition);
+    }
+
+    .badge-item.unlocked {
+      filter: grayscale(0%);
+      opacity: 1;
+      background: var(--card-bg);
+      border-color: var(--accent);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
+      animation: scale-up 0.5s ease-out;
+    }
+
+    .badge-icon {
+      font-size: 36px;
+      margin-bottom: 10px;
+      transition: transform 0.5s;
+    }
+
+    .badge-item.unlocked:hover .badge-icon {
+      transform: rotate(15deg) scale(1.2);
+    }
+
+    .badge-name {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    .badge-desc {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.2;
+    }
+
+    /* QUIZ ARENA VIEW (QUIZ PLAYING) */
+    #quiz-view {
+      display: none; /* Managed by JS */
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .quiz-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 14px;
+      margin-bottom: 8px;
+    }
+
+    .btn-back {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .btn-back:hover {
+      background: rgba(100, 116, 139, 0.1);
+      transform: translateX(-4px);
+    }
+
+    .quiz-subject-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quiz-progress-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quiz-progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .quiz-progress-bar-bg {
+      background: rgba(100, 116, 139, 0.15);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-bar-fill {
+      background: var(--sub-color, var(--accent));
+      height: 100%;
+      width: 0%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    /* QUESTION CARD */
+    .question-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .question-type-badge {
+      align-self: flex-start;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: white;
+    }
+
+    .question-type-badge.multiple-choice {
+      background: var(--color-blue);
+    }
+
+    .question-type-badge.essay {
+      background: var(--color-purple);
+    }
+
+    .question-text {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* MULTIPLE CHOICE OPTIONS GRID */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .options-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 16px 20px;
+      border-radius: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      text-align: left;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    [data-theme="dark"] .option-btn:hover:not(:disabled) {
+      background: rgba(30, 41, 59, 0.9);
+    }
+
+    .option-letter {
+      background: rgba(100, 116, 139, 0.15);
+      border-radius: 8px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .option-text {
+      flex-grow: 1;
+    }
+
+    .option-btn:disabled {
+      cursor: not-allowed;
+    }
+
+    /* Color states for options after selection */
+    .option-btn.correct {
+      background-color: var(--correct-bg) !important;
+      border-color: var(--correct-border) !important;
+      color: var(--color-green) !important;
+      font-weight: 600;
+    }
+    
+    .option-btn.correct .option-letter {
+      background-color: var(--color-green);
+      color: white;
+    }
+
+    .option-btn.incorrect {
+      background-color: var(--incorrect-bg) !important;
+      border-color: var(--incorrect-border) !important;
+      color: var(--color-red) !important;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    .option-btn.incorrect .option-letter {
+      background-color: var(--color-red);
+      color: white;
+    }
+
+    /* EXPLANATION PANEL */
+    .explanation-panel {
+      display: none; /* hidden until answered */
+      padding: 16px 20px;
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      animation: slide-down 0.4s ease;
+    }
+
+    .explanation-panel strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+
+    /* ESSAY VIEW STYLES */
+    .essay-container {
+      display: none; /* Managed by JS */
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .essay-textarea {
+      width: 100%;
+      min-height: 150px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 15px;
+      line-height: 1.5;
+      resize: vertical;
+      transition: var(--transition);
+    }
+
+    .essay-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .essay-controls {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+      transition: var(--transition);
+    }
+
+    .btn-action:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-action:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ESSAY EVALUATION PANEL */
+    .essay-eval-panel {
+      display: none; /* hidden until submit */
+      flex-direction: column;
+      gap: 20px;
+      animation: fade-in 0.5s ease;
+      margin-top: 10px;
+    }
+
+    .keyword-detector {
+      background: rgba(245, 158, 11, 0.08);
+      border-left: 4px solid var(--color-orange);
+      padding: 16px;
+      border-radius: 12px;
+    }
+
+    .keyword-detector-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-orange);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .keyword-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .kw-pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(100, 116, 139, 0.15);
+      color: var(--text-muted);
+      border: 1px solid rgba(100, 116, 139, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .kw-pill.matched {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--color-green);
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .answer-compare {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 650px) {
+      .answer-compare {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .compare-box {
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .compare-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .compare-box-content {
+      white-space: pre-line;
+    }
+
+    .compare-box-content mark {
+      background: rgba(16, 185, 129, 0.25);
+      color: var(--color-green);
+      font-weight: 600;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    /* SELF EVALUATION ROW */
+    .self-eval-section {
+      text-align: center;
+      padding: 16px;
+      background: rgba(139, 92, 246, 0.08);
+      border-radius: 16px;
+      border: 1px dashed var(--color-purple);
+    }
+
+    .self-eval-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-purple);
+      margin-bottom: 12px;
+    }
+
+    .eval-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    .btn-eval {
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+    }
+
+    .btn-eval:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-eval.perfect:hover {
+      border-color: var(--color-green);
+      color: var(--color-green);
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);
+    }
+
+    .btn-eval.good:hover {
+      border-color: var(--color-orange);
+      color: var(--color-orange);
+      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.15);
+    }
+
+    .btn-eval.try-hard:hover {
+      border-color: var(--color-red);
+      color: var(--color-red);
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15);
+    }
+
+    .btn-eval span:first-child {
+      font-size: 18px;
+    }
+
+    /* FOOTER/SUBMIT NAVIGATION */
+    .quiz-navigation {
+      display: none; /* hidden until answered or evaluated */
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    /* END GAME / RESULT VIEW */
+    #result-view {
+      display: none; /* Managed by JS */
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 24px;
+    }
+
+    .congrats-emoji {
+      font-size: 72px;
+      animation: bounce-loop 2s infinite;
+    }
+
+    .result-title {
+      font-size: 26px;
+      font-weight: 700;
+      background: linear-gradient(to right, var(--accent), var(--color-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stats-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .result-stat-box {
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .result-stat-val {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .result-stat-lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 12px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(100, 116, 139, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* CONFETTI CANVAS */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      display: block;
+    }
+
+    /* BACKGROUND ANIMATED CANVAS */
+    #bg-particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.55;
+      display: none;
+    }
+
+    /* MODAL GENERAL STYLES */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 2px solid var(--accent);
+      border-radius: 28px;
+      padding: 30px;
+      width: 90%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow);
+      transform: scale(0.85);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.show .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 10px;
+    }
+
+    /* MODAL FORM CONTROLS */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .form-input {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 14px;
+      color: var(--text-main);
+      font-family: inherit;
+      width: 100%;
+      transition: var(--transition);
+    }
+
+    [data-theme="dark"] .form-input {
+      background: rgba(15, 23, 42, 0.5);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+    }
+
+    /* AVATAR GRID IN PROFILE MODAL */
+    .avatar-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .avatar-option-btn {
+      font-size: 32px;
+      background: rgba(255, 255, 255, 0.3);
+      border: 2px solid transparent;
+      border-radius: 16px;
+      height: 60px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .avatar-option-btn:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .avatar-option-btn.selected {
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.1);
+      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.15);
+    }
+
+    /* THEME ACCENT COLOR DOTS IN SETTINGS */
+    .color-picker-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .color-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: var(--transition);
+    }
+
+    .color-dot:hover {
+      transform: scale(1.15);
+    }
+
+    .color-dot.selected {
+      border-color: white;
+      box-shadow: 0 0 0 2px var(--theme-color);
+    }
+
+    /* MODAL FOOTER */
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      border-top: 1px solid var(--card-border);
+      padding-top: 18px;
+    }
+
+    /* SEMESTER CARD SELECTOR */
+    .semester-selection-box {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 500px) {
+      .semester-selection-box {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .semester-select-card {
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+    }
+
+    .semester-select-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      background: var(--card-bg);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .semester-select-icon {
+      font-size: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .semester-select-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .semester-select-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .semester-select-progress {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(99, 102, 241, 0.08);
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+
+    /* BADGE UNLOCKED SPECIAL MODAL */
+    .badge-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .badge-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .badge-modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--accent);
+      border-radius: 28px;
+      padding: 36px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      transform: scale(0.8);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .badge-modal.show .badge-modal-content {
+      transform: scale(1);
+    }
+
+    .badge-modal-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      animation: pulse-ring 2s infinite;
+    }
+
+    .badge-modal-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .badge-modal-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .badge-modal-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+
+    /* ANIMATIONS & MICRO-INTERACTIONS */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+      50% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5); }
+      100% { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    @keyframes slide-down {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scale-up {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes bounce-loop {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.9; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.9; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating animated particle canvas running in background -->
+  <canvas id="bg-particle-canvas"></canvas>
+
+  <!-- Confetti particle engine canvas overlay -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="container">
+    
+    <!-- APPLICATION HEADER -->
+    <header class="glass-card">
+      <div class="brand-section">
+        <div class="logo-badge">🎓</div>
+        <div class="brand-title">
+          <h1>Đấu Trường Lớp 8</h1>
+          <p>Chinh Phục Tri Thức - Bứt Phá Điểm Số</p>
+        </div>
+      </div>
+      
+      <div class="header-controls">
+        <div class="score-badge">
+          <span>🏆 Đúng:</span>
+          <span id="global-score">0</span>
+        </div>
+        <button class="btn-icon" id="btn-open-settings" onclick="openSettingsModal()" title="Cấu hình hệ thống">⚙️</button>
+        <button class="btn-icon" id="toggle-theme" title="Chế độ Tối/Sáng">🌙</button>
+      </div>
+    </header>
+
+    <!-- PLAYER PROFILE & LEVEL CARD -->
+    <div class="glass-card profile-card">
+      <div class="profile-container">
+        <div class="profile-avatar-container">
+          <div class="profile-avatar" id="display-profile-avatar">🦁</div>
+          <div class="profile-level-badge" id="player-level">1</div>
+        </div>
+        <div class="profile-details">
+          <div class="profile-name-row">
+            <span class="profile-name" id="display-profile-name">Đức Bảo</span>
+          </div>
+          <span class="profile-school" id="display-profile-school">Trường THCS Lớp 8</span>
+          <span class="profile-goal" id="display-profile-goal">🎯 Mục tiêu: Ôn tập hiệu quả</span>
+        </div>
+        <button class="btn-edit-profile" onclick="openProfileModal()">✏️ Chỉnh sửa hồ sơ</button>
+      </div>
+
+      <div class="xp-bar-container">
+        <div class="xp-bar-labels">
+          <span id="xp-bar-name" style="color: var(--accent); font-weight: 700;">Học giả tân binh</span>
+          <span id="xp-ratio">0 / 100 XP</span>
+        </div>
+        <div class="xp-bar-bg">
+          <div class="xp-bar-fill" id="xp-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 1: HOME DASHBOARD -->
+    <div id="dashboard-view">
+      
+      <!-- Quick Statistics -->
+      <div class="stats-summary glass-card">
+        <div class="stat-box">
+          <div class="stat-val" id="stat-total-answered">0</div>
+          <div class="stat-lbl">Câu Đã Làm</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-accuracy">0%</div>
+          <div class="stat-lbl">Tỷ Lệ Đúng</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-total-xp">0</div>
+          <div class="stat-lbl">Tổng XP</div>
+        </div>
+      </div>
+
+      <!-- Subjects Section -->
+      <div>
+        <div class="subjects-title">
+          <span>📚</span> Chọn Môn Học Ôn Tập
+        </div>
+        <div class="subjects-grid">
+          
+          <!-- Toán Học Card -->
+          <div class="glass-card subject-card" style="--sub-color: var(--color-blue);" onclick="clickSubject('toan')">
+            <div class="subject-header">
+              <div class="subject-icon" style="color: var(--color-blue);">📐</div>
+              <div class="subject-progress-text" id="progress-toan">Đã làm: 0/8</div>
+            </div>
+            <div class="subject-info">
+              <h3>Toán Học 8</h3>
+              <p>Hằng đẳng thức, tứ giác, phương trình bậc nhất, định lí Thalès & Pythagore.</p>
+            </div>
+            <div class="subject-footer">
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="btn-start" style="--sub-color: var(--color-blue);">Chơi ➔</button>
+            </div>
+          </div>
+
+          <!-- Ngữ Văn Card -->
+          <div class="glass-card subject-card" style="--sub-color: var(--color-green);" onclick="clickSubject('van')">
+            <div class="subject-header">
+              <div class="subject-icon" style="color: var(--color-green);">✍️</div>
+              <div class="subject-progress-text" id="progress-van">Đã làm: 0/8</div>
+            </div>
+            <div class="subject-info">
+              <h3>Ngữ Văn 8</h3>
+              <p>Tác phẩm Lão Hạc, Tôi đi học, Ông đồ, Nhớ rừng, Chiếu dời đô & Cảm thụ văn học.</p>
+            </div>
+            <div class="subject-footer">
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="btn-start" style="--sub-color: var(--color-green);">Chơi ➔</button>
+            </div>
+          </div>
+
+          <!-- Tiếng Anh Card -->
+          <div class="glass-card subject-card" style="--sub-color: var(--color-purple);" onclick="clickSubject('anh')">
+            <div class="subject-header">
+              <div class="subject-icon" style="color: var(--color-purple);">🇬🇧</div>
+              <div class="subject-progress-text" id="progress-anh">Đã làm: 0/8</div>
+            </div>
+            <div class="subject-info">
+              <h3>Tiếng Anh 8</h3>
+              <p>Trọng âm, Câu điều kiện (loại 1, 2), Thì quá khứ tiếp diễn, Câu gián tiếp & Bị động.</p>
+            </div>
+            <div class="subject-footer">
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="btn-start" style="--sub-color: var(--color-purple);">Chơi ➔</button>
+            </div>
+          </div>
+
+          <!-- Khoa Học Tự Nhiên Card -->
+          <div class="glass-card subject-card" style="--sub-color: var(--color-orange);" onclick="clickSubject('khtn')">
+            <div class="subject-header">
+              <div class="subject-icon" style="color: var(--color-orange);">🧪</div>
+              <div class="subject-progress-text" id="progress-khtn">Đã làm: 0/8</div>
+            </div>
+            <div class="subject-info">
+              <h3>Khoa Học Tự Nhiên</h3>
+              <p>Acid-Base, bảo toàn khối lượng, mol, áp suất, lực đẩy Ác-si-mét & sinh lý người.</p>
+            </div>
+            <div class="subject-footer">
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="btn-start" style="--sub-color: var(--color-orange);">Chơi ➔</button>
+            </div>
+          </div>
+
+          <!-- Lịch Sử & Địa Lí Card -->
+          <div class="glass-card subject-card" style="--sub-color: var(--color-pink);" onclick="clickSubject('sudia')">
+            <div class="subject-header">
+              <div class="subject-icon" style="color: var(--color-pink);">🌍</div>
+              <div class="subject-progress-text" id="progress-sudia">Đã làm: 0/8</div>
+            </div>
+            <div class="subject-info">
+              <h3>Lịch Sử & Địa Lí</h3>
+              <p>Cách mạng tư sản Pháp, vị trí & địa hình Việt Nam, thực dân Pháp & gió mùa feralit.</p>
+            </div>
+            <div class="subject-footer">
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="btn-start" style="--sub-color: var(--color-pink);">Chơi ➔</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Badges cabinet -->
+      <div class="badges-section">
+        <div class="subjects-title">
+          <span>🏆</span> Tủ Huy Hiệu Danh Hiệu
+        </div>
+        <div class="badges-grid">
+          
+          <div class="badge-item" id="badge-rookie">
+            <div class="badge-icon">🛡️</div>
+            <div class="badge-name">Tân Binh Tự Học</div>
+            <div class="badge-desc">Đúng câu đầu tiên</div>
+          </div>
+
+          <div class="badge-item" id="badge-streak5">
+            <div class="badge-icon">⚡</div>
+            <div class="badge-name">Chuỗi Siêu Cấp</div>
+            <div class="badge-desc">Đúng 5 câu trắc nghiệm liên tiếp</div>
+          </div>
+
+          <div class="badge-item" id="badge-essay_pro">
+            <div class="badge-icon">✍️</div>
+            <div class="badge-name">Bút Thần Tự Luận</div>
+            <div class="badge-desc">Tự chấm "Hoàn hảo" 3 lần</div>
+          </div>
+
+          <div class="badge-item" id="badge-complete_subject">
+            <div class="badge-icon">🔥</div>
+            <div class="badge-name">Chinh Phục Môn</div>
+            <div class="badge-desc">Hoàn thành kì học của môn</div>
+          </div>
+
+          <div class="badge-item" id="badge-level5">
+            <div class="badge-icon">👑</div>
+            <div class="badge-name">Nhà Thông Thái</div>
+            <div class="badge-desc">Đạt Cấp độ 5 trở lên</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VIEW 2: QUIZ ARENA (PLAYING STATE) -->
+    <div id="quiz-view" class="glass-card">
+      
+      <!-- Quiz Nav Header -->
+      <div class="quiz-navbar">
+        <button class="btn-back" onclick="quitQuiz()">⬅️ Về Dashboard</button>
+        <div class="quiz-subject-title" id="quiz-title-display">
+          <span>📐</span> <span>Toán Học 8</span>
+        </div>
+      </div>
+
+      <!-- Progress bar inside quiz -->
+      <div class="quiz-progress-section">
+        <div class="quiz-progress-text">
+          <span id="quiz-progress-label">Tiến trình học kỳ</span>
+          <span id="quiz-progress-fraction">Câu 1 / 4</span>
+        </div>
+        <div class="quiz-progress-bar-bg">
+          <div class="quiz-progress-bar-fill" id="quiz-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Active Question Container -->
+      <div class="question-card">
+        <div id="q-type-badge" class="question-type-badge multiple-choice">Trắc nghiệm</div>
+        <div class="question-text" id="question-text-content">
+          Đang tải câu hỏi...
+        </div>
+
+        <!-- Dynamic Area for Multiple Choice -->
+        <div class="options-grid" id="options-container">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Dynamic Area for Essay -->
+        <div class="essay-container" id="essay-container">
+          <textarea class="essay-textarea" id="essay-input" placeholder="Hãy viết câu trả lời chi tiết của bạn tại đây..."></textarea>
+          <div class="essay-controls">
+            <button class="btn-action" id="btn-submit-essay" onclick="submitEssay()">
+              <span>📝</span> Nộp Bài & Đối Chiếu
+            </button>
+          </div>
+        </div>
+
+        <!-- Keyword Detector & Standard Answer Comparison -->
+        <div class="essay-eval-panel" id="essay-eval-panel">
+          <div class="keyword-detector">
+            <div class="keyword-detector-title">
+              <span>🔍</span> Phát hiện từ khóa cốt lõi trong câu trả lời của bạn:
+            </div>
+            <div class="keyword-pills" id="keyword-pills-box">
+              <!-- Keyword badges highlighted -->
+            </div>
+          </div>
+
+          <div class="answer-compare">
+            <div class="compare-box">
+              <div class="compare-box-title">Bài làm của bạn</div>
+              <div class="compare-box-content" id="student-rendered-answer">
+                <!-- User text with matched words highlighted -->
+              </div>
+            </div>
+            <div class="compare-box">
+              <div class="compare-box-title">Đáp án mẫu chi tiết</div>
+              <div class="compare-box-content" id="model-answer-content" style="color: var(--accent); font-weight: 500;">
+                <!-- Model answer text -->
+              </div>
+            </div>
+          </div>
+
+          <div class="self-eval-section">
+            <div class="self-eval-title">Bạn tự đánh giá bài làm của mình ở mức độ nào?</div>
+            <div class="eval-buttons">
+              <button class="btn-eval perfect" onclick="rateEssay('perfect')">
+                <span>🏆</span>
+                <strong>Hoàn hảo</strong>
+                <span style="font-size: 11px; opacity: 0.8; font-weight: 500;">+20 XP</span>
+              </button>
+              <button class="btn-eval good" onclick="rateEssay('good')">
+                <span>👍</span>
+                <strong>Đạt ý chính</strong>
+                <span style="font-size: 11px; opacity: 0.8; font-weight: 500;">+12 XP</span>
+              </button>
+              <button class="btn-eval try-hard" onclick="rateEssay('try')">
+                <span>🔄</span>
+                <strong>Cần cố gắng</strong>
+                <span style="font-size: 11px; opacity: 0.8; font-weight: 500;">+2 XP</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explanation Block (MCQ only) -->
+        <div class="explanation-panel" id="explanation-box">
+          <strong>💡 Giải thích chi tiết:</strong>
+          <span id="explanation-text">Giải thích đáp án...</span>
+        </div>
+
+        <!-- Next / Continue Navigation bar -->
+        <div class="quiz-navigation" id="quiz-nav-footer">
+          <button class="btn-action" id="btn-next-question" onclick="nextQuestion()">
+            <span>Tiếp Tục</span> ➔
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- VIEW 3: END SUBJECT RESULT PANEL -->
+    <div id="result-view" class="glass-card">
+      <div class="congrats-emoji" id="result-emoji">🎉</div>
+      <h2 class="result-title" id="result-congrats-title">Chinh Phục Thành Công!</h2>
+      <p id="result-message" style="color: var(--text-muted); font-size: 15px; max-width: 500px;">
+        Tuyệt vời! Bạn vừa hoàn thành thử thách học kỳ của môn học này. Hãy xem thành tích đạt được:
+      </p>
+
+      <div class="stats-card-grid">
+        <div class="result-stat-box">
+          <div class="result-stat-val" id="result-score">0/4</div>
+          <div class="result-stat-lbl">Số Câu Trả Lời</div>
+        </div>
+        <div class="result-stat-box" style="border-color: var(--color-purple);">
+          <div class="result-stat-val" id="result-xp" style="color: var(--color-purple);">+0 XP</div>
+          <div class="result-stat-lbl">XP Tích Lũy</div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn-action" onclick="quitQuiz()">Trở Về Dashboard</button>
+        <button class="btn-secondary" onclick="restartCurrentSubject()">Làm Lại Lượt Này</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL: SEMESTER SELECTION -->
+  <div class="modal-overlay" id="semester-modal">
+    <div class="modal-content">
+      <div class="modal-header-title">
+        <span>📖</span> Chọn Học Kỳ Ôn Tập
+      </div>
+      <div class="semester-selection-box">
+        <div class="semester-select-card" onclick="selectSemester('hk1')">
+          <div class="semester-select-icon" style="color: var(--color-blue); background: rgba(14, 165, 233, 0.1);">🌟</div>
+          <div class="semester-select-title">Học Kỳ 1</div>
+          <div class="semester-select-desc">Nửa đầu năm học: Các khái niệm nền tảng & bài đọc cốt lõi.</div>
+          <div class="semester-select-progress" id="progress-detail-hk1">Hoàn thành: 0/4</div>
+        </div>
+        <div class="semester-select-card" onclick="selectSemester('hk2')">
+          <div class="semester-select-icon" style="color: var(--color-purple); background: rgba(139, 92, 246, 0.1);">🚀</div>
+          <div class="semester-select-title">Học Kỳ 2</div>
+          <div class="semester-select-desc">Nửa cuối năm học: Kiến thức nâng cao, ứng dụng tổng kết.</div>
+          <div class="semester-select-progress" id="progress-detail-hk2">Hoàn thành: 0/4</div>
+        </div>
+      </div>
+      <div class="modal-footer" style="margin-top: 18px; padding-top: 14px;">
+        <button class="btn-secondary" onclick="closeSemesterModal()" style="padding: 8px 16px; font-size: 13px;">Hủy bỏ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PROFILE EDITOR -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal-content">
+      <div class="modal-header-title">
+        <span>👤</span> Chỉnh Sửa Hồ Sơ Học Sinh
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Chọn Linh Vật Avatar</label>
+        <div class="avatar-picker-grid">
+          <button class="avatar-option-btn" onclick="selectAvatarOption('🦁')">🦁</button>
+          <button class="avatar-option-btn" onclick="selectAvatarOption('🦊')">🦊</button>
+          <button class="avatar-option-btn" onclick="selectAvatarOption('🐼')">🐼</button>
+          <button class="avatar-option-btn" onclick="selectAvatarOption('🐨')">🐨</button>
+          <button class="avatar-option-btn" onclick="selectAvatarOption('🐰')">🐰</button>
+          <button class="avatar-option-btn" onclick="selectAvatarOption('🐯')">🐯</button>
+          <button class="avatar-option-btn" onclick="selectAvatarOption('🐸')">🐸</button>
+          <button class="avatar-option-btn" onclick="selectAvatarOption('🐙')">🐙</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="profile-name-input">Tên hiển thị</label>
+        <input type="text" class="form-input" id="profile-name-input" placeholder="Nhập tên của bạn...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="profile-school-input">Trường Học</label>
+        <input type="text" class="form-input" id="profile-school-input" placeholder="Tên trường THCS...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="profile-goal-input">Mục Tiêu Ôn Tập</label>
+        <select class="form-input" id="profile-goal-input">
+          <option value="🎯 Mục tiêu: Ôn tập hiệu quả">🎯 Ôn tập củng cố kiến thức cơ bản</option>
+          <option value="🎯 Mục tiêu: Đạt điểm 9+">🎯 Đạt điểm 9+ Học sinh Giỏi</option>
+          <option value="🎯 Mục tiêu: Chinh phục điểm 10">🎯 Chinh phục điểm 10 các môn thi</option>
+          <option value="🎯 Mục tiêu: Chuẩn bị thi chuyên">🎯 Học tốt lớp 8, định hướng thi chuyên</option>
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeProfileModal()">Hủy bỏ</button>
+        <button class="btn-action" onclick="saveProfileData()">Lưu hồ sơ ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SETTINGS SYSTEM -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal-content">
+      <div class="modal-header-title">
+        <span>⚙️</span> Cấu Hình Ứng Dụng & Giao Diện
+      </div>
+
+      <!-- Theme Accent Picker -->
+      <div class="form-group">
+        <label class="form-label">Màu Sắc Chủ Đạo (Theme Color)</label>
+        <div class="color-picker-row">
+          <div class="color-dot selected" style="background-color: #6366f1; --theme-color: #6366f1;" onclick="setThemeAccentColor('indigo', '#6366f1', '#4f46e5')"></div>
+          <div class="color-dot" style="background-color: #10b981; --theme-color: #10b981;" onclick="setThemeAccentColor('emerald', '#10b981', '#059669')"></div>
+          <div class="color-dot" style="background-color: #f43f5e; --theme-color: #f43f5e;" onclick="setThemeAccentColor('ruby', '#f43f5e', '#e11d48')"></div>
+          <div class="color-dot" style="background-color: #f59e0b; --theme-color: #f59e0b;" onclick="setThemeAccentColor('amber', '#f59e0b', '#d97706')"></div>
+          <div class="color-dot" style="background-color: #0ea5e9; --theme-color: #0ea5e9;" onclick="setThemeAccentColor('sky', '#0ea5e9', '#0284c7')"></div>
+        </div>
+      </div>
+
+      <!-- Background Style Selection -->
+      <div class="form-group">
+        <label class="form-label" for="settings-bg-input">Kiểu Nền Ứng Dụng</label>
+        <select class="form-input" id="settings-bg-input" onchange="changeBackgroundStyle(this.value)">
+          <option value="gradient">🌈 Nền Gradient Mềm (Mặc định)</option>
+          <option value="solid">⬜ Nền Đơn Sắc Tối Giản</option>
+          <option value="animated">✨ Nền Hạt Động Lơ Lửng (Cao cấp)</option>
+        </select>
+      </div>
+
+      <!-- Sound Waveform Type -->
+      <div class="form-group">
+        <label class="form-label" for="settings-sound-type">Thể Loại Âm Tổng Hợp</label>
+        <select class="form-input" id="settings-sound-type" onchange="changeSoundWaveType(this.value)">
+          <option value="sine">🎵 Clean Tone (Sóng Sine - êm dịu)</option>
+          <option value="square">👾 Retro 8-bit (Sóng Square - ngộ nghĩnh)</option>
+          <option value="triangle">🎹 Soft Synth (Sóng Triangle - trầm ấm)</option>
+        </select>
+      </div>
+
+      <!-- Sound Volume Slider -->
+      <div class="form-group">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label class="form-label" id="volume-label">Âm Lượng: 60%</label>
+          <button id="btn-sound-test" onclick="testSoundSynth()" style="background:none; border:none; color:var(--accent); font-size:12px; font-weight:700; cursor:pointer;">🔊 Thử âm</button>
+        </div>
+        <input type="range" min="0" max="100" value="60" class="form-input" style="padding: 0; cursor: pointer;" id="settings-volume-slider" oninput="changeSoundVolume(this.value)">
+      </div>
+
+      <!-- Confetti Amount -->
+      <div class="form-group">
+        <label class="form-label" for="settings-confetti-input">Mật Độ Pháo Hoa Ăn Mừng</label>
+        <select class="form-input" id="settings-confetti-input">
+          <option value="50">🎉 Nhẹ Nhàng (50 hạt)</option>
+          <option value="100" selected>🎉 Tiêu Chuẩn (100 hạt)</option>
+          <option value="250">🎉 Hoành Tráng (250 hạt)</option>
+        </select>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="form-group" style="margin-top: 10px; border-top: 1px solid var(--card-border); padding-top: 14px;">
+        <label class="form-label" style="color: var(--color-red);">Danger Zone</label>
+        <button class="btn-secondary" onclick="resetAllProgress()" style="color: var(--color-red); border-color: rgba(239, 68, 68, 0.4); text-align: center; width: 100%; justify-content: center;">
+          Đặt Lại Toàn Bộ Tiến Trình Học Tập 🔄
+        </button>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-action" style="width: 100%; justify-content: center;" onclick="closeSettingsModal()">Đóng Cài Đặt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION BADGE MODAL -->
+  <div class="badge-modal" id="badge-alert-modal">
+    <div class="badge-modal-content">
+      <div class="badge-modal-icon" id="modal-badge-icon">🏆</div>
+      <div class="badge-modal-title">DANH HIỆU MỚI!</div>
+      <div class="badge-modal-name" id="modal-badge-name">Học giả thông thái</div>
+      <div class="badge-modal-desc" id="modal-badge-desc">Đã hoàn thành toàn bộ thử thách lớp 8 xuất sắc.</div>
+      <button class="btn-action" style="width: 100%; justify-content: center;" onclick="closeBadgeModal()">Nhận Ngay! ⚡</button>
+    </div>
+  </div>
+
+  <!-- SCRIPTS SECTION: APP CONTROLLERS -->
+  <script>
+    /* ==========================================================================
+       1. WEB AUDIO API - SOUND SYNTHESIS ENGINE (Adjustable parameters)
+       ========================================================================== */
+    class AudioSynthesizer {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        this.volume = 0.6; // multiplier between 0 and 1
+        this.waveType = 'sine'; // sine, square, triangle
+      }
+
+      init() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      setVolume(val) {
+        this.volume = parseFloat(val) / 100;
+      }
+
+      setWaveType(type) {
+        this.waveType = type;
+      }
+
+      playTone(freq, type, duration, delay = 0) {
+        if (this.volume <= 0) return;
+        this.init();
+        
+        setTimeout(() => {
+          try {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            
+            osc.type = type || this.waveType;
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            
+            // Apply volume scale
+            gain.gain.setValueAtTime(0.12 * this.volume, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+            
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            
+            osc.start();
+            osc.stop(this.ctx.currentTime + duration);
+          } catch (e) {
+            console.error("Audio error:", e);
+          }
+        }, delay * 1000);
+      }
+
+      playClick() {
+        this.playTone(600, this.waveType, 0.1);
+      }
+
+      playCorrect() {
+        // Joyful quick ascending arpeggio
+        this.playTone(523.25, this.waveType, 0.15, 0);     // C5
+        this.playTone(659.25, this.waveType, 0.15, 0.08);  // E5
+        this.playTone(783.99, this.waveType, 0.15, 0.16);  // G5
+        this.playTone(1046.50, this.waveType, 0.25, 0.24); // C6
+      }
+
+      playWrong() {
+        // Low flat descending buzz
+        this.playTone(180, 'sawtooth', 0.35, 0);
+        this.playTone(120, 'sawtooth', 0.4, 0.1);
+      }
+
+      playLevelUp() {
+        const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          this.playTone(freq, this.waveType, 0.5, idx * 0.08);
+        });
+      }
+
+      playBadgeUnlocked() {
+        const notes = [880, 987.77, 1046.50, 1174.66, 1318.51, 1567.98];
+        notes.forEach((freq, idx) => {
+          this.playTone(freq, this.waveType, 0.3, idx * 0.06);
+        });
+      }
+    }
+
+    const sound = new AudioSynthesizer();
+
+    /* ==========================================================================
+       2. CANVAS CONFETTI PARTICLE SYSTEM
+       ========================================================================== */
+    class ConfettiEngine {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.animationId = null;
+        this.colors = ['#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#ff4d4d', '#2dd4bf'];
+
+        window.addEventListener('resize', () => this.resizeCanvas());
+        this.resizeCanvas();
+      }
+
+      resizeCanvas() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+      }
+
+      spawn(count = 100) {
+        this.resizeCanvas();
+        for (let i = 0; i < count; i++) {
+          this.particles.push({
+            x: Math.random() * this.canvas.width,
+            y: this.canvas.height + 20,
+            size: Math.random() * 8 + 6,
+            color: this.colors[Math.floor(Math.random() * this.colors.length)],
+            speedX: Math.random() * 10 - 5,
+            speedY: -(Math.random() * 15 + 10),
+            gravity: 0.3,
+            rotation: Math.random() * 360,
+            rotationSpeed: Math.random() * 8 - 4,
+            opacity: 1
+          });
+        }
+
+        if (!this.animationId) {
+          this.animate();
+        }
+      }
+
+      animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          const p = this.particles[i];
+          p.x += p.speedX;
+          p.y += p.speedY;
+          p.speedY += p.gravity;
+          p.rotation += p.rotationSpeed;
+          
+          if (p.speedY > 0) {
+            p.opacity -= 0.015;
+          }
+
+          this.ctx.save();
+          this.ctx.translate(p.x, p.y);
+          this.ctx.rotate((p.rotation * Math.PI) / 180);
+          this.ctx.fillStyle = p.color;
+          this.ctx.globalAlpha = p.opacity;
+          this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.5);
+          this.ctx.restore();
+
+          if (p.y > this.canvas.height + 50 || p.opacity <= 0 || p.x < -50 || p.x > this.canvas.width + 50) {
+            this.particles.splice(i, 1);
+          }
+        }
+
+        if (this.particles.length > 0) {
+          this.animationId = requestAnimationFrame(() => this.animate());
+        } else {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          this.animationId = null;
+        }
+      }
+    }
+
+    let confetti;
+
+    /* ==========================================================================
+       3. CANVAS PARTICLE BACKGROUND ENGINE
+       ========================================================================== */
+    class ParticleBackground {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.animationId = null;
+        this.active = false;
+
+        window.addEventListener('resize', () => this.resizeCanvas());
+        this.resizeCanvas();
+      }
+
+      resizeCanvas() {
+        if (this.canvas) {
+          this.canvas.width = window.innerWidth;
+          this.canvas.height = window.innerHeight;
+        }
+      }
+
+      start() {
+        this.active = true;
+        this.canvas.style.display = 'block';
+        this.resizeCanvas();
+        this.particles = [];
+
+        // Spawn particles
+        const count = 40;
+        for (let i = 0; i < count; i++) {
+          this.particles.push({
+            x: Math.random() * this.canvas.width,
+            y: Math.random() * this.canvas.height,
+            radius: Math.random() * 4 + 2,
+            speedX: Math.random() * 0.4 - 0.2,
+            speedY: Math.random() * 0.4 - 0.2,
+            opacity: Math.random() * 0.4 + 0.1
+          });
+        }
+
+        if (!this.animationId) {
+          this.animate();
+        }
+      }
+
+      stop() {
+        this.active = false;
+        this.canvas.style.display = 'none';
+        if (this.animationId) {
+          cancelAnimationFrame(this.animationId);
+          this.animationId = null;
+        }
+      }
+
+      animate() {
+        if (!this.active) return;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Fetch current accent color dynamically
+        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#6366f1';
+
+        this.particles.forEach(p => {
+          p.x += p.speedX;
+          p.y += p.speedY;
+
+          // Wrap boundaries
+          if (p.x < 0) p.x = this.canvas.width;
+          if (p.x > this.canvas.width) p.x = 0;
+          if (p.y < 0) p.y = this.canvas.height;
+          if (p.y > this.canvas.height) p.y = 0;
+
+          this.ctx.beginPath();
+          this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          this.ctx.fillStyle = accent;
+          this.ctx.globalAlpha = p.opacity;
+          this.ctx.fill();
+        });
+
+        this.animationId = requestAnimationFrame(() => this.animate());
+      }
+    }
+
+    let particleBg;
+
+    /* ==========================================================================
+       4. QUIZ QUESTIONS DATABASE (Divided by semesters)
+       ========================================================================== */
+    const quizDatabase = {
+      toan: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: 'Đâu là khai triển đúng của hằng đẳng thức (A + B)²?',
+            options: [
+              '(A + B)² = A² + B²',
+              '(A + B)² = A² + 2AB + B²',
+              '(A + B)² = A² - 2AB + B²',
+              '(A + B)² = A² + AB + B²'
+            ],
+            correct: 1,
+            explanation: 'Công thức bình phương của một tổng: (A + B)² = A² + 2AB + B².'
+          },
+          {
+            type: 'mcq',
+            question: 'Cho tam giác vuông có hai cạnh góc vuông là 6cm và 8cm. Cạnh huyền dài bao nhiêu?',
+            options: [
+              '10 cm',
+              '14 cm',
+              '12 cm',
+              '100 cm'
+            ],
+            correct: 0,
+            explanation: 'Theo định lí Pythagore: Cạnh huyền = √(6² + 8²) = √100 = 10 cm.'
+          },
+          {
+            type: 'mcq',
+            question: 'Tổng số đo bốn góc trong một tứ giác lồi luôn bằng bao nhiêu?',
+            options: [
+              '180 độ',
+              '360 độ',
+              '540 độ',
+              '90 độ'
+            ],
+            correct: 1,
+            explanation: 'Tổng số đo các góc của một tứ giác luôn bằng 360 độ.'
+          },
+          {
+            type: 'essay',
+            question: 'Hãy phát biểu Định lý Pythagore trong hình học tam giác vuông và viết hệ thức tương ứng.',
+            keywords: ['tam giác vuông', 'bình phương cạnh huyền', 'tổng bình phương', 'cạnh góc vuông', 'a^2', 'b^2', 'c^2'],
+            modelAnswer: 'Trong một tam giác vuông, bình phương độ dài cạnh huyền bằng tổng các bình phương độ dài của hai cạnh góc vuông. Hệ thức: c² = a² + b² (với c là cạnh huyền, a và b là hai cạnh góc vuông).'
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'Phương trình nào dưới đây là phương trình bậc nhất một ẩn?',
+            options: [
+              '2x - 3 = 0',
+              'x² - 4 = 0',
+              '0x + 5 = 0',
+              '1/x - 2 = 0'
+            ],
+            correct: 0,
+            explanation: 'Phương trình bậc nhất một ẩn có dạng ax + b = 0 với a khác 0. Do đó 2x - 3 = 0 là đúng.'
+          },
+          {
+            type: 'mcq',
+            question: 'Hình chóp tam giác đều có mặt đáy là hình gì?',
+            options: [
+              'Tam giác cân',
+              'Tam giác vuông',
+              'Tam giác đều',
+              'Hình vuông'
+            ],
+            correct: 2,
+            explanation: 'Hình chóp tam giác đều có đáy là một tam giác đều và các mặt bên là các tam giác cân bằng nhau.'
+          },
+          {
+            type: 'mcq',
+            question: 'Nếu tam giác ABC đồng dạng với tam giác DEF theo tỉ số k = 2, thì tỉ số diện tích S(ABC)/S(DEF) là:',
+            options: [
+              '2',
+              '4',
+              '1/2',
+              '8'
+            ],
+            correct: 1,
+            explanation: 'Tỉ số diện tích của hai tam giác đồng dạng bằng bình phương tỉ số đồng dạng k² = 2² = 4.'
+          },
+          {
+            type: 'essay',
+            question: 'Hãy phát biểu định lí Thalès trong tam giác (trường hợp thuận).',
+            keywords: ['song song', 'cạnh', 'cắt', 'đoạn thẳng tương ứng tỉ lệ'],
+            modelAnswer: 'Nếu một đường thẳng song song với một cạnh của tam giác và cắt hai cạnh còn lại thì nó định ra trên hai cạnh đó những đoạn thẳng tương ứng tỉ lệ.'
+          }
+        ]
+      },
+      van: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: 'Tác phẩm truyện ngắn "Lão Hạc" được sáng tác bởi nhà văn nào?',
+            options: [
+              'Nam Cao',
+              'Ngô Tất Tố',
+              'Nguyên Hồng',
+              'Thạch Lam'
+            ],
+            correct: 0,
+            explanation: '"Lão Hạc" là tác phẩm tiêu biểu của nhà văn hiện thực Nam Cao viết năm 1943.'
+          },
+          {
+            type: 'mcq',
+            question: 'Khổ thơ "Giấy đỏ buồn không thắm / Mực đọng trong nghiên sầu..." nói về nhân vật nào?',
+            options: [
+              'Người chiến sĩ',
+              'Ông đồ già',
+              'Người mẹ nghèo',
+              'Em bé bán vé số'
+            ],
+            correct: 1,
+            explanation: 'Đoạn thơ trên trích từ bài thơ "Ông đồ" của Vũ Đình Liên tả cảnh nho học lụi tàn.'
+          },
+          {
+            type: 'mcq',
+            question: 'Trong truyện ngắn "Tôi đi học" của Thanh Tịnh, tâm trạng ngày đầu tựu trường của cậu bé là:',
+            options: [
+              'Sợ sệt, khóc lóc và ghét đi học',
+              'Hồi hộp, bỡ ngỡ xen lẫn tưng bừng và hoang mang kì lạ',
+              'Tự tin, kiêu ngạo không cần mẹ dắt tay',
+              'Vui vẻ cười đùa nghịch ngợm cùng bạn bè'
+            ],
+            correct: 1,
+            explanation: 'Tác phẩm thể hiện những cảm xúc trong trẻo, bỡ ngỡ, trang trọng của nhân vật tôi khi lần đầu đi học.'
+          },
+          {
+            type: 'essay',
+            question: 'Nêu ngắn gọn giá trị nhân đạo sâu sắc của tác phẩm "Lão Hạc" thông qua sự hy sinh của nhân vật Lão Hạc.',
+            keywords: ['nhân đạo', 'Lão Hạc', 'lòng tự trọng', 'thương con', 'đói nghèo', 'nhân phẩm'],
+            modelAnswer: 'Tác phẩm thể hiện lòng cảm thương chân thành trước số phận đau khổ của người nông dân trước Cách mạng. Qua cái chết của Lão Hạc, Nam Cao ca ngợi lòng tự trọng cao cả (thà chết chứ không phá tiền của con, không làm phiền hàng xóm) và tình cha thương con sâu nặng.'
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'Bài thơ "Nhớ rừng" của Thế Lữ sử dụng hình tượng con hổ bị giam để thể hiện điều gì?',
+            options: [
+              'Nỗi sợ hãi thế giới bên ngoài',
+              'Tình yêu thiên nhiên hoang dã của loài thú',
+              'Khát vọng tự do mãnh liệt và lòng yêu nước kín đáo của người dân mất nước',
+              'Sự bất bình với những người canh thú'
+            ],
+            correct: 2,
+            explanation: 'Con hổ bị giam đại diện cho tâm sự u uất và khao khát tự do của trí thức mất nước đương thời.'
+          },
+          {
+            type: 'mcq',
+            question: 'Mục đích chính của văn bản "Chiếu dời đô" do Lý Công Uẩn viết là gì?',
+            options: [
+              'Kêu gọi nhân dân đứng lên chống giặc ngoại xâm',
+              'Bày tỏ ý định dời đô từ Hoa Lư ra thành Đại La (Thăng Long)',
+              'Công bố chiến thắng giặc Tống',
+              'Thiết lập luật pháp mới cho triều đại Lý'
+            ],
+            correct: 1,
+            explanation: 'Lý Công Uẩn viết Chiếu dời đô vào năm 1010 để thuyết phục quần thần và công bố dời đô về Đại La.'
+          },
+          {
+            type: 'mcq',
+            question: 'Trong văn bản "Nước Đại Việt ta", Nguyễn Trãi dựa vào yếu tố nào đầu tiên để khẳng định chủ quyền dân tộc?',
+            options: [
+              'Quân đội hùng mạnh',
+              'Nền văn hiến lâu đời',
+              'Biên giới núi sông hiểm trở',
+              'Lực lượng hào kiệt đông đảo'
+            ],
+            correct: 1,
+            explanation: 'Nguyễn Trãi khẳng định: "Như nước Đại Việt ta từ trước / Vốn xưng nền văn hiến đã lâu". Văn hiến là thước đo chủ quyền tối thượng.'
+          },
+          {
+            type: 'essay',
+            question: 'Viết đoạn văn ngắn nêu cảm nhận của em về khát vọng tự do của con hổ qua cảnh núi rừng đại ngàn hoang vu trong bài thơ "Nhớ rừng".',
+            keywords: ['cảnh núi rừng', 'giang sơn', 'hùng vĩ', 'khát vọng tự do', 'u uất'],
+            modelAnswer: 'Khổ thơ tái hiện cảnh sơn lâm hùng vĩ, bóng cả cây già, gió ngàn, mưa rừng cuộn thổi. Đó là thế giới tự do đầy uy quyền của chúa sơn lâm. Qua đó thể hiện niềm tiếc nuối khôn nguôi quá khứ oanh liệt tự do và sự u uất cay đắng khi phải sống trong cảnh tù hãm.'
+          }
+        ]
+      },
+      anh: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: 'Choose the word that has a different stress pattern.',
+            options: [
+              'pre\'vent',
+              '\'cultural',
+              'pre\'serve',
+              'pro\'nounce'
+            ],
+            correct: 1,
+            explanation: 'cultural has stress on 1st syllable; prevent, preserve, and pronounce have stress on the 2nd syllable.'
+          },
+          {
+            type: 'mcq',
+            question: 'If you study hard, you _______ pass the final exam.',
+            options: [
+              'would',
+              'will',
+              'passed',
+              'are passing'
+            ],
+            correct: 1,
+            explanation: 'Conditional sentence type 1: If + S + V(simple present), S + will + V-infinitive.'
+          },
+          {
+            type: 'mcq',
+            question: 'Which word is CLOSEST in meaning to the word "hospitable"?',
+            options: [
+              'friendly and welcoming',
+              'unfriendly',
+              'cold and quiet',
+              'selfish'
+            ],
+            correct: 0,
+            explanation: 'Hospitable means being warm, friendly, and welcoming to guests or strangers.'
+          },
+          {
+            type: 'essay',
+            question: 'Write a short paragraph (3-4 sentences) describing your favorite hobby in your free time.',
+            keywords: ['hobby', 'free time', 'relax', 'leisure', 'because'],
+            modelAnswer: 'My favorite hobby is reading books in my free time. I enjoy it because it helps me relax after class and expands my knowledge. I usually read novels for 30 minutes before bed.'
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'Complete the sentence: "While we _______ along the street, it started to rain."',
+            options: [
+              'walked',
+              'were walking',
+              'are walking',
+              'have walked'
+            ],
+            correct: 1,
+            explanation: 'We use past continuous (were walking) for the ongoing background action interrupted by a shorter action in past simple (started).'
+          },
+          {
+            type: 'mcq',
+            question: 'Choose the correct reported speech: Nam said: "I want to study abroad next year."',
+            options: [
+              'Nam said he wants to study abroad next year.',
+              'Nam said that he wanted to study abroad the following year.',
+              'Nam said that I wanted to study abroad next year.',
+              'Nam said that he would want to study abroad next year.'
+            ],
+            correct: 1,
+            explanation: 'In reported speech: tense backs (want -> wanted), pronoun changes (I -> he), and time expression changes (next year -> the following year).'
+          },
+          {
+            type: 'mcq',
+            question: 'If I _______ you, I would take that science course.',
+            options: [
+              'am',
+              'was',
+              'were',
+              'would be'
+            ],
+            correct: 2,
+            explanation: 'Conditional type 2 (unreal present condition): "If I were you..." is standard subjunctive form.'
+          },
+          {
+            type: 'essay',
+            question: 'Rewrite the following sentence using Passive Voice: "The wind blew away many houses last night."',
+            keywords: ['Many houses', 'were blown away', 'by the wind', 'last night'],
+            modelAnswer: 'Many houses were blown away by the wind last night.\n(Passive voice past simple: S + was/were + V-ed/3 + by O).'
+          }
+        ]
+      },
+      khtn: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: 'Chất nào sau đây làm quỳ tím chuyển sang màu đỏ?',
+            options: [
+              'NaOH',
+              'HCl',
+              'NaCl',
+              'Ca(OH)₂'
+            ],
+            correct: 1,
+            explanation: 'HCl là axit mạnh, làm dung dịch chứa quỳ tím hóa đỏ. NaOH và Ca(OH)2 làm quỳ hóa xanh.'
+          },
+          {
+            type: 'mcq',
+            question: 'Dấu hiệu chính yếu để chứng tỏ một phản ứng hóa học đã xảy ra là:',
+            options: [
+              'Sự thay đổi nhiệt độ',
+              'Sự tạo thành chất mới có tính chất khác biệt chất ban đầu',
+              'Sự bay hơi của nước',
+              'Sự thay đổi kích thước chất rắn'
+            ],
+            correct: 1,
+            explanation: 'Bản chất phản ứng hóa học là sự biến đổi chất này thành chất khác (tạo chất mới).'
+          },
+          {
+            type: 'mcq',
+            question: 'Một mol chất chứa bao nhiêu hạt vi mô (nguyên tử hoặc phân tử)?',
+            options: [
+              '6,022 * 10²³ hạt',
+              '6,022 * 10²² hạt',
+              '6,022 * 10²⁴ hạt',
+              '1,66 * 10⁻²⁴ hạt'
+            ],
+            correct: 0,
+            explanation: 'Một mol bất kỳ chất nào cũng chứa số Avogadro hạt vi mô: N = 6,022 x 10²³.'
+          },
+          {
+            type: 'essay',
+            question: 'Trình bày sự khác biệt giữa hiện tượng vật lí và hiện tượng hóa học. Cho ví dụ cụ thể.',
+            keywords: ['chất mới', 'vật lí', 'hóa học', 'biến đổi', 'ví dụ', 'nước đá', 'đốt cháy'],
+            modelAnswer: 'Hiện tượng vật lí chỉ biến đổi trạng thái, hình dạng mà không sinh ra chất mới (ví dụ: nước đá tan chảy). Hiện tượng hóa học có sự biến đổi chất cũ thành chất mới (ví dụ: đốt giấy thành tro).'
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'Đơn vị tiêu chuẩn để đo áp suất trong hệ đo lường quốc tế (SI) là gì?',
+            options: [
+              'Newton (N)',
+              'Pascal (Pa)',
+              'Joule (J)',
+              'Độ C (C)'
+            ],
+            correct: 1,
+            explanation: 'Pascal (ký hiệu Pa), tương đương 1 N/m², là đơn vị đo áp suất trong hệ SI.'
+          },
+          {
+            type: 'mcq',
+            question: 'Cơ quan chính đóng vai trò lọc máu và đào thải nước tiểu ở người là:',
+            options: [
+              'Thận',
+              'Tim',
+              'Gan',
+              'Ruột non'
+            ],
+            correct: 0,
+            explanation: 'Đôi thận có nhiệm vụ lọc chất độc trong máu và hình thành nước tiểu để thải ra ngoài.'
+          },
+          {
+            type: 'mcq',
+            question: 'Lực đẩy Ác-si-mét tác dụng lên vật nằm trong lòng chất lỏng có đặc điểm nào?',
+            options: [
+              'Hướng thẳng đứng từ trên xuống',
+              'Hướng thẳng đứng từ dưới lên',
+              'Hướng xiên chéo tùy hình dạng',
+              'Hướng sang hai bên'
+            ],
+            correct: 1,
+            explanation: 'Lực đẩy Ác-si-mét luôn có phương thẳng đứng, chiều hướng từ dưới lên trên.'
+          },
+          {
+            type: 'essay',
+            question: 'Giải thích tại sao hành khách đi máy bay khi cất cánh nhanh thường bị ù tai?',
+            keywords: ['áp suất khí quyển', 'giảm', 'độ cao', 'chênh lệch', 'màng nhĩ'],
+            modelAnswer: 'Khi máy bay cất cánh lên cao, áp suất khí quyển giảm nhanh đột ngột. Sự chênh lệch áp suất không khí giữa tai giữa và môi trường bên ngoài làm màng nhĩ bị căng phồng ra phía ngoài, gây ù tai.'
+          }
+        ]
+      },
+      sudia: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: 'Sự kiện nào đánh dấu cuộc Cách mạng tư sản Pháp (1789) chính thức bùng nổ?',
+            options: [
+              'Vua Pháp họp quốc hội ba cấp',
+              'Nhân dân tấn công đánh chiếm ngục Ba-xti ngày 14/7/1789',
+              'Thiết lập chính thể cộng hòa',
+              'Tuyên ngôn nhân quyền ra đời'
+            ],
+            correct: 1,
+            explanation: 'Cuộc tấn công ngục Ba-xti, ngục thất giam tù chính trị, là mốc lịch sử mở đầu cách mạng Pháp.'
+          },
+          {
+            type: 'mcq',
+            question: 'Lãnh thổ Việt Nam nằm hoàn toàn trong vùng khí hậu đặc trưng nào?',
+            options: [
+              'Khí hậu ôn đới hải dương',
+              'Khí hậu nhiệt đới ẩm gió mùa',
+              'Khí hậu xích đạo gió mùa',
+              'Khí hậu cận nhiệt đới gió mùa'
+            ],
+            correct: 1,
+            explanation: 'Việt Nam nằm trong đới nóng nửa cầu Bắc, chịu ảnh hưởng mạnh của chế độ gió mùa châu Á và biển Đông nên có khí hậu nhiệt đới ẩm gió mùa.'
+          },
+          {
+            type: 'mcq',
+            question: 'Điểm cực Bắc phần đất liền nước ta nằm ở vĩ độ nào, thuộc tỉnh nào?',
+            options: [
+              'Hà Giang',
+              'Lào Cai',
+              'Cao Bằng',
+              'Lai Châu'
+            ],
+            correct: 0,
+            explanation: 'Điểm cực Bắc tại vĩ độ 23 độ 23 phút Bắc ở xã Lũng Cú, huyện Đồng Văn, tỉnh Hà Giang.'
+          },
+          {
+            type: 'essay',
+            question: 'Trình bày ý nghĩa lịch sử sâu sắc của cuộc Cách mạng tư sản Pháp cuối thế kỷ XVIII.',
+            keywords: ['phong kiến', 'tư bản', 'giải phóng', 'quần chúng', 'ảnh hưởng thế giới'],
+            modelAnswer: 'Cách mạng tư sản Pháp lật đổ triệt để chế độ phong kiến chuyên chế, mở đường cho chủ nghĩa tư bản phát triển. Giải phóng sức sản xuất và quyền con người của nhân dân, đồng thời ảnh hưởng sâu sắc thức tỉnh phong trào dân chủ toàn cầu.'
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'Thực dân Pháp bắt đầu nổ súng xâm lược Việt Nam tại đâu, vào thời gian nào?',
+            options: [
+              'Sơn Tây năm 1873',
+              'Bán đảo Sơn Trà (Đà Nẵng) ngày 1/9/1858',
+              'Gia Định năm 1859',
+              'Thuận An năm 1883'
+            ],
+            correct: 1,
+            explanation: 'Ngày 1/9/1858, quân Pháp nổ súng tấn công Đà Nẵng, mở đầu quá trình thực dân hóa xâm lược Việt Nam.'
+          },
+          {
+            type: 'mcq',
+            question: 'Gió mùa Đông Bắc thổi vào nước ta hoạt động chủ yếu trong khoảng thời gian nào?',
+            options: [
+              'Từ tháng 5 đến tháng 10',
+              'Từ tháng 11 đến tháng 4 năm sau',
+              'Quanh năm suốt tháng',
+              'Chỉ thổi vào mùa hè'
+            ],
+            correct: 1,
+            explanation: 'Gió mùa Đông Bắc hoạt động từ tháng 11 đến tháng 4 năm sau, gây khí hậu lạnh khô vào đầu đông, lạnh ẩm vào cuối đông ở miền Bắc.'
+          },
+          {
+            type: 'mcq',
+            question: 'Đất feralit vùng đồi núi Việt Nam thích hợp nhất cho việc canh tác loại cây trồng nào?',
+            options: [
+              'Lúa nước và hoa màu ngắn ngày',
+              'Cây công nghiệp lâu năm (chè, cà phê) và cây ăn quả',
+              'Rừng ngập mặn',
+              'Các loại cây xứ lạnh ôn đới'
+            ],
+            correct: 1,
+            explanation: 'Đất feralit dày, thoáng khí thích hợp cho cây công nghiệp rễ sâu chịu hạn như chè, cà phê, cao su.'
+          },
+          {
+            type: 'essay',
+            question: 'Giải thích tác động tích cực của Biển Đông đối với đặc điểm nhiệt đới ẩm gió mùa của khí hậu Việt Nam.',
+            keywords: ['Biển Đông', 'hơi nước', 'lượng mưa', 'ẩm', 'khô hạn hoang mạc'],
+            modelAnswer: 'Biển Đông rộng lớn cung cấp nguồn nhiệt và hơi ẩm dồi dào cho các luồng gió thổi qua biển. Nhờ đó, nước ta có lượng mưa lớn (1500-2000mm/năm), độ ẩm cao trên 80%, khí hậu mát mẻ ôn hòa hơn, không bị hoang mạc hóa như các khu vực cùng vĩ độ ở Tây Á.'
+          }
+        ]
+      }
+    };
+
+    /* ==========================================================================
+       5. GAMIFICATION & STATE MANAGER
+       ========================================================================== */
+    const BADGES = {
+      rookie: { id: 'rookie', name: 'Tân Binh Tự Học', icon: '🛡️', desc: 'Đúng câu đầu tiên' },
+      streak5: { id: 'streak5', name: 'Chuỗi Siêu Cấp', icon: '⚡', desc: 'Đúng 5 câu trắc nghiệm liên tiếp' },
+      essay_pro: { id: 'essay_pro', name: 'Bút Thần Tự Luận', icon: '✍️', desc: 'Tự chấm "Hoàn hảo" 3 lần' },
+      complete_subject: { id: 'complete_subject', name: 'Chinh Phục Môn', icon: '🔥', desc: 'Hoàn thành kì học của môn' },
+      level5: { id: 'level5', name: 'Nhà Thông Thái', icon: '👑', desc: 'Đạt Cấp độ 5 trở lên' }
+    };
+
+    // State Variables
+    let state = {
+      level: 1,
+      xp: 0,
+      totalXp: 0,
+      totalAnswered: 0,
+      correctCount: 0,
+      currentStreak: 0,
+      essayPerfectCount: 0,
+      unlockedBadges: [],
+      
+      // Split completion tracking by semesters: toan: { hk1: false, hk2: false }
+      subjectCompleted: {
+        toan: { hk1: false, hk2: false },
+        van: { hk1: false, hk2: false },
+        anh: { hk1: false, hk2: false },
+        khtn: { hk1: false, hk2: false },
+        sudia: { hk1: false, hk2: false }
+      },
+
+      // Profile settings
+      profile: {
+        avatar: '🦁',
+        name: 'Đức Bảo',
+        school: 'Trường THCS Lớp 8',
+        goal: '🎯 Mục tiêu: Ôn tập hiệu quả'
+      },
+
+      // Custom preferences
+      settings: {
+        themeId: 'indigo',
+        themeColor: '#6366f1',
+        themeHover: '#4f46e5',
+        backgroundStyle: 'gradient', // gradient, solid, animated
+        soundVolume: 60,
+        soundWave: 'sine',
+        confettiCount: 100
+      },
+      
+      // Active Quiz State
+      activeSubject: null,
+      activeSemester: null, // hk1 or hk2
+      currentQuestionIndex: 0,
+      quizCorrectInTurn: 0,
+      quizXpEarnedInTurn: 0,
+      shuffledQuestions: []
+    };
+
+    // Temp profile selection before saving
+    let selectedAvatarTemp = '🦁';
+
+    // Load initial user stats & custom settings from localStorage
+    function loadUserData() {
+      const saved = localStorage.getItem('ducbao_quiz_stats_v2');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          
+          // Migration support from v1 flat subjectCompleted
+          if (parsed.subjectCompleted) {
+            Object.keys(parsed.subjectCompleted).forEach(subj => {
+              if (typeof parsed.subjectCompleted[subj] === 'boolean') {
+                // convert old flat value to hk1: true, hk2: false
+                parsed.subjectCompleted[subj] = {
+                  hk1: parsed.subjectCompleted[subj],
+                  hk2: false
+                };
+              }
+            });
+          }
+
+          state = {
+            ...state,
+            ...parsed,
+            profile: { ...state.profile, ...(parsed.profile || {}) },
+            settings: { ...state.settings, ...(parsed.settings || {}) },
+            subjectCompleted: { ...state.subjectCompleted, ...(parsed.subjectCompleted || {}) }
+          };
+        } catch (e) {
+          console.error("Failed to parse user stats", e);
+        }
+      }
+      
+      // Apply theme and background styles from saved settings
+      applyThemeStyles();
+      updateUIElements();
+    }
+
+    // Save profile and setting data to localStorage
+    function saveUserData() {
+      const copy = {
+        level: state.level,
+        xp: state.xp,
+        totalXp: state.totalXp,
+        totalAnswered: state.totalAnswered,
+        correctCount: state.correctCount,
+        currentStreak: state.currentStreak,
+        essayPerfectCount: state.essayPerfectCount,
+        unlockedBadges: state.unlockedBadges,
+        subjectCompleted: state.subjectCompleted,
+        profile: state.profile,
+        settings: state.settings
+      };
+      localStorage.setItem('ducbao_quiz_stats_v2', JSON.stringify(copy));
+    }
+
+    // Reset profile data for testing
+    function resetAllProgress() {
+      if (confirm("Cảnh báo: Bạn có chắc chắn muốn đặt lại toàn bộ cấp độ, XP, Huy hiệu và thông tin hồ sơ về mặc định không?")) {
+        localStorage.removeItem('ducbao_quiz_stats_v2');
+        state = {
+          level: 1,
+          xp: 0,
+          totalXp: 0,
+          totalAnswered: 0,
+          correctCount: 0,
+          currentStreak: 0,
+          essayPerfectCount: 0,
+          unlockedBadges: [],
+          subjectCompleted: {
+            toan: { hk1: false, hk2: false },
+            van: { hk1: false, hk2: false },
+            anh: { hk1: false, hk2: false },
+            khtn: { hk1: false, hk2: false },
+            sudia: { hk1: false, hk2: false }
+          },
+          profile: {
+            avatar: '🦁',
+            name: 'Đức Bảo',
+            school: 'Trường THCS Lớp 8',
+            goal: '🎯 Mục tiêu: Ôn tập hiệu quả'
+          },
+          settings: {
+            themeId: 'indigo',
+            themeColor: '#6366f1',
+            themeHover: '#4f46e5',
+            backgroundStyle: 'gradient',
+            soundVolume: 60,
+            soundWave: 'sine',
+            confettiCount: 100
+          },
+          activeSubject: null,
+          activeSemester: null,
+          currentQuestionIndex: 0,
+          quizCorrectInTurn: 0,
+          quizXpEarnedInTurn: 0,
+          shuffledQuestions: []
+        };
+        closeSettingsModal();
+        applyThemeStyles();
+        updateUIElements();
+        sound.playWrong();
+      }
+    }
+
+    // Calculate XP needed for next level
+    function getXpNeeded(lvl) {
+      return lvl * 100;
+    }
+
+    // Level Titles
+    function getLevelTitle(lvl) {
+      if (lvl >= 10) return "Đại Hiền Triết";
+      if (lvl >= 7) return "Bậc Thầy Học Thuật";
+      if (lvl >= 5) return "Nhà Thông Thái";
+      if (lvl >= 3) return "Chiến Binh Lớp 8";
+      return "Học Giả Tân Binh";
+    }
+
+    // Award XP and check Level Up
+    function gainXP(amount) {
+      state.xp += amount;
+      state.totalXp += amount;
+      state.quizXpEarnedInTurn += amount;
+      
+      let leveledUp = false;
+      while (state.xp >= getXpNeeded(state.level)) {
+        state.xp -= getXpNeeded(state.level);
+        state.level++;
+        leveledUp = true;
+      }
+
+      if (leveledUp) {
+        setTimeout(() => {
+          sound.playLevelUp();
+          const density = parseInt(state.settings.confettiCount) || 100;
+          confetti.spawn(density + 50);
+          showLevelUpEffect();
+          checkBadgeUnlock('level5');
+        }, 600);
+      }
+      
+      saveUserData();
+      updateUIElements();
+    }
+
+    // Micro Level Up Animation Effect
+    function showLevelUpEffect() {
+      const lvlBadge = document.getElementById('player-level');
+      if (lvlBadge) {
+        lvlBadge.style.transform = 'scale(1.5)';
+        lvlBadge.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        setTimeout(() => {
+          lvlBadge.style.transform = 'scale(1)';
+        }, 500);
+      }
+    }
+
+    // UI Updates
+    function updateUIElements() {
+      // Profile Display Card UI
+      document.getElementById('display-profile-avatar').innerText = state.profile.avatar;
+      document.getElementById('display-profile-name').innerText = state.profile.name;
+      document.getElementById('display-profile-school').innerText = state.profile.school;
+      document.getElementById('display-profile-goal').innerText = state.profile.goal;
+      
+      // XP & Level UI
+      document.getElementById('player-level').innerText = state.level;
+      document.getElementById('xp-bar-name').innerText = getLevelTitle(state.level);
+      
+      const xpNeeded = getXpNeeded(state.level);
+      document.getElementById('xp-ratio').innerText = `${state.xp} / ${xpNeeded} XP`;
+      
+      const pct = (state.xp / xpNeeded) * 100;
+      document.getElementById('xp-bar-fill').style.width = `${pct}%`;
+      
+      // Global header score (Total correct answers)
+      document.getElementById('global-score').innerText = state.correctCount;
+      
+      // Dashboard stat boxes
+      document.getElementById('stat-total-answered').innerText = state.totalAnswered;
+      document.getElementById('stat-total-xp').innerText = state.totalXp;
+      
+      const accuracy = state.totalAnswered > 0 ? Math.round((state.correctCount / state.totalAnswered) * 100) : 0;
+      document.getElementById('stat-accuracy').innerText = `${accuracy}%`;
+
+      // Subjects Progress display on dashboard cards (Total completed out of 8 across both semesters)
+      Object.keys(quizDatabase).forEach(subj => {
+        let count = 0;
+        if (state.subjectCompleted[subj].hk1) count += 4;
+        if (state.subjectCompleted[subj].hk2) count += 4;
+        
+        const completedText = count === 8 ? "Hoàn thành: 8/8" : `Đang ôn tập: ${count}/8`;
+        const progressEl = document.getElementById(`progress-${subj}`);
+        if (progressEl) {
+          progressEl.innerText = completedText;
+        }
+      });
+
+      // Render Badge Cabinets (unlocked state)
+      Object.keys(BADGES).forEach(badgeId => {
+        const badgeEl = document.getElementById(`badge-${badgeId}`);
+        if (badgeEl) {
+          if (state.unlockedBadges.includes(badgeId)) {
+            badgeEl.classList.add('unlocked');
+          } else {
+            badgeEl.classList.remove('unlocked');
+          }
+        }
+      });
+    }
+
+    // Badge Unlocking Logic
+    function checkBadgeUnlock(badgeId) {
+      if (state.unlockedBadges.includes(badgeId)) return; // already unlocked
+
+      let unlock = false;
+      if (badgeId === 'rookie' && state.correctCount >= 1) {
+        unlock = true;
+      } else if (badgeId === 'streak5' && state.currentStreak >= 5) {
+        unlock = true;
+      } else if (badgeId === 'essay_pro' && state.essayPerfectCount >= 3) {
+        unlock = true;
+      } else if (badgeId === 'complete_subject') {
+        // check if any single semester of any subject is fully completed
+        unlock = Object.keys(state.subjectCompleted).some(subj => {
+          return state.subjectCompleted[subj].hk1 === true || state.subjectCompleted[subj].hk2 === true;
+        });
+      } else if (badgeId === 'level5' && state.level >= 5) {
+        unlock = true;
+      }
+
+      if (unlock) {
+        state.unlockedBadges.push(badgeId);
+        saveUserData();
+        updateUIElements();
+        
+        // Show Badge Modal
+        setTimeout(() => {
+          sound.playBadgeUnlocked();
+          const density = parseInt(state.settings.confettiCount) || 100;
+          confetti.spawn(density);
+          showBadgeModal(BADGES[badgeId]);
+        }, 800);
+      }
+    }
+
+    // Badge Modals Control
+    function showBadgeModal(badge) {
+      document.getElementById('modal-badge-icon').innerText = badge.icon;
+      document.getElementById('modal-badge-name').innerText = badge.name;
+      document.getElementById('modal-badge-desc').innerText = badge.desc;
+      
+      const modal = document.getElementById('badge-alert-modal');
+      modal.classList.add('show');
+    }
+
+    function closeBadgeModal() {
+      document.getElementById('badge-alert-modal').classList.remove('show');
+      sound.playClick();
+    }
+
+    /* ==========================================================================
+       6. THEME CUSTOMIZATION ENGINE (Colors, Background Style, Synthesizer)
+       ========================================================================== */
+    
+    // Theme switching logic (Accent Colors)
+    function setThemeAccentColor(themeId, mainColor, hoverColor) {
+      sound.playClick();
+      state.settings.themeId = themeId;
+      state.settings.themeColor = mainColor;
+      state.settings.themeHover = hoverColor;
+      
+      applyThemeStyles();
+      saveUserData();
+
+      // Highlight selected color dot in modal
+      const dots = document.querySelectorAll('.color-dot');
+      dots.forEach(dot => {
+        const bgVal = dot.style.backgroundColor;
+        if (bgVal.includes(mainColor) || dot.getAttribute('onclick').includes(themeId)) {
+          dot.classList.add('selected');
+        } else {
+          dot.classList.remove('selected');
+        }
+      });
+    }
+
+    function applyThemeStyles() {
+      const settings = state.settings;
+      // Set CSS variables
+      document.documentElement.style.setProperty('--accent', settings.themeColor);
+      document.documentElement.style.setProperty('--accent-hover', settings.themeHover);
+
+      // Handle Background Style
+      if (settings.backgroundStyle === 'solid') {
+        document.documentElement.style.setProperty('--bg-gradient', 'var(--bg-color-solid)');
+        if (particleBg) particleBg.stop();
+      } else if (settings.backgroundStyle === 'animated') {
+        document.documentElement.style.setProperty('--bg-gradient', 'var(--bg-color-solid)');
+        if (particleBg) particleBg.start();
+      } else {
+        // default gradient
+        document.documentElement.style.setProperty('--bg-gradient', 'var(--bg-gradient-default)');
+        if (particleBg) particleBg.stop();
+      }
+
+      // Configure Sound Synthesizer waveforms and volumes
+      sound.setVolume(settings.soundVolume);
+      sound.setWaveType(settings.soundWave);
+    }
+
+    function changeBackgroundStyle(style) {
+      sound.playClick();
+      state.settings.backgroundStyle = style;
+      applyThemeStyles();
+      saveUserData();
+    }
+
+    function changeSoundWaveType(type) {
+      state.settings.soundWave = type;
+      sound.setWaveType(type);
+      saveUserData();
+      sound.playClick();
+    }
+
+    function changeSoundVolume(val) {
+      state.settings.soundVolume = val;
+      sound.setVolume(val);
+      document.getElementById('volume-label').innerText = `Âm Lượng: ${val}%`;
+      // Don't save continuously on scroll, we will write it on pause or close.
+      saveUserData();
+    }
+
+    function testSoundSynth() {
+      sound.playCorrect();
+    }
+
+    /* ==========================================================================
+       7. PROFILE EDITOR MANAGEMENT
+       ========================================================================== */
+    function openProfileModal() {
+      sound.playClick();
+      selectedAvatarTemp = state.profile.avatar;
+      
+      // Pre-fill inputs
+      document.getElementById('profile-name-input').value = state.profile.name;
+      document.getElementById('profile-school-input').value = state.profile.school;
+      document.getElementById('profile-goal-input').value = state.profile.goal;
+
+      // Select active avatar in picker grid
+      const avatarBtns = document.querySelectorAll('.avatar-option-btn');
+      avatarBtns.forEach(btn => {
+        if (btn.innerText === selectedAvatarTemp) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+
+      document.getElementById('profile-modal').classList.add('show');
+    }
+
+    function closeProfileModal() {
+      sound.playClick();
+      document.getElementById('profile-modal').classList.remove('show');
+    }
+
+    function selectAvatarOption(avatar) {
+      sound.playClick();
+      selectedAvatarTemp = avatar;
+      const avatarBtns = document.querySelectorAll('.avatar-option-btn');
+      avatarBtns.forEach(btn => {
+        if (btn.innerText === avatar) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+    }
+
+    function saveProfileData() {
+      const name = document.getElementById('profile-name-input').value.trim() || 'Học sinh';
+      const school = document.getElementById('profile-school-input').value.trim() || 'Trường Lớp 8';
+      const goal = document.getElementById('profile-goal-input').value;
+
+      state.profile = {
+        avatar: selectedAvatarTemp,
+        name: name,
+        school: school,
+        goal: goal
+      };
+
+      saveUserData();
+      updateUIElements();
+      
+      sound.playCorrect();
+      confetti.spawn(40);
+      
+      document.getElementById('profile-modal').classList.remove('show');
+    }
+
+    /* ==========================================================================
+       8. SETTINGS DIALOG MANAGEMENT
+       ========================================================================== */
+    function openSettingsModal() {
+      sound.playClick();
+      // Setup current setting values on inputs
+      const settings = state.settings;
+      document.getElementById('settings-bg-input').value = settings.backgroundStyle;
+      document.getElementById('settings-sound-type').value = settings.soundWave;
+      document.getElementById('settings-volume-slider').value = settings.soundVolume;
+      document.getElementById('volume-label').innerText = `Âm Lượng: ${settings.soundVolume}%`;
+      document.getElementById('settings-confetti-input').value = settings.confettiCount;
+
+      // Highlight selected color dot in modal
+      const dots = document.querySelectorAll('.color-dot');
+      dots.forEach(dot => {
+        if (dot.getAttribute('onclick').includes(settings.themeId)) {
+          dot.classList.add('selected');
+        } else {
+          dot.classList.remove('selected');
+        }
+      });
+
+      document.getElementById('settings-modal').classList.add('show');
+    }
+
+    function closeSettingsModal() {
+      sound.playClick();
+      // Save confetti setting count
+      state.settings.confettiCount = parseInt(document.getElementById('settings-confetti-input').value) || 100;
+      saveUserData();
+      document.getElementById('settings-modal').classList.remove('show');
+    }
+
+    /* ==========================================================================
+       9. SEMESTER SELECT DIALOG MANAGEMENT
+       ========================================================================== */
+    function clickSubject(subjId) {
+      sound.playClick();
+      state.activeSubject = subjId;
+
+      // Update semester modal descriptions and progress info
+      const hk1Completed = state.subjectCompleted[subjId].hk1;
+      const hk2Completed = state.subjectCompleted[subjId].hk2;
+
+      document.getElementById('progress-detail-hk1').innerText = hk1Completed ? "Hoàn thành: 4/4" : "Đang ôn tập: 0/4";
+      document.getElementById('progress-detail-hk2').innerText = hk2Completed ? "Hoàn thành: 4/4" : "Đang ôn tập: 0/4";
+
+      // Show modal
+      document.getElementById('semester-modal').classList.add('show');
+    }
+
+    function closeSemesterModal() {
+      sound.playClick();
+      document.getElementById('semester-modal').classList.remove('show');
+    }
+
+    function selectSemester(semId) {
+      sound.playClick();
+      document.getElementById('semester-modal').classList.remove('show');
+      startSubject(state.activeSubject, semId);
+    }
+
+    /* ==========================================================================
+       10. QUIZ PLAYING STATE & GAME ENGINE
+       ========================================================================== */
+    
+    // Shuffle helper function to randomize question options
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Get Subject details
+    function getSubjectDetails(subj) {
+      switch (subj) {
+        case 'toan': return { title: 'Toán Học 8', icon: '📐', color: 'var(--color-blue)' };
+        case 'van': return { title: 'Ngữ Văn 8', icon: '✍️', color: 'var(--color-green)' };
+        case 'anh': return { title: 'Tiếng Anh 8', icon: '🇬🇧', color: 'var(--color-purple)' };
+        case 'khtn': return { title: 'Khoa Học Tự Nhiên', icon: '🧪', color: 'var(--color-orange)' };
+        case 'sudia': return { title: 'Lịch Sử & Địa Lí', icon: '🌍', color: 'var(--color-pink)' };
+      }
+    }
+
+    // Start subject quiz
+    function startSubject(subjId, semesterId) {
+      state.activeSubject = subjId;
+      state.activeSemester = semesterId;
+      state.currentQuestionIndex = 0;
+      state.quizCorrectInTurn = 0;
+      state.quizXpEarnedInTurn = 0;
+
+      // Extract subject semester questions
+      const questionsList = quizDatabase[subjId][semesterId];
+      // Shuffle questions to make it dynamic
+      state.shuffledQuestions = shuffleArray(questionsList);
+
+      // Hide Dashboard & Results, show Quiz Arena
+      document.getElementById('dashboard-view').style.display = 'none';
+      document.getElementById('result-view').style.display = 'none';
+      document.getElementById('quiz-view').style.display = 'flex';
+
+      // Set Subject header UI
+      const info = getSubjectDetails(subjId);
+      const semLabel = semesterId === 'hk1' ? 'Học Kỳ 1' : 'Học Kỳ 2';
+      const titleDisplay = document.getElementById('quiz-title-display');
+      titleDisplay.innerHTML = `<span>${info.icon}</span> <span>${info.title} (${semLabel})</span>`;
+      
+      const quizViewEl = document.getElementById('quiz-view');
+      quizViewEl.style.setProperty('--sub-color', info.color);
+
+      // Load first question
+      loadQuestion();
+    }
+
+    // Load active question
+    function loadQuestion() {
+      const q = state.shuffledQuestions[state.currentQuestionIndex];
+      const totalQ = state.shuffledQuestions.length;
+
+      // Reset panels
+      document.getElementById('explanation-box').style.display = 'none';
+      document.getElementById('quiz-nav-footer').style.display = 'none';
+      document.getElementById('essay-container').style.display = 'none';
+      document.getElementById('essay-eval-panel').style.display = 'none';
+      document.getElementById('options-container').style.display = 'none';
+
+      // Update question index labels
+      document.getElementById('quiz-progress-fraction').innerText = `Câu ${state.currentQuestionIndex + 1} / ${totalQ}`;
+      const progressPct = ((state.currentQuestionIndex) / totalQ) * 100;
+      document.getElementById('quiz-progress-fill').style.width = `${progressPct}%`;
+
+      document.getElementById('question-text-content').innerText = q.question;
+
+      // Toggle MCQ / Essay layout
+      const badgeEl = document.getElementById('q-type-badge');
+      if (q.type === 'mcq') {
+        badgeEl.className = "question-type-badge multiple-choice";
+        badgeEl.innerText = "Trắc nghiệm";
+        renderMultipleChoice(q);
+      } else {
+        badgeEl.className = "question-type-badge essay";
+        badgeEl.innerText = "Tự luận";
+        renderEssay();
+      }
+    }
+
+    // Render MCQ UI
+    function renderMultipleChoice(q) {
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+      container.style.display = 'grid';
+
+      q.options.forEach((optText, index) => {
+        const letter = String.fromCharCode(65 + index); // A, B, C, D
+        const button = document.createElement('button');
+        button.className = 'option-btn';
+        button.innerHTML = `
+          <span class="option-letter">${letter}</span>
+          <span class="option-text">${optText}</span>
+        `;
+        button.onclick = () => selectOption(index);
+        container.appendChild(button);
+      });
+    }
+
+    // Action MCQ Select Option
+    function selectOption(selectedIndex) {
+      const q = state.shuffledQuestions[state.currentQuestionIndex];
+      const buttons = document.querySelectorAll('#options-container .option-btn');
+      
+      // Disable all options
+      buttons.forEach(btn => btn.disabled = true);
+
+      state.totalAnswered++;
+
+      const isCorrect = (selectedIndex === q.correct);
+
+      if (isCorrect) {
+        buttons[selectedIndex].classList.add('correct');
+        sound.playCorrect();
+        
+        state.correctCount++;
+        state.quizCorrectInTurn++;
+        state.currentStreak++;
+        
+        gainXP(10); // correct MCQ earns 10 XP
+        
+        checkBadgeUnlock('rookie');
+        checkBadgeUnlock('streak5');
+      } else {
+        buttons[selectedIndex].classList.add('incorrect');
+        buttons[q.correct].classList.add('correct');
+        sound.playWrong();
+        
+        state.currentStreak = 0; // Reset streak
+      }
+
+      // Display Explanation
+      const explanationText = document.getElementById('explanation-text');
+      explanationText.innerText = q.explanation;
+      document.getElementById('explanation-box').style.display = 'block';
+
+      // Show Next button
+      document.getElementById('quiz-nav-footer').style.display = 'flex';
+      
+      saveUserData();
+      updateUIElements();
+    }
+
+    // Render Essay UI
+    function renderEssay() {
+      const essayContainer = document.getElementById('essay-container');
+      essayContainer.style.display = 'flex';
+      
+      // Reset text inputs
+      document.getElementById('essay-input').value = '';
+      document.getElementById('essay-input').disabled = false;
+      document.getElementById('btn-submit-essay').disabled = false;
+    }
+
+    // Action Essay Submission
+    function submitEssay() {
+      const userText = document.getElementById('essay-input').value.trim();
+      if (!userText) {
+        alert("Vui lòng nhập câu trả lời trước khi nộp bài nhé!");
+        return;
+      }
+
+      sound.playClick();
+      
+      document.getElementById('essay-input').disabled = true;
+      document.getElementById('btn-submit-essay').disabled = true;
+
+      const q = state.shuffledQuestions[state.currentQuestionIndex];
+
+      // Highlight keywords in student answer representation
+      let markedText = escapeHTML(userText);
+      const pillsContainer = document.getElementById('keyword-pills-box');
+      pillsContainer.innerHTML = '';
+
+      let matchCount = 0;
+      q.keywords.forEach(kw => {
+        const pill = document.createElement('span');
+        pill.className = 'kw-pill';
+        
+        const escapedKw = kw.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        const regex = new RegExp(`(${escapedKw})`, 'gi');
+        
+        if (regex.test(userText)) {
+          pill.classList.add('matched');
+          pill.innerHTML = `✅ ${kw}`;
+          matchCount++;
+          markedText = markedText.replace(regex, '<mark>$1</mark>');
+        } else {
+          pill.innerHTML = `❌ ${kw}`;
+        }
+        
+        pillsContainer.appendChild(pill);
+      });
+
+      // Update comparison UI
+      document.getElementById('student-rendered-answer').innerHTML = markedText;
+      document.getElementById('model-answer-content').innerText = q.modelAnswer;
+
+      // Show Comparison Panel
+      document.getElementById('essay-eval-panel').style.display = 'flex';
+      
+      // Keep next hidden until user self-assesses
+      document.getElementById('quiz-nav-footer').style.display = 'none';
+    }
+
+    // Action Self-Assessment Selection
+    function rateEssay(rating) {
+      sound.playClick();
+      
+      state.totalAnswered++;
+      let xpGained = 0;
+
+      if (rating === 'perfect') {
+        xpGained = 20; // 100% XP
+        state.essayPerfectCount++;
+        const density = parseInt(state.settings.confettiCount) || 100;
+        confetti.spawn(Math.min(density, 60));
+        sound.playCorrect();
+        checkBadgeUnlock('essay_pro');
+      } else if (rating === 'good') {
+        xpGained = 12; // 60% XP
+        sound.playCorrect();
+      } else if (rating === 'try') {
+        xpGained = 2;  // 10% XP
+      }
+
+      if (rating === 'perfect' || rating === 'good') {
+        state.correctCount++;
+        state.quizCorrectInTurn++;
+      }
+
+      // Lock self-eval elements
+      document.querySelector('.self-eval-section').style.opacity = '0.5';
+      const evalBtns = document.querySelectorAll('.btn-eval');
+      evalBtns.forEach(btn => btn.disabled = true);
+
+      // Award XP
+      gainXP(xpGained);
+
+      // Show next button
+      document.getElementById('quiz-nav-footer').style.display = 'flex';
+      
+      saveUserData();
+      updateUIElements();
+    }
+
+    // Action Next Question Click
+    function nextQuestion() {
+      sound.playClick();
+      
+      // Reset self evaluation block
+      document.querySelector('.self-eval-section').style.opacity = '1';
+      const evalBtns = document.querySelectorAll('.btn-eval');
+      evalBtns.forEach(btn => btn.disabled = false);
+
+      state.currentQuestionIndex++;
+      const totalQ = state.shuffledQuestions.length;
+
+      if (state.currentQuestionIndex < totalQ) {
+        loadQuestion();
+      } else {
+        finishQuizSubject();
+      }
+    }
+
+    // Finish Subject Semester
+    function finishQuizSubject() {
+      // Save semester completed status
+      state.subjectCompleted[state.activeSubject][state.activeSemester] = true;
+      saveUserData();
+      updateUIElements();
+
+      checkBadgeUnlock('complete_subject');
+
+      // Setup Results view
+      document.getElementById('quiz-view').style.display = 'none';
+      document.getElementById('result-view').style.display = 'flex';
+
+      const info = getSubjectDetails(state.activeSubject);
+      const semLabel = state.activeSemester === 'hk1' ? 'Học Kỳ 1' : 'Học Kỳ 2';
+      document.getElementById('result-congrats-title').innerText = `Chinh Phục ${info.title}!`;
+      document.getElementById('result-message').innerText = `Tuyệt vời! Bạn vừa hoàn thành xuất sắc các nội dung ôn tập của ${semLabel} môn ${info.title}.`;
+      document.getElementById('result-score').innerText = `${state.quizCorrectInTurn} / 4`;
+      document.getElementById('result-xp').innerText = `+${state.quizXpEarnedInTurn} XP`;
+
+      const emojiEl = document.getElementById('result-emoji');
+      const density = parseInt(state.settings.confettiCount) || 100;
+      
+      if (state.quizCorrectInTurn === 4) {
+        emojiEl.innerText = "👑";
+        confetti.spawn(density + 50);
+        setTimeout(() => sound.playLevelUp(), 200);
+      } else if (state.quizCorrectInTurn >= 3) {
+        emojiEl.innerText = "🏆";
+        confetti.spawn(density);
+      } else {
+        emojiEl.innerText = "📚";
+      }
+    }
+
+    // Quit quiz to dashboard
+    function quitQuiz() {
+      sound.playClick();
+      state.activeSubject = null;
+      state.activeSemester = null;
+      document.getElementById('quiz-view').style.display = 'none';
+      document.getElementById('result-view').style.display = 'none';
+      document.getElementById('dashboard-view').style.display = 'flex';
+      updateUIElements();
+    }
+
+    // Restart the current subject immediately
+    function restartCurrentSubject() {
+      sound.playClick();
+      startSubject(state.activeSubject, state.activeSemester);
+    }
+
+    // Helper: Escapes characters to prevent HTML injection
+    function escapeHTML(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    /* ==========================================================================
+       11. INITIALIZATION & LIGHT/DARK TOGGLE
+       ========================================================================== */
+    
+    // Light/Dark Theme Switcher
+    const themeBtn = document.getElementById('toggle-theme');
+    themeBtn.addEventListener('click', () => {
+      sound.playClick();
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      if (currentTheme === 'dark') {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.innerText = '🌙';
+        localStorage.setItem('ducbao_quiz_theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeBtn.innerText = '☀️';
+        localStorage.setItem('ducbao_quiz_theme', 'dark');
+      }
+    });
+
+    // Initialize application on load
+    function initializeApp() {
+      // 1. Setup Theme mode
+      const savedTheme = localStorage.getItem('ducbao_quiz_theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeBtn.innerText = '☀️';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.innerText = '🌙';
+      }
+
+      // 2. Setup engines
+      confetti = new ConfettiEngine('confetti-canvas');
+      particleBg = new ParticleBackground('bg-particle-canvas');
+
+      // 3. Load user data
+      loadUserData();
+    }
+
+    window.addEventListener('load', initializeApp);
+  </script>
+</body>
+</html>
