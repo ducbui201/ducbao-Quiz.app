@@ -1502,7 +1502,7 @@
               <p>Hằng đẳng thức, tứ giác, phương trình bậc nhất, định lí Thalès & Pythagore.</p>
             </div>
             <div class="subject-footer">
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <span id="info-toan" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
               <button class="btn-start" style="--sub-color: var(--color-blue);">Chơi ➔</button>
             </div>
           </div>
@@ -1518,7 +1518,7 @@
               <p>Tác phẩm Lão Hạc, Tôi đi học, Ông đồ, Nhớ rừng, Chiếu dời đô & Cảm thụ văn học.</p>
             </div>
             <div class="subject-footer">
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <span id="info-van" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
               <button class="btn-start" style="--sub-color: var(--color-green);">Chơi ➔</button>
             </div>
           </div>
@@ -1534,7 +1534,7 @@
               <p>Trọng âm, Câu điều kiện (loại 1, 2), Thì quá khứ tiếp diễn, Câu gián tiếp & Bị động.</p>
             </div>
             <div class="subject-footer">
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <span id="info-anh" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
               <button class="btn-start" style="--sub-color: var(--color-purple);">Chơi ➔</button>
             </div>
           </div>
@@ -1550,7 +1550,7 @@
               <p>Acid-Base, bảo toàn khối lượng, mol, áp suất, lực đẩy Ác-si-mét & sinh lý người.</p>
             </div>
             <div class="subject-footer">
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <span id="info-khtn" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
               <button class="btn-start" style="--sub-color: var(--color-orange);">Chơi ➔</button>
             </div>
           </div>
@@ -1566,7 +1566,7 @@
               <p>Cách mạng tư sản Pháp, vị trí & địa hình Việt Nam, thực dân Pháp & gió mùa feralit.</p>
             </div>
             <div class="subject-footer">
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
+              <span id="info-sudia" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
               <button class="btn-start" style="--sub-color: var(--color-pink);">Chơi ➔</button>
             </div>
           </div>
@@ -1612,6 +1612,92 @@
           </div>
 
         </div>
+      </div>
+
+      <!-- Custom Question Form Section -->
+      <div class="glass-card" style="margin-top: 12px; animation: slide-down 0.4s ease;">
+        <div class="subjects-title" style="margin-bottom: 20px;">
+          <span>✏️</span> Tự Tạo Câu Hỏi Trắc Nghiệm Mới
+        </div>
+        
+        <!-- Custom success alert inside form card -->
+        <div id="custom-success-msg" style="display: none; background: var(--correct-bg); border: 1px solid var(--correct-border); color: var(--color-green); padding: 12px; border-radius: 12px; margin-bottom: 16px; font-weight: 600; text-align: center; animation: pulse-ring 2s infinite;">
+          🎉 Thêm câu hỏi thành công! Hãy vào môn học để trải nghiệm ngay.
+        </div>
+
+        <form id="custom-question-form" onsubmit="addCustomQuestion(event)">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="custom-subject">Chọn Môn Học</label>
+              <select class="form-input" id="custom-subject" required>
+                <option value="toan">📐 Toán Học 8</option>
+                <option value="van">✍️ Ngữ Văn 8</option>
+                <option value="anh">🇬🇧 Tiếng Anh 8</option>
+                <option value="khtn">🧪 Khoa Học Tự Nhiên</option>
+                <option value="sudia">🌍 Lịch Sử & Địa Lí</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="custom-semester">Chọn Học Kỳ</label>
+              <select class="form-input" id="custom-semester" required>
+                <option value="hk1">🌟 Học Kỳ 1</option>
+                <option value="hk2">🚀 Học Kỳ 2</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="custom-question-text">Nội Dung Câu Hỏi</label>
+            <textarea class="form-input" id="custom-question-text" rows="3" placeholder="Ví dụ: Căn bậc hai số học của 9 là bao nhiêu?" style="resize: vertical;" required></textarea>
+          </div>
+
+          <div style="margin-bottom: 18px;">
+            <label class="form-label" style="display: block; margin-bottom: 10px;">Nhập 4 Đáp Án và chọn đáp án Đúng</label>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <span class="option-letter" style="background: var(--accent); color: white;">A</span>
+                <input type="text" class="form-input" id="custom-opt-a" placeholder="Nhập đáp án A..." required>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                  <input type="radio" name="correct-option" value="0" style="width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer;" required checked>
+                  <span class="form-label" style="font-size: 11px; white-space: nowrap; margin-bottom: 0;">Đúng</span>
+                </label>
+              </div>
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <span class="option-letter" style="background: var(--accent); color: white;">B</span>
+                <input type="text" class="form-input" id="custom-opt-b" placeholder="Nhập đáp án B..." required>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                  <input type="radio" name="correct-option" value="1" style="width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer;" required>
+                  <span class="form-label" style="font-size: 11px; white-space: nowrap; margin-bottom: 0;">Đúng</span>
+                </label>
+              </div>
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <span class="option-letter" style="background: var(--accent); color: white;">C</span>
+                <input type="text" class="form-input" id="custom-opt-c" placeholder="Nhập đáp án C..." required>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                  <input type="radio" name="correct-option" value="2" style="width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer;" required>
+                  <span class="form-label" style="font-size: 11px; white-space: nowrap; margin-bottom: 0;">Đúng</span>
+                </label>
+              </div>
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <span class="option-letter" style="background: var(--accent); color: white;">D</span>
+                <input type="text" class="form-input" id="custom-opt-d" placeholder="Nhập đáp án D..." required>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                  <input type="radio" name="correct-option" value="3" style="width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer;" required>
+                  <span class="form-label" style="font-size: 11px; white-space: nowrap; margin-bottom: 0;">Đúng</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="custom-explanation">Giải Thích Đáp Án (Không bắt buộc)</label>
+            <input type="text" class="form-input" id="custom-explanation" placeholder="Ví dụ: Vì căn bậc hai số học của 9 là một số không âm x sao cho x^2 = 9, do đó x = 3.">
+          </div>
+
+          <button type="submit" class="btn-action" style="width: 100%; justify-content: center; padding: 14px;">
+            <span>➕</span> Thêm Câu Hỏi Mới ➔
+          </button>
+        </form>
       </div>
 
     </div>
@@ -2527,7 +2613,7 @@
             question: 'Giải thích tại sao hành khách đi máy bay khi cất cánh nhanh thường bị ù tai?',
             keywords: ['áp suất khí quyển', 'giảm', 'độ cao', 'chênh lệch', 'màng nhĩ'],
             modelAnswer: 'Khi máy bay cất cánh lên cao, áp suất khí quyển giảm nhanh đột ngột. Sự chênh lệch áp suất không khí giữa tai giữa và môi trường bên ngoài làm màng nhĩ bị căng phồng ra phía ngoài, gây ù tai.'
-          }
+          }          
         ]
       },
       sudia: {
@@ -2741,50 +2827,10 @@
 
     // Reset profile data for testing
     function resetAllProgress() {
-      if (confirm("Cảnh báo: Bạn có chắc chắn muốn đặt lại toàn bộ cấp độ, XP, Huy hiệu và thông tin hồ sơ về mặc định không?")) {
+      if (confirm("Cảnh báo: Bạn có chắc chắn muốn đặt lại toàn bộ cấp độ, XP, Huy hiệu, thông tin hồ sơ và các câu hỏi tự thêm về mặc định không?")) {
         localStorage.removeItem('ducbao_quiz_stats_v2');
-        state = {
-          level: 1,
-          xp: 0,
-          totalXp: 0,
-          totalAnswered: 0,
-          correctCount: 0,
-          currentStreak: 0,
-          essayPerfectCount: 0,
-          unlockedBadges: [],
-          subjectCompleted: {
-            toan: { hk1: false, hk2: false },
-            van: { hk1: false, hk2: false },
-            anh: { hk1: false, hk2: false },
-            khtn: { hk1: false, hk2: false },
-            sudia: { hk1: false, hk2: false }
-          },
-          profile: {
-            avatar: '🦁',
-            name: 'Đức Bảo',
-            school: 'Trường THCS Lớp 8',
-            goal: '🎯 Mục tiêu: Ôn tập hiệu quả'
-          },
-          settings: {
-            themeId: 'indigo',
-            themeColor: '#6366f1',
-            themeHover: '#4f46e5',
-            backgroundStyle: 'gradient',
-            soundVolume: 60,
-            soundWave: 'sine',
-            confettiCount: 100
-          },
-          activeSubject: null,
-          activeSemester: null,
-          currentQuestionIndex: 0,
-          quizCorrectInTurn: 0,
-          quizXpEarnedInTurn: 0,
-          shuffledQuestions: []
-        };
-        closeSettingsModal();
-        applyThemeStyles();
-        updateUIElements();
-        sound.playWrong();
+        localStorage.removeItem('ducbao_custom_questions');
+        location.reload();
       }
     }
 
@@ -2869,16 +2915,26 @@
       const accuracy = state.totalAnswered > 0 ? Math.round((state.correctCount / state.totalAnswered) * 100) : 0;
       document.getElementById('stat-accuracy').innerText = `${accuracy}%`;
 
-      // Subjects Progress display on dashboard cards (Total completed out of 8 across both semesters)
+      // Subjects Progress display on dashboard cards (Total completed out of total across both semesters)
       Object.keys(quizDatabase).forEach(subj => {
         let count = 0;
-        if (state.subjectCompleted[subj].hk1) count += 4;
-        if (state.subjectCompleted[subj].hk2) count += 4;
+        const total = quizDatabase[subj].hk1.length + quizDatabase[subj].hk2.length;
+        if (state.subjectCompleted[subj].hk1) count += quizDatabase[subj].hk1.length;
+        if (state.subjectCompleted[subj].hk2) count += quizDatabase[subj].hk2.length;
         
-        const completedText = count === 8 ? "Hoàn thành: 8/8" : `Đang ôn tập: ${count}/8`;
+        const completedText = count === total ? `Hoàn thành: ${total}/${total}` : `Đang ôn tập: ${count}/${total}`;
         const progressEl = document.getElementById(`progress-${subj}`);
         if (progressEl) {
           progressEl.innerText = completedText;
+        }
+
+        // Update footer text dynamically to display correct counts
+        const infoEl = document.getElementById(`info-${subj}`);
+        if (infoEl) {
+          const allQs = [...quizDatabase[subj].hk1, ...quizDatabase[subj].hk2];
+          const mcqCount = allQs.filter(q => q.type === 'mcq').length;
+          const essayCount = allQs.filter(q => q.type === 'essay').length;
+          infoEl.innerText = `${total} câu hỏi (${mcqCount} Trắc nghiệm, ${essayCount} Tự luận)`;
         }
       });
 
@@ -3129,9 +3185,11 @@
       // Update semester modal descriptions and progress info
       const hk1Completed = state.subjectCompleted[subjId].hk1;
       const hk2Completed = state.subjectCompleted[subjId].hk2;
+      const lenHk1 = quizDatabase[subjId].hk1.length;
+      const lenHk2 = quizDatabase[subjId].hk2.length;
 
-      document.getElementById('progress-detail-hk1').innerText = hk1Completed ? "Hoàn thành: 4/4" : "Đang ôn tập: 0/4";
-      document.getElementById('progress-detail-hk2').innerText = hk2Completed ? "Hoàn thành: 4/4" : "Đang ôn tập: 0/4";
+      document.getElementById('progress-detail-hk1').innerText = hk1Completed ? `Hoàn thành: ${lenHk1}/${lenHk1}` : `Đang ôn tập: 0/${lenHk1}`;
+      document.getElementById('progress-detail-hk2').innerText = hk2Completed ? `Hoàn thành: ${lenHk2}/${lenHk2}` : `Đang ôn tập: 0/${lenHk2}`;
 
       // Show modal
       document.getElementById('semester-modal').classList.add('show');
@@ -3438,17 +3496,18 @@
       const semLabel = state.activeSemester === 'hk1' ? 'Học Kỳ 1' : 'Học Kỳ 2';
       document.getElementById('result-congrats-title').innerText = `Chinh Phục ${info.title}!`;
       document.getElementById('result-message').innerText = `Tuyệt vời! Bạn vừa hoàn thành xuất sắc các nội dung ôn tập của ${semLabel} môn ${info.title}.`;
-      document.getElementById('result-score').innerText = `${state.quizCorrectInTurn} / 4`;
+      const totalQ = state.shuffledQuestions.length;
+      document.getElementById('result-score').innerText = `${state.quizCorrectInTurn} / ${totalQ}`;
       document.getElementById('result-xp').innerText = `+${state.quizXpEarnedInTurn} XP`;
 
       const emojiEl = document.getElementById('result-emoji');
       const density = parseInt(state.settings.confettiCount) || 100;
       
-      if (state.quizCorrectInTurn === 4) {
+      if (state.quizCorrectInTurn === totalQ) {
         emojiEl.innerText = "👑";
         confetti.spawn(density + 50);
         setTimeout(() => sound.playLevelUp(), 200);
-      } else if (state.quizCorrectInTurn >= 3) {
+      } else if (state.quizCorrectInTurn >= Math.ceil(totalQ * 0.75)) {
         emojiEl.innerText = "🏆";
         confetti.spawn(density);
       } else {
@@ -3503,6 +3562,117 @@
       }
     });
 
+    /* ==========================================================================
+       10.5 CUSTOM QUESTIONS CONTROLLER
+       ========================================================================== */
+    function loadCustomQuestions() {
+      const savedCustom = localStorage.getItem('ducbao_custom_questions');
+      if (savedCustom) {
+        try {
+          const customQs = JSON.parse(savedCustom);
+          Object.keys(customQs).forEach(subj => {
+            if (quizDatabase[subj]) {
+              if (customQs[subj].hk1) {
+                customQs[subj].hk1.forEach(q => {
+                  if (!quizDatabase[subj].hk1.some(existing => existing.question === q.question)) {
+                    quizDatabase[subj].hk1.push(q);
+                  }
+                });
+              }
+              if (customQs[subj].hk2) {
+                customQs[subj].hk2.forEach(q => {
+                  if (!quizDatabase[subj].hk2.some(existing => existing.question === q.question)) {
+                    quizDatabase[subj].hk2.push(q);
+                  }
+                });
+              }
+            }
+          });
+        } catch (e) {
+          console.error("Failed to parse custom questions:", e);
+        }
+      }
+    }
+
+    function addCustomQuestion(event) {
+      event.preventDefault();
+      
+      const subject = document.getElementById('custom-subject').value;
+      const semester = document.getElementById('custom-semester').value;
+      const questionText = document.getElementById('custom-question-text').value.trim();
+      const optA = document.getElementById('custom-opt-a').value.trim();
+      const optB = document.getElementById('custom-opt-b').value.trim();
+      const optC = document.getElementById('custom-opt-c').value.trim();
+      const optD = document.getElementById('custom-opt-d').value.trim();
+      const correctOptionVal = document.querySelector('input[name="correct-option"]:checked').value;
+      const explanationText = document.getElementById('custom-explanation').value.trim();
+
+      if (!questionText || !optA || !optB || !optC || !optD) {
+        alert("Vui lòng điền đầy đủ nội dung câu hỏi và các đáp án!");
+        return;
+      }
+
+      const newQ = {
+        type: 'mcq',
+        question: questionText,
+        options: [optA, optB, optC, optD],
+        correct: parseInt(correctOptionVal),
+        explanation: explanationText || 'Không có giải thích chi tiết cho câu hỏi này.'
+      };
+
+      // Push to in-memory database
+      if (quizDatabase[subject] && quizDatabase[subject][semester]) {
+        quizDatabase[subject][semester].push(newQ);
+      } else {
+        console.error("Subject or semester not found in database:", subject, semester);
+        return;
+      }
+
+      // Save to localStorage
+      let savedCustom = localStorage.getItem('ducbao_custom_questions');
+      let customQs = {};
+      if (savedCustom) {
+        try {
+          customQs = JSON.parse(savedCustom);
+        } catch (e) {
+          console.error("Failed to parse custom questions from localStorage:", e);
+        }
+      }
+      if (!customQs[subject]) {
+        customQs[subject] = { hk1: [], hk2: [] };
+      }
+      if (!customQs[subject][semester]) {
+        customQs[subject][semester] = [];
+      }
+      customQs[subject][semester].push(newQ);
+      localStorage.setItem('ducbao_custom_questions', JSON.stringify(customQs));
+
+      // Play correct sound synth feedback
+      sound.playCorrect();
+      
+      // Spawn confetti celebration
+      const density = parseInt(state.settings.confettiCount) || 100;
+      confetti.spawn(Math.min(density, 40));
+
+      // Show success notice
+      const successMsg = document.getElementById('custom-success-msg');
+      successMsg.style.display = 'block';
+      successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      
+      if (window.customMsgTimeout) {
+        clearTimeout(window.customMsgTimeout);
+      }
+      window.customMsgTimeout = setTimeout(() => {
+        successMsg.style.display = 'none';
+      }, 5000);
+
+      // Reset form
+      document.getElementById('custom-question-form').reset();
+      
+      // Update UI elements to reflect new question count
+      updateUIElements();
+    }
+
     // Initialize application on load
     function initializeApp() {
       // 1. Setup Theme mode
@@ -3518,6 +3688,9 @@
       // 2. Setup engines
       confetti = new ConfettiEngine('confetti-canvas');
       particleBg = new ParticleBackground('bg-particle-canvas');
+
+      // 2.5 Load custom questions
+      loadCustomQuestions();
 
       // 3. Load user data
       loadUserData();
