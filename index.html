@@ -9,21 +9,46 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <style>
-    /* DESIGN SYSTEM & CONSTANTS */
+    <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            cyberDark: '#0B0F19',
+            cyberLight: '#F8FAFC',
+            neonBlue: '#00d2ff',
+            neonOrange: '#ff5e00',
+            neonGreen: '#39ff14',
+            neonRed: '#ff003c',
+          },
+          boxShadow: {
+            neonBlue: '0 0 10px rgba(0, 210, 255, 0.4), 0 0 20px rgba(0, 210, 255, 0.1)',
+            neonOrange: '0 0 10px rgba(255, 94, 0, 0.4), 0 0 20px rgba(255, 94, 0, 0.1)',
+            neonGreen: '0 0 15px rgba(57, 255, 20, 0.3)',
+            neonRed: '0 0 15px rgba(255, 0, 60, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+  
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+    
     :root {
       /* Light Mode Palette */
       --bg-color-solid: #f1f5f9;
       --bg-gradient-default: linear-gradient(135deg, #f0f4ff, #e0e7ff, #f3e8ff);
-      
       --bg-gradient: var(--bg-gradient-default);
       --card-bg: rgba(255, 255, 255, 0.75);
       --card-border: rgba(255, 255, 255, 0.6);
       --text-main: #1e293b;
-      --text-muted: #64748b;
+      --text-muted: #475569; /* Tăng tương phản từ slate-500 sang slate-600 */
       --accent: #6366f1;
       --accent-hover: #4f46e5;
-      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
       
       /* Common colors */
       --color-green: #10b981;
@@ -37,1266 +62,126 @@
       --correct-border: #10b981;
       --incorrect-bg: rgba(239, 68, 68, 0.15);
       --incorrect-border: #ef4444;
-      
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* Dark Mode Palette overrides */
     [data-theme="dark"] {
       --bg-color-solid: #0f172a;
       --bg-gradient-default: linear-gradient(135deg, #0f172a, #1e1b4b, #111827);
+      --bg-gradient: var(--bg-gradient-default);
       
-      --card-bg: rgba(15, 23, 42, 0.7);
+      --card-bg: rgba(15, 23, 42, 0.75);
       --card-border: rgba(255, 255, 255, 0.08);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent: #818cf8;
       --accent-hover: #6366f1;
-      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       
       --correct-bg: rgba(16, 185, 129, 0.2);
       --incorrect-bg: rgba(239, 68, 68, 0.2);
     }
 
-    /* RESET & CORE STYLES */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Quicksand', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
     body {
+      font-family: 'Quicksand', sans-serif;
       background: var(--bg-gradient);
       background-attachment: fixed;
       color: var(--text-main);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       transition: background 0.5s ease, color 0.3s ease;
-      overflow-x: hidden;
-      padding: 20px;
-      position: relative;
     }
 
-    .container {
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      z-index: 10;
-    }
-
-    /* GLASSMORPHIC CARD UTILITY */
-    .glass-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 28px;
-      transition: var(--transition);
-    }
-
-    /* HEADER STYLES */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      width: 100%;
-    }
-
-    .brand-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-badge {
-      background: linear-gradient(135deg, var(--accent), var(--color-purple));
-      color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .brand-title h1 {
-      font-size: 22px;
-      font-weight: 700;
-      background: linear-gradient(to right, var(--accent), var(--color-pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .brand-title p {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* HEADER CONTROLS & STATS */
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .btn-icon {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
-    }
-
-    .btn-icon:hover {
-      transform: translateY(-3px) scale(1.05);
-      border-color: var(--accent);
-    }
-
-    .score-badge {
-      background: linear-gradient(135deg, var(--color-green), #059669);
-      color: white;
-      padding: 10px 16px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
-      animation: pulse-glow 2s infinite;
-    }
-
-    /* PROFILE & LEVEL CARD */
-    .profile-card {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      position: relative;
-    }
-
-    .profile-container {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .profile-avatar-container {
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .profile-avatar {
-      font-size: 56px;
-      background: rgba(255, 255, 255, 0.2);
-      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
-      width: 80px;
-      height: 80px;
-      border-radius: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid var(--accent);
-    }
-
-    .profile-level-badge {
-      position: absolute;
-      bottom: -6px;
-      right: -6px;
-      background: linear-gradient(135deg, var(--accent), var(--color-blue));
-      color: white;
-      font-weight: 700;
-      font-size: 12px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid var(--card-bg);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-
-    .profile-details {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 200px;
-    }
-
-    .profile-name-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .profile-name {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .profile-school {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .profile-goal {
-      font-size: 13px;
-      color: var(--color-purple);
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .btn-edit-profile {
-      background: transparent;
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 6px 12px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: var(--transition);
-      align-self: flex-start;
-      margin-left: auto;
-    }
-
-    .btn-edit-profile:hover {
-      background: rgba(100, 116, 139, 0.1);
-      border-color: var(--accent);
-    }
-
-    .xp-bar-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .xp-bar-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .xp-bar-bg {
-      background: rgba(100, 116, 139, 0.15);
-      height: 12px;
-      border-radius: 6px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .xp-bar-fill {
-      background: linear-gradient(to right, var(--accent), var(--color-blue));
-      height: 100%;
-      width: 0%;
-      border-radius: 6px;
-      transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    /* DASHBOARD / HOME STATE */
-    #dashboard-view {
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-    }
-
-    /* STATS DASHBOARD ROW */
-    .stats-summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      text-align: center;
-    }
-
-    .stat-box {
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--card-border);
-    }
-
-    .stat-val {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .stat-lbl {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 500;
-      margin-top: 4px;
-    }
-
-    /* SUBJECTS GRID */
-    .subjects-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .subjects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-    }
-
-    .subject-card {
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      border-left: 6px solid var(--sub-color, var(--accent));
-      transition: var(--transition);
-    }
-
-    .subject-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-    }
-
-    .subject-card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -30%;
-      width: 150px;
-      height: 150px;
-      background: var(--sub-color);
-      opacity: 0.08;
-      border-radius: 50%;
-      transition: var(--transition);
-    }
-
-    .subject-card:hover::before {
-      transform: scale(1.3);
-      opacity: 0.15;
-    }
-
-    .subject-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .subject-icon {
-      font-size: 32px;
-      background: rgba(255, 255, 255, 0.1);
-      width: 54px;
-      height: 54px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.2);
-    }
-
-    .subject-info h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .subject-info p {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .subject-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: auto;
-      padding-top: 10px;
-      border-top: 1px solid var(--card-border);
-    }
-
-    .subject-progress-text {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .btn-start {
-      background: var(--sub-color);
-      color: white;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: var(--transition);
-    }
-
-    .subject-card:hover .btn-start {
-      transform: scale(1.05);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-
-    /* BADGES CABINET */
-    .badges-section {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .badges-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 16px;
-    }
-
-    .badge-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 16px 10px;
-      border-radius: 18px;
-      border: 1px solid var(--card-border);
-      background: rgba(255, 255, 255, 0.05);
-      filter: grayscale(100%);
-      opacity: 0.5;
-      transition: var(--transition);
-    }
-
-    .badge-item.unlocked {
-      filter: grayscale(0%);
-      opacity: 1;
-      background: var(--card-bg);
-      border-color: var(--accent);
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
-      animation: scale-up 0.5s ease-out;
-    }
-
-    .badge-icon {
-      font-size: 36px;
-      margin-bottom: 10px;
-      transition: transform 0.5s;
-    }
-
-    .badge-item.unlocked:hover .badge-icon {
-      transform: rotate(15deg) scale(1.2);
-    }
-
-    .badge-name {
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: var(--text-main);
-    }
-
-    .badge-desc {
-      font-size: 10px;
-      color: var(--text-muted);
-      line-height: 1.2;
-    }
-
-    /* QUIZ ARENA VIEW (QUIZ PLAYING) */
-    #quiz-view {
-      display: none; /* Managed by JS */
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .quiz-navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 14px;
-      margin-bottom: 8px;
-    }
-
-    .btn-back {
-      background: transparent;
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 8px 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 600;
-      font-size: 14px;
-      transition: var(--transition);
-    }
-
-    .btn-back:hover {
-      background: rgba(100, 116, 139, 0.1);
-      transform: translateX(-4px);
-    }
-
-    .quiz-subject-title {
-      font-size: 18px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .quiz-progress-section {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .quiz-progress-text {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .quiz-progress-bar-bg {
-      background: rgba(100, 116, 139, 0.15);
-      height: 8px;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .quiz-progress-bar-fill {
-      background: var(--sub-color, var(--accent));
-      height: 100%;
-      width: 0%;
-      border-radius: 4px;
-      transition: width 0.4s ease;
-    }
-
-    /* QUESTION CARD */
-    .question-card {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .question-type-badge {
-      align-self: flex-start;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: white;
-    }
-
-    .question-type-badge.multiple-choice {
-      background: var(--color-blue);
-    }
-
-    .question-type-badge.essay {
-      background: var(--color-purple);
-    }
-
-    .question-text {
-      font-size: 18px;
-      font-weight: 600;
-      line-height: 1.5;
-    }
-
-    /* MULTIPLE CHOICE OPTIONS GRID */
-    .options-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    @media (min-width: 600px) {
-      .options-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .option-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 16px 20px;
-      border-radius: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      text-align: left;
-      gap: 12px;
-      font-size: 15px;
-      font-weight: 500;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-      transition: var(--transition);
-      position: relative;
-    }
-
-    .option-btn:hover:not(:disabled) {
-      transform: translateY(-3px);
-      border-color: var(--accent);
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    [data-theme="dark"] .option-btn:hover:not(:disabled) {
-      background: rgba(30, 41, 59, 0.9);
-    }
-
-    .option-letter {
-      background: rgba(100, 116, 139, 0.15);
-      border-radius: 8px;
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 13px;
-      flex-shrink: 0;
-    }
-
-    .option-text {
-      flex-grow: 1;
-    }
-
-    .option-btn:disabled {
-      cursor: not-allowed;
-    }
-
-    /* Color states for options after selection */
-    .option-btn.correct {
-      background-color: var(--correct-bg) !important;
-      border-color: var(--correct-border) !important;
-      color: var(--color-green) !important;
-      font-weight: 600;
-    }
-    
-    .option-btn.correct .option-letter {
-      background-color: var(--color-green);
-      color: white;
-    }
-
-    .option-btn.incorrect {
-      background-color: var(--incorrect-bg) !important;
-      border-color: var(--incorrect-border) !important;
-      color: var(--color-red) !important;
-      animation: shake 0.5s ease-in-out;
-    }
-
-    .option-btn.incorrect .option-letter {
-      background-color: var(--color-red);
-      color: white;
-    }
-
-    /* EXPLANATION PANEL */
-    .explanation-panel {
-      display: none; /* hidden until answered */
-      padding: 16px 20px;
-      background: rgba(99, 102, 241, 0.08);
-      border-left: 4px solid var(--accent);
-      border-radius: 12px;
-      font-size: 14px;
-      line-height: 1.5;
-      animation: slide-down 0.4s ease;
-    }
-
-    .explanation-panel strong {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--accent);
-    }
-
-    /* ESSAY VIEW STYLES */
-    .essay-container {
-      display: none; /* Managed by JS */
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .essay-textarea {
-      width: 100%;
-      min-height: 150px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 16px;
-      color: var(--text-main);
-      font-family: inherit;
-      font-size: 15px;
-      line-height: 1.5;
-      resize: vertical;
-      transition: var(--transition);
-    }
-
-    .essay-textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-    }
-
-    .essay-controls {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .btn-action {
-      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-      transition: var(--transition);
-    }
-
-    .btn-action:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-    }
-
-    .btn-action:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* ESSAY EVALUATION PANEL */
-    .essay-eval-panel {
-      display: none; /* hidden until submit */
-      flex-direction: column;
-      gap: 20px;
-      animation: fade-in 0.5s ease;
-      margin-top: 10px;
-    }
-
-    .keyword-detector {
-      background: rgba(245, 158, 11, 0.08);
-      border-left: 4px solid var(--color-orange);
-      padding: 16px;
-      border-radius: 12px;
-    }
-
-    .keyword-detector-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--color-orange);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .keyword-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .kw-pill {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 99px;
-      background: rgba(100, 116, 139, 0.15);
-      color: var(--text-muted);
-      border: 1px solid rgba(100, 116, 139, 0.1);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .kw-pill.matched {
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--color-green);
-      border-color: rgba(16, 185, 129, 0.2);
-    }
-
-    .answer-compare {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    @media (min-width: 650px) {
-      .answer-compare {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .compare-box {
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 14px;
-      background: rgba(255, 255, 255, 0.02);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .compare-box-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .compare-box-content {
-      white-space: pre-line;
-    }
-
-    .compare-box-content mark {
-      background: rgba(16, 185, 129, 0.25);
-      color: var(--color-green);
-      font-weight: 600;
-      padding: 1px 4px;
-      border-radius: 4px;
-    }
-
-    /* SELF EVALUATION ROW */
-    .self-eval-section {
-      text-align: center;
-      padding: 16px;
-      background: rgba(139, 92, 246, 0.08);
-      border-radius: 16px;
-      border: 1px dashed var(--color-purple);
-    }
-
-    .self-eval-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--color-purple);
-      margin-bottom: 12px;
-    }
-
-    .eval-buttons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
-    }
-
-    .btn-eval {
-      border: 1px solid var(--card-border);
-      background: var(--card-bg);
-      color: var(--text-main);
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      transition: var(--transition);
-    }
-
-    .btn-eval:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn-eval.perfect:hover {
-      border-color: var(--color-green);
-      color: var(--color-green);
-      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);
-    }
-
-    .btn-eval.good:hover {
-      border-color: var(--color-orange);
-      color: var(--color-orange);
-      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.15);
-    }
-
-    .btn-eval.try-hard:hover {
-      border-color: var(--color-red);
-      color: var(--color-red);
-      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15);
-    }
-
-    .btn-eval span:first-child {
-      font-size: 18px;
-    }
-
-    /* FOOTER/SUBMIT NAVIGATION */
-    .quiz-navigation {
-      display: none; /* hidden until answered or evaluated */
-      justify-content: flex-end;
-      margin-top: 10px;
-    }
-
-    /* END GAME / RESULT VIEW */
-    #result-view {
-      display: none; /* Managed by JS */
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 24px;
-    }
-
-    .congrats-emoji {
-      font-size: 72px;
-      animation: bounce-loop 2s infinite;
-    }
-
-    .result-title {
-      font-size: 26px;
-      font-weight: 700;
-      background: linear-gradient(to right, var(--accent), var(--color-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .stats-card-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      width: 100%;
-      max-width: 450px;
-    }
-
-    .result-stat-box {
-      padding: 20px;
-      border-radius: 18px;
-      border: 1px solid var(--card-border);
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .result-stat-val {
-      font-size: 28px;
-      font-weight: 700;
-    }
-
-    .result-stat-lbl {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-top: 6px;
-    }
-
-    .result-actions {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 12px 24px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(100, 116, 139, 0.1);
-      transform: translateY(-2px);
-    }
-
-    /* CONFETTI CANVAS */
-    #confetti-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 9999;
-      display: block;
-    }
-
-    /* BACKGROUND ANIMATED CANVAS */
     #bg-particle-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      pointer-events: none;
       z-index: 1;
-      opacity: 0.55;
-      display: none;
+      pointer-events: none;
     }
 
-    /* MODAL GENERAL STYLES */
-    .modal-overlay {
+    #confetti-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
+      z-index: 9999;
       pointer-events: none;
-      transition: opacity 0.4s ease;
     }
 
-    .modal-overlay.show {
-      opacity: 1;
-      pointer-events: auto;
+    /* Custom animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
     }
 
-    .modal-content {
-      background: var(--card-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 2px solid var(--accent);
-      border-radius: 28px;
-      padding: 30px;
-      width: 90%;
-      max-width: 480px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: var(--shadow);
-      transform: scale(0.85);
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
     }
 
-    .modal-overlay.show .modal-content {
-      transform: scale(1);
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.25); }
+      50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); }
     }
 
-    .modal-header-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 18px;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 10px;
+    .animate-pulse-glow {
+      animation: pulse-glow 2s infinite;
     }
 
-    /* MODAL FORM CONTROLS */
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 18px;
+    @keyframes rotate-shake {
+      0% { transform: rotate(-8deg); }
+      100% { transform: rotate(8deg); }
     }
 
-    .form-label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
+    .animate-rotate-shake {
+      animation: rotate-shake 1.5s ease-in-out infinite alternate;
     }
 
-    .form-input {
-      background: rgba(255, 255, 255, 0.5);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 14px;
-      color: var(--text-main);
-      font-family: inherit;
-      width: 100%;
-      transition: var(--transition);
+    @keyframes pulse-red {
+      0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.3)); }
+      100% { transform: scale(1.05); filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.8)); }
     }
 
-    [data-theme="dark"] .form-input {
-      background: rgba(15, 23, 42, 0.5);
+    .animate-pulse-red {
+      animation: pulse-red 0.5s infinite alternate;
     }
 
-    .form-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+    /* Option Buttons Styles (Correct / Incorrect) */
+    .option-btn {
+      transition: all 0.2s ease-in-out;
     }
 
-    /* AVATAR GRID IN PROFILE MODAL */
-    .avatar-picker-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 6px;
+    .option-btn.correct {
+      background-color: rgba(16, 185, 129, 0.15) !important;
+      border-color: #10b981 !important;
+      color: #10b981 !important;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.4) !important;
     }
 
-    .avatar-option-btn {
-      font-size: 32px;
-      background: rgba(255, 255, 255, 0.3);
-      border: 2px solid transparent;
-      border-radius: 16px;
-      height: 60px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
+    [data-theme="dark"] .option-btn.correct {
+      background-color: rgba(16, 185, 129, 0.2) !important;
+      border-color: #34d399 !important;
+      color: #34d399 !important;
+      box-shadow: 0 0 15px rgba(52, 211, 153, 0.5) !important;
     }
 
-    .avatar-option-btn:hover {
-      transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.6);
+    .option-btn.incorrect {
+      background-color: rgba(239, 68, 68, 0.15) !important;
+      border-color: #ef4444 !important;
+      color: #ef4444 !important;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.4) !important;
     }
 
-    .avatar-option-btn.selected {
-      border-color: var(--accent);
-      background: rgba(99, 102, 241, 0.1);
-      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.15);
+    [data-theme="dark"] .option-btn.incorrect {
+      background-color: rgba(239, 68, 68, 0.2) !important;
+      border-color: #f87171 !important;
+      color: #f87171 !important;
+      box-shadow: 0 0 15px rgba(248, 113, 113, 0.5) !important;
     }
 
-    /* THEME ACCENT COLOR DOTS IN SETTINGS */
-    .color-picker-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-top: 4px;
-    }
-
-    .color-dot {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 3px solid transparent;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: var(--transition);
-    }
-
-    .color-dot:hover {
-      transform: scale(1.15);
-    }
-
-    .color-dot.selected {
-      border-color: white;
-      box-shadow: 0 0 0 2px var(--theme-color);
-    }
-
-    /* MODAL FOOTER */
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-top: 24px;
-      border-top: 1px solid var(--card-border);
-      padding-top: 18px;
-    }
-
-    /* SEMESTER CARD SELECTOR */
-    .semester-selection-box {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    @media (min-width: 500px) {
-      .semester-selection-box {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .semester-select-card {
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 20px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      transition: var(--transition);
-    }
-
-    .semester-select-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent);
-      background: var(--card-bg);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .semester-select-icon {
-      font-size: 40px;
-      background: rgba(255, 255, 255, 0.1);
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .semester-select-title {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .semester-select-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.3;
-    }
-
-    .semester-select-progress {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-      background: rgba(99, 102, 241, 0.08);
-      padding: 2px 10px;
-      border-radius: 20px;
-    }
-
-    /* BADGE UNLOCKED SPECIAL MODAL */
-    .badge-modal {
+    /* General Modal Overlay with opacity and pointer-events transition */
+    .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
@@ -1304,6 +189,41 @@
       height: 100vh;
       background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content-animate {
+      transform: scale(0.85);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.show .modal-content-animate {
+      transform: scale(1);
+    }
+
+    /* Custom Modal Badge Alert styles */
+    .badge-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       z-index: 10000;
       display: flex;
       align-items: center;
@@ -1319,15 +239,7 @@
     }
 
     .badge-modal-content {
-      background: var(--card-bg);
-      border: 2px solid var(--accent);
-      border-radius: 28px;
-      padding: 36px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-      transform: scale(0.8);
+      transform: scale(0.85);
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
@@ -1335,75 +247,80 @@
       transform: scale(1);
     }
 
-    .badge-modal-icon {
-      font-size: 64px;
-      margin-bottom: 16px;
-      animation: pulse-ring 2s infinite;
-    }
-
-    .badge-modal-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 6px;
-    }
-
-    .badge-modal-name {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .badge-modal-desc {
-      font-size: 14px;
+    /* Keyword pills matched */
+    .kw-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(100, 116, 139, 0.1);
+      border: 1px solid rgba(100, 116, 139, 0.2);
       color: var(--text-muted);
-      line-height: 1.4;
-      margin-bottom: 24px;
+      transition: all 0.3s;
     }
 
-    /* ANIMATIONS & MICRO-INTERACTIONS */
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-6px); }
-      100% { transform: translateY(0px); }
+    .kw-pill.matched {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: #10b981;
+      color: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
     }
 
-    @keyframes pulse-glow {
-      0% { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
-      50% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5); }
-      100% { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+    [data-theme="dark"] .kw-pill.matched {
+      background: rgba(52, 211, 153, 0.2);
+      border-color: #34d399;
+      color: #34d399;
     }
 
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-8px); }
-      40%, 80% { transform: translateX(8px); }
+    .badge-item.unlocked {
+      filter: grayscale(0%) !important;
+      opacity: 1 !important;
+      background: white !important;
+      border-color: var(--accent) !important;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15) !important;
     }
 
-    @keyframes slide-down {
-      from { opacity: 0; transform: translateY(-15px); }
-      to { opacity: 1; transform: translateY(0); }
+    [data-theme="dark"] .badge-item.unlocked {
+      background: rgba(15, 23, 42, 0.8) !important;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4) !important;
     }
 
-    @keyframes fade-in {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    [data-theme="dark"] .subject-card:hover {
+      box-shadow: 0 0 15px var(--sub-color) !important;
+      border-color: var(--sub-color) !important;
     }
 
+    /* Confetti effect */
     @keyframes scale-up {
       from { transform: scale(0.9); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
-
-    @keyframes bounce-loop {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
+    .animate-scale-up {
+      animation: scale-up 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
-    @keyframes pulse-ring {
-      0% { transform: scale(0.95); opacity: 0.9; }
-      50% { transform: scale(1.05); opacity: 1; }
-      100% { transform: scale(0.95); opacity: 0.9; }
+    /* Base question type badge styles */
+    .question-type-badge {
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .question-type-badge.multiple-choice {
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.2);
+      color: var(--color-blue);
+    }
+    .question-type-badge.essay {
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: var(--color-purple);
     }
   </style>
 </head>
@@ -1415,159 +332,162 @@
   <!-- Confetti particle engine canvas overlay -->
   <canvas id="confetti-canvas"></canvas>
 
-  <div class="container">
+  <div class="w-full max-w-4xl mx-auto px-4 md:px-6 py-6 flex flex-col gap-6 relative z-10">
     
     <!-- APPLICATION HEADER -->
-    <header class="glass-card">
-      <div class="brand-section">
-        <div class="logo-badge">🎓</div>
+    <header class="backdrop-blur-md bg-white/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/80 shadow-md rounded-3xl p-5 flex justify-between items-center flex-wrap gap-4 transition-all duration-300">
+      <div class="flex items-center gap-3">
+        <div class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-lg dark:shadow-indigo-500/20 animate-float">🎓</div>
         <div class="brand-title">
-          <h1>Đấu Trường Lớp 8</h1>
-          <p>Chinh Phục Tri Thức - Bứt Phá Điểm Số</p>
+          <h1 data-i18n="app-title" class="text-lg md:text-xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Đấu Trường Lớp 8</h1>
+          <p data-i18n="app-subtitle" class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-medium">Chinh Phục Tri Thức - Bứt Phá Điểm Số</p>
         </div>
       </div>
       
-      <div class="header-controls">
-        <div class="score-badge">
-          <span>🏆 Đúng:</span>
+      <div class="flex items-center gap-3">
+        <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-2xl font-bold text-xs md:text-sm flex items-center gap-1.5 shadow-md dark:shadow-emerald-500/20 animate-pulse-glow">
+          <span data-i18n="score-label">🏆 Đúng:</span>
           <span id="global-score">0</span>
         </div>
-        <button class="btn-icon" id="btn-open-settings" onclick="openSettingsModal()" title="Cấu hình hệ thống">⚙️</button>
-        <button class="btn-icon" id="toggle-theme" title="Chế độ Tối/Sáng">🌙</button>
+        <button class="bg-white/80 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 px-3 rounded-2xl flex items-center justify-center text-xs font-bold shadow-sm hover:scale-105 hover:border-indigo-500 dark:hover:border-indigo-400 active:scale-95 transition-all duration-200 cursor-pointer h-10 gap-1" id="toggle-lang" onclick="toggleLanguage()" title="Chuyển đổi ngôn ngữ / Switch language">
+          <span>🇻🇳</span> <span id="lang-label">VI</span>
+        </button>
+        <button class="bg-white/80 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 w-10 h-10 rounded-2xl flex items-center justify-center text-lg shadow-sm hover:scale-105 hover:border-indigo-500 dark:hover:border-indigo-400 active:scale-95 transition-all duration-200 cursor-pointer" id="btn-open-settings" onclick="openSettingsModal()" title="Cấu hình hệ thống">⚙️</button>
+        <button class="bg-white/80 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 w-10 h-10 rounded-2xl flex items-center justify-center text-lg shadow-sm hover:scale-105 hover:border-indigo-500 dark:hover:border-indigo-400 active:scale-95 transition-all duration-200 cursor-pointer" id="toggle-theme" title="Chế độ Tối/Sáng">🌙</button>
       </div>
     </header>
 
     <!-- PLAYER PROFILE & LEVEL CARD -->
-    <div class="glass-card profile-card">
-      <div class="profile-container">
-        <div class="profile-avatar-container">
-          <div class="profile-avatar" id="display-profile-avatar">🦁</div>
-          <div class="profile-level-badge" id="player-level">1</div>
+    <div class="backdrop-blur-md bg-white/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/80 shadow-md rounded-3xl p-6 flex flex-col gap-5 transition-all duration-300">
+      <div class="flex items-center gap-5 flex-wrap">
+        <div class="relative flex-shrink-0">
+          <div class="text-4xl bg-indigo-50 dark:bg-slate-800/50 w-16 h-16 rounded-2xl flex items-center justify-center border-2 border-indigo-400 dark:border-indigo-500 shadow-inner" id="display-profile-avatar">🦁</div>
+          <div class="absolute -bottom-1 -right-1 bg-gradient-to-r from-indigo-500 to-sky-500 text-white font-bold text-xs w-7 h-7 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900 shadow-md" id="player-level">1</div>
         </div>
-        <div class="profile-details">
-          <div class="profile-name-row">
-            <span class="profile-name" id="display-profile-name">Đức Bảo</span>
+        <div class="flex-grow flex flex-col gap-1 min-w-[200px]">
+          <div class="flex items-center gap-3">
+            <span class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100" id="display-profile-name">Đức Bảo</span>
           </div>
-          <span class="profile-school" id="display-profile-school">Trường THCS Lớp 8</span>
-          <span class="profile-goal" id="display-profile-goal">🎯 Mục tiêu: Ôn tập hiệu quả</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium" id="display-profile-school">Trường THCS Lớp 8</span>
+          <span class="text-xs text-purple-600 dark:text-purple-400 font-bold flex items-center gap-1" id="display-profile-goal">🎯 Mục tiêu: Ôn tập hiệu quả</span>
         </div>
-        <button class="btn-edit-profile" onclick="openProfileModal()">✏️ Chỉnh sửa hồ sơ</button>
+        <button data-i18n="edit-profile" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50 px-4 py-2 rounded-xl font-bold text-xs transition-all duration-200 ml-auto cursor-pointer flex items-center gap-1" onclick="openProfileModal()">✏️ Chỉnh sửa</button>
       </div>
 
-      <div class="xp-bar-container">
-        <div class="xp-bar-labels">
-          <span id="xp-bar-name" style="color: var(--accent); font-weight: 700;">Học giả tân binh</span>
-          <span id="xp-ratio">0 / 100 XP</span>
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between items-center text-xs font-bold">
+          <span id="xp-bar-name" class="text-indigo-500 dark:text-indigo-400 font-bold">Học giả tân binh</span>
+          <span id="xp-ratio" class="text-slate-500 dark:text-slate-400">0 / 100 XP</span>
         </div>
-        <div class="xp-bar-bg">
-          <div class="xp-bar-fill" id="xp-bar-fill"></div>
+        <div class="w-full h-3 bg-slate-200/60 dark:bg-slate-800/80 rounded-full overflow-hidden relative">
+          <div class="h-full bg-gradient-to-r from-indigo-500 to-sky-500 rounded-full transition-all duration-500" id="xp-bar-fill" style="width: 0%;"></div>
         </div>
       </div>
     </div>
 
     <!-- VIEW 1: HOME DASHBOARD -->
-    <div id="dashboard-view">
+    <div id="dashboard-view" class="flex flex-col gap-6">
       
       <!-- Quick Statistics -->
-      <div class="stats-summary glass-card">
-        <div class="stat-box">
-          <div class="stat-val" id="stat-total-answered">0</div>
-          <div class="stat-lbl">Câu Đã Làm</div>
+      <div class="grid grid-cols-3 gap-4 backdrop-blur-md bg-white/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/80 shadow-md rounded-3xl p-5">
+        <div class="text-center p-3 rounded-2xl bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/30 dark:border-slate-800/30">
+          <div class="text-xl md:text-2xl font-bold text-indigo-600 dark:text-indigo-400" id="stat-total-answered">0</div>
+          <div data-i18n="stat-answered" class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Câu Đã Làm</div>
         </div>
-        <div class="stat-box">
-          <div class="stat-val" id="stat-accuracy">0%</div>
-          <div class="stat-lbl">Tỷ Lệ Đúng</div>
+        <div class="text-center p-3 rounded-2xl bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/30 dark:border-slate-800/30">
+          <div class="text-xl md:text-2xl font-bold text-indigo-600 dark:text-indigo-400" id="stat-accuracy">0%</div>
+          <div data-i18n="stat-accuracy" class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Tỷ Lệ Đúng</div>
         </div>
-        <div class="stat-box">
-          <div class="stat-val" id="stat-total-xp">0</div>
-          <div class="stat-lbl">Tổng XP</div>
+        <div class="text-center p-3 rounded-2xl bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/30 dark:border-slate-800/30">
+          <div class="text-xl md:text-2xl font-bold text-indigo-600 dark:text-indigo-400" id="stat-total-xp">0</div>
+          <div data-i18n="stat-xp" class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Tổng XP</div>
         </div>
       </div>
 
       <!-- Subjects Section -->
       <div>
-        <div class="subjects-title">
-          <span>📚</span> Chọn Môn Học Ôn Tập
+        <div class="text-base font-bold mb-4 flex items-center gap-2 text-slate-800 dark:text-slate-100">
+          <span>📚</span> <span data-i18n="subj-title">Chọn Môn Học Ôn Tập</span>
         </div>
-        <div class="subjects-grid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           
           <!-- Toán Học Card -->
-          <div class="glass-card subject-card" style="--sub-color: var(--color-blue);" onclick="clickSubject('toan')">
-            <div class="subject-header">
-              <div class="subject-icon" style="color: var(--color-blue);">📐</div>
-              <div class="subject-progress-text" id="progress-toan">Đã làm: 0/8</div>
+          <div class="subject-card backdrop-blur-md bg-white/90 dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800/80 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer p-5 flex flex-col gap-4 relative overflow-hidden group border-l-[6px] rounded-3xl" style="--sub-color: var(--color-blue);" onclick="clickSubject('toan')">
+            <div class="flex items-center justify-between">
+              <div class="text-2xl bg-sky-50 dark:bg-sky-950/40 w-12 h-12 rounded-xl flex items-center justify-center border border-sky-100 dark:border-sky-900/50" style="color: var(--color-blue);">📐</div>
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400" id="progress-toan">Đã làm: 0/8</div>
             </div>
-            <div class="subject-info">
-              <h3>Toán Học 8</h3>
-              <p>Hằng đẳng thức, tứ giác, phương trình bậc nhất, định lí Thalès & Pythagore.</p>
+            <div class="flex-grow">
+              <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">Toán Học 8</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Hằng đẳng thức, tứ giác, phương trình bậc nhất, định lí Thalès & Pythagore.</p>
             </div>
-            <div class="subject-footer">
-              <span id="info-toan" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
-              <button class="btn-start" style="--sub-color: var(--color-blue);">Chơi ➔</button>
+            <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 pt-3 mt-1">
+              <span id="info-toan" class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">8 câu (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="bg-[var(--sub-color)] hover:brightness-110 active:scale-95 text-white border-none px-3.5 py-1.5 rounded-xl font-bold text-xs cursor-pointer shadow-md transition-all duration-200 ml-auto flex items-center gap-1">Chơi ➔</button>
             </div>
           </div>
 
           <!-- Ngữ Văn Card -->
-          <div class="glass-card subject-card" style="--sub-color: var(--color-green);" onclick="clickSubject('van')">
-            <div class="subject-header">
-              <div class="subject-icon" style="color: var(--color-green);">✍️</div>
-              <div class="subject-progress-text" id="progress-van">Đã làm: 0/8</div>
+          <div class="subject-card backdrop-blur-md bg-white/90 dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800/80 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer p-5 flex flex-col gap-4 relative overflow-hidden group border-l-[6px] rounded-3xl" style="--sub-color: var(--color-green);" onclick="clickSubject('van')">
+            <div class="flex items-center justify-between">
+              <div class="text-2xl bg-emerald-50 dark:bg-emerald-950/40 w-12 h-12 rounded-xl flex items-center justify-center border border-emerald-100 dark:border-emerald-900/50" style="color: var(--color-green);">✍️</div>
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400" id="progress-van">Đã làm: 0/8</div>
             </div>
-            <div class="subject-info">
-              <h3>Ngữ Văn 8</h3>
-              <p>Tác phẩm Lão Hạc, Tôi đi học, Ông đồ, Nhớ rừng, Chiếu dời đô & Cảm thụ văn học.</p>
+            <div class="flex-grow">
+              <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">Ngữ Văn 8</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Tác phẩm Lão Hạc, Tôi đi học, Ông đồ, Nhớ rừng, Chiếu dời đô & Cảm thụ văn học.</p>
             </div>
-            <div class="subject-footer">
-              <span id="info-van" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
-              <button class="btn-start" style="--sub-color: var(--color-green);">Chơi ➔</button>
+            <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 pt-3 mt-1">
+              <span id="info-van" class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">8 câu (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="bg-[var(--sub-color)] hover:brightness-110 active:scale-95 text-white border-none px-3.5 py-1.5 rounded-xl font-bold text-xs cursor-pointer shadow-md transition-all duration-200 ml-auto flex items-center gap-1">Chơi ➔</button>
             </div>
           </div>
 
           <!-- Tiếng Anh Card -->
-          <div class="glass-card subject-card" style="--sub-color: var(--color-purple);" onclick="clickSubject('anh')">
-            <div class="subject-header">
-              <div class="subject-icon" style="color: var(--color-purple);">🇬🇧</div>
-              <div class="subject-progress-text" id="progress-anh">Đã làm: 0/8</div>
+          <div class="subject-card backdrop-blur-md bg-white/90 dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800/80 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer p-5 flex flex-col gap-4 relative overflow-hidden group border-l-[6px] rounded-3xl" style="--sub-color: var(--color-purple);" onclick="clickSubject('anh')">
+            <div class="flex items-center justify-between">
+              <div class="text-2xl bg-purple-50 dark:bg-purple-950/40 w-12 h-12 rounded-xl flex items-center justify-center border border-purple-100 dark:border-purple-900/50" style="color: var(--color-purple);">🇬🇧</div>
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400" id="progress-anh">Đã làm: 0/8</div>
             </div>
-            <div class="subject-info">
-              <h3>Tiếng Anh 8</h3>
-              <p>Trọng âm, Câu điều kiện (loại 1, 2), Thì quá khứ tiếp diễn, Câu gián tiếp & Bị động.</p>
+            <div class="flex-grow">
+              <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">Tiếng Anh 8</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Trọng âm, Câu điều kiện (loại 1, 2), Thì quá khứ tiếp diễn, Câu gián tiếp & Bị động.</p>
             </div>
-            <div class="subject-footer">
-              <span id="info-anh" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
-              <button class="btn-start" style="--sub-color: var(--color-purple);">Chơi ➔</button>
+            <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 pt-3 mt-1">
+              <span id="info-anh" class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">8 câu (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="bg-[var(--sub-color)] hover:brightness-110 active:scale-95 text-white border-none px-3.5 py-1.5 rounded-xl font-bold text-xs cursor-pointer shadow-md transition-all duration-200 ml-auto flex items-center gap-1">Chơi ➔</button>
             </div>
           </div>
 
           <!-- Khoa Học Tự Nhiên Card -->
-          <div class="glass-card subject-card" style="--sub-color: var(--color-orange);" onclick="clickSubject('khtn')">
-            <div class="subject-header">
-              <div class="subject-icon" style="color: var(--color-orange);">🧪</div>
-              <div class="subject-progress-text" id="progress-khtn">Đã làm: 0/8</div>
+          <div class="subject-card backdrop-blur-md bg-white/90 dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800/80 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer p-5 flex flex-col gap-4 relative overflow-hidden group border-l-[6px] rounded-3xl" style="--sub-color: var(--color-orange);" onclick="clickSubject('khtn')">
+            <div class="flex items-center justify-between">
+              <div class="text-2xl bg-amber-50 dark:bg-amber-950/40 w-12 h-12 rounded-xl flex items-center justify-center border border-amber-100 dark:border-amber-900/50" style="color: var(--color-orange);">🧪</div>
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400" id="progress-khtn">Đã làm: 0/8</div>
             </div>
-            <div class="subject-info">
-              <h3>Khoa Học Tự Nhiên</h3>
-              <p>Acid-Base, bảo toàn khối lượng, mol, áp suất, lực đẩy Ác-si-mét & sinh lý người.</p>
+            <div class="flex-grow">
+              <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">Khoa Học Tự Nhiên</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Acid-Base, bảo toàn khối lượng, mol, áp suất, lực đẩy Ác-si-mét & sinh lý người.</p>
             </div>
-            <div class="subject-footer">
-              <span id="info-khtn" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
-              <button class="btn-start" style="--sub-color: var(--color-orange);">Chơi ➔</button>
+            <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 pt-3 mt-1">
+              <span id="info-khtn" class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">8 câu (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="bg-[var(--sub-color)] hover:brightness-110 active:scale-95 text-white border-none px-3.5 py-1.5 rounded-xl font-bold text-xs cursor-pointer shadow-md transition-all duration-200 ml-auto flex items-center gap-1">Chơi ➔</button>
             </div>
           </div>
 
           <!-- Lịch Sử & Địa Lí Card -->
-          <div class="glass-card subject-card" style="--sub-color: var(--color-pink);" onclick="clickSubject('sudia')">
-            <div class="subject-header">
-              <div class="subject-icon" style="color: var(--color-pink);">🌍</div>
-              <div class="subject-progress-text" id="progress-sudia">Đã làm: 0/8</div>
+          <div class="subject-card backdrop-blur-md bg-white/90 dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800/80 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer p-5 flex flex-col gap-4 relative overflow-hidden group border-l-[6px] rounded-3xl" style="--sub-color: var(--color-pink);" onclick="clickSubject('sudia')">
+            <div class="flex items-center justify-between">
+              <div class="text-2xl bg-rose-50 dark:bg-rose-950/40 w-12 h-12 rounded-xl flex items-center justify-center border border-rose-100 dark:border-rose-900/50" style="color: var(--color-pink);">🌍</div>
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400" id="progress-sudia">Đã làm: 0/8</div>
             </div>
-            <div class="subject-info">
-              <h3>Lịch Sử & Địa Lí</h3>
-              <p>Cách mạng tư sản Pháp, vị trí & địa hình Việt Nam, thực dân Pháp & gió mùa feralit.</p>
+            <div class="flex-grow">
+              <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">Lịch Sử & Địa Lí</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Cách mạng tư sản Pháp, vị trí & địa hình Việt Nam, thực dân Pháp & gió mùa feralit.</p>
             </div>
-            <div class="subject-footer">
-              <span id="info-sudia" style="font-size: 11px; color: var(--text-muted); font-weight: 500;">8 câu hỏi (6 Trắc nghiệm, 2 Tự luận)</span>
-              <button class="btn-start" style="--sub-color: var(--color-pink);">Chơi ➔</button>
+            <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/60 pt-3 mt-1">
+              <span id="info-sudia" class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">8 câu (6 Trắc nghiệm, 2 Tự luận)</span>
+              <button class="bg-[var(--sub-color)] hover:brightness-110 active:scale-95 text-white border-none px-3.5 py-1.5 rounded-xl font-bold text-xs cursor-pointer shadow-md transition-all duration-200 ml-auto flex items-center gap-1">Chơi ➔</button>
             </div>
           </div>
 
@@ -1575,61 +495,61 @@
       </div>
 
       <!-- Badges cabinet -->
-      <div class="badges-section">
-        <div class="subjects-title">
-          <span>🏆</span> Tủ Huy Hiệu Danh Hiệu
+      <div class="flex flex-col gap-4">
+        <div class="text-base font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100">
+          <span>🏆</span> <span data-i18n="badge-title">Tủ Huy Hiệu Danh Hiệu</span>
         </div>
-        <div class="badges-grid">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
           
-          <div class="badge-item" id="badge-rookie">
-            <div class="badge-icon">🛡️</div>
-            <div class="badge-name">Tân Binh Tự Học</div>
-            <div class="badge-desc">Đúng câu đầu tiên</div>
+          <div class="flex flex-col items-center text-center p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/30 filter grayscale opacity-40 transition-all duration-300" id="badge-rookie">
+            <div class="text-3xl mb-2 transition-transform duration-300">🛡️</div>
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-100 mb-1">Tân Binh Tự Học</div>
+            <div class="text-[10px] text-slate-600 dark:text-slate-400 leading-snug">Đúng câu đầu tiên</div>
           </div>
 
-          <div class="badge-item" id="badge-streak5">
-            <div class="badge-icon">⚡</div>
-            <div class="badge-name">Chuỗi Siêu Cấp</div>
-            <div class="badge-desc">Đúng 5 câu trắc nghiệm liên tiếp</div>
+          <div class="flex flex-col items-center text-center p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/30 filter grayscale opacity-40 transition-all duration-300" id="badge-streak5">
+            <div class="text-3xl mb-2 transition-transform duration-300">⚡</div>
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-100 mb-1">Chuỗi Siêu Cấp</div>
+            <div class="text-[10px] text-slate-600 dark:text-slate-400 leading-snug">Đúng 5 câu trắc nghiệm liên tiếp</div>
           </div>
 
-          <div class="badge-item" id="badge-essay_pro">
-            <div class="badge-icon">✍️</div>
-            <div class="badge-name">Bút Thần Tự Luận</div>
-            <div class="badge-desc">Tự chấm "Hoàn hảo" 3 lần</div>
+          <div class="flex flex-col items-center text-center p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/30 filter grayscale opacity-40 transition-all duration-300" id="badge-essay_pro">
+            <div class="text-3xl mb-2 transition-transform duration-300">✍️</div>
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-100 mb-1">Bút Thần Tự Luận</div>
+            <div class="text-[10px] text-slate-600 dark:text-slate-400 leading-snug">Tự chấm "Hoàn hảo" 3 lần</div>
           </div>
 
-          <div class="badge-item" id="badge-complete_subject">
-            <div class="badge-icon">🔥</div>
-            <div class="badge-name">Chinh Phục Môn</div>
-            <div class="badge-desc">Hoàn thành kì học của môn</div>
+          <div class="flex flex-col items-center text-center p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/30 filter grayscale opacity-40 transition-all duration-300" id="badge-complete_subject">
+            <div class="text-3xl mb-2 transition-transform duration-300">🔥</div>
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-100 mb-1">Chinh Phục Môn</div>
+            <div class="text-[10px] text-slate-600 dark:text-slate-400 leading-snug">Hoàn thành kì học của môn</div>
           </div>
 
-          <div class="badge-item" id="badge-level5">
-            <div class="badge-icon">👑</div>
-            <div class="badge-name">Nhà Thông Thái</div>
-            <div class="badge-desc">Đạt Cấp độ 5 trở lên</div>
+          <div class="flex flex-col items-center text-center p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/30 filter grayscale opacity-40 transition-all duration-300" id="badge-level5">
+            <div class="text-3xl mb-2 transition-transform duration-300">👑</div>
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-100 mb-1">Nhà Thông Thái</div>
+            <div class="text-[10px] text-slate-600 dark:text-slate-400 leading-snug">Đạt Cấp độ 5 trở lên</div>
           </div>
 
         </div>
       </div>
 
       <!-- Custom Question Form Section -->
-      <div class="glass-card" style="margin-top: 12px; animation: slide-down 0.4s ease;">
-        <div class="subjects-title" style="margin-bottom: 20px;">
-          <span>✏️</span> Tự Tạo Câu Hỏi Trắc Nghiệm Mới
+      <div class="backdrop-blur-md bg-white/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/80 shadow-md rounded-3xl p-6 flex flex-col mt-2">
+        <div class="text-base font-bold mb-5 flex items-center gap-2 text-slate-800 dark:text-slate-100">
+          <span>✏️</span> <span data-i18n="custom-form-title">Tự Tạo Câu Hỏi Trắc Nghiệm Mới</span>
         </div>
         
         <!-- Custom success alert inside form card -->
-        <div id="custom-success-msg" style="display: none; background: var(--correct-bg); border: 1px solid var(--correct-border); color: var(--color-green); padding: 12px; border-radius: 12px; margin-bottom: 16px; font-weight: 600; text-align: center; animation: pulse-ring 2s infinite;">
+        <div id="custom-success-msg" data-i18n="custom-success-msg" style="display: none;" class="bg-emerald-500/10 border border-emerald-500 text-emerald-600 dark:text-emerald-400 p-4 rounded-2xl mb-4 font-bold text-center animate-pulse-glow">
           🎉 Thêm câu hỏi thành công! Hãy vào môn học để trải nghiệm ngay.
         </div>
 
-        <form id="custom-question-form" onsubmit="addCustomQuestion(event)">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
-            <div class="form-group" style="margin-bottom: 0;">
-              <label class="form-label" for="custom-subject">Chọn Môn Học</label>
-              <select class="form-input" id="custom-subject" required>
+        <form id="custom-question-form" onsubmit="addCustomQuestion(event)" class="flex flex-col gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label data-i18n="custom-lbl-subject" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="custom-subject">Chọn Môn Học</label>
+              <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200 cursor-pointer" id="custom-subject" required>
                 <option value="toan">📐 Toán Học 8</option>
                 <option value="van">✍️ Ngữ Văn 8</option>
                 <option value="anh">🇬🇧 Tiếng Anh 8</option>
@@ -1637,65 +557,65 @@
                 <option value="sudia">🌍 Lịch Sử & Địa Lí</option>
               </select>
             </div>
-            <div class="form-group" style="margin-bottom: 0;">
-              <label class="form-label" for="custom-semester">Chọn Học Kỳ</label>
-              <select class="form-input" id="custom-semester" required>
+            <div class="flex flex-col gap-1.5">
+              <label data-i18n="custom-lbl-semester" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="custom-semester">Chọn Học Kỳ</label>
+              <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200 cursor-pointer" id="custom-semester" required>
                 <option value="hk1">🌟 Học Kỳ 1</option>
                 <option value="hk2">🚀 Học Kỳ 2</option>
               </select>
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="custom-question-text">Nội Dung Câu Hỏi</label>
-            <textarea class="form-input" id="custom-question-text" rows="3" placeholder="Ví dụ: Căn bậc hai số học của 9 là bao nhiêu?" style="resize: vertical;" required></textarea>
+          <div class="flex flex-col gap-1.5">
+            <label data-i18n="custom-lbl-question" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="custom-question-text">Nội Dung Câu Hỏi</label>
+            <textarea class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200 min-h-[80px]" id="custom-question-text" rows="3" placeholder="Ví dụ: Căn bậc hai số học của 9 là bao nhiêu?" required></textarea>
           </div>
 
-          <div style="margin-bottom: 18px;">
-            <label class="form-label" style="display: block; margin-bottom: 10px;">Nhập 4 Đáp Án và chọn đáp án Đúng</label>
-            <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-              <div style="display: flex; gap: 12px; align-items: center;">
-                <span class="option-letter" style="background: var(--accent); color: white;">A</span>
-                <input type="text" class="form-input" id="custom-opt-a" placeholder="Nhập đáp án A..." required>
-                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
-                  <input type="radio" name="correct-option" value="0" style="width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer;" required checked>
-                  <span class="form-label" style="font-size: 11px; white-space: nowrap; margin-bottom: 0;">Đúng</span>
+          <div>
+            <label data-i18n="custom-lbl-options" class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-3">Nhập 4 Đáp Án và chọn đáp án Đúng</label>
+            <div class="grid grid-cols-1 gap-3">
+              <div class="flex gap-3 items-center">
+                <span class="w-7 h-7 rounded-lg bg-indigo-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">A</span>
+                <input type="text" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200" id="custom-opt-a" placeholder="Nhập đáp án A..." required>
+                <label class="flex items-center gap-1.5 cursor-pointer flex-shrink-0">
+                  <input type="radio" name="correct-option" value="0" class="w-5 h-5 accent-indigo-500 cursor-pointer" required checked>
+                  <span data-i18n="custom-lbl-correct" class="text-xs font-bold text-slate-600 dark:text-slate-300">Đúng</span>
                 </label>
               </div>
-              <div style="display: flex; gap: 12px; align-items: center;">
-                <span class="option-letter" style="background: var(--accent); color: white;">B</span>
-                <input type="text" class="form-input" id="custom-opt-b" placeholder="Nhập đáp án B..." required>
-                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
-                  <input type="radio" name="correct-option" value="1" style="width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer;" required>
-                  <span class="form-label" style="font-size: 11px; white-space: nowrap; margin-bottom: 0;">Đúng</span>
+              <div class="flex gap-3 items-center">
+                <span class="w-7 h-7 rounded-lg bg-indigo-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">B</span>
+                <input type="text" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200" id="custom-opt-b" placeholder="Nhập đáp án B..." required>
+                <label class="flex items-center gap-1.5 cursor-pointer flex-shrink-0">
+                  <input type="radio" name="correct-option" value="1" class="w-5 h-5 accent-indigo-500 cursor-pointer" required>
+                  <span data-i18n="custom-lbl-correct" class="text-xs font-bold text-slate-600 dark:text-slate-300">Đúng</span>
                 </label>
               </div>
-              <div style="display: flex; gap: 12px; align-items: center;">
-                <span class="option-letter" style="background: var(--accent); color: white;">C</span>
-                <input type="text" class="form-input" id="custom-opt-c" placeholder="Nhập đáp án C..." required>
-                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
-                  <input type="radio" name="correct-option" value="2" style="width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer;" required>
-                  <span class="form-label" style="font-size: 11px; white-space: nowrap; margin-bottom: 0;">Đúng</span>
+              <div class="flex gap-3 items-center">
+                <span class="w-7 h-7 rounded-lg bg-indigo-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">C</span>
+                <input type="text" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200" id="custom-opt-c" placeholder="Nhập đáp án C..." required>
+                <label class="flex items-center gap-1.5 cursor-pointer flex-shrink-0">
+                  <input type="radio" name="correct-option" value="2" class="w-5 h-5 accent-indigo-500 cursor-pointer" required>
+                  <span data-i18n="custom-lbl-correct" class="text-xs font-bold text-slate-600 dark:text-slate-300">Đúng</span>
                 </label>
               </div>
-              <div style="display: flex; gap: 12px; align-items: center;">
-                <span class="option-letter" style="background: var(--accent); color: white;">D</span>
-                <input type="text" class="form-input" id="custom-opt-d" placeholder="Nhập đáp án D..." required>
-                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
-                  <input type="radio" name="correct-option" value="3" style="width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer;" required>
-                  <span class="form-label" style="font-size: 11px; white-space: nowrap; margin-bottom: 0;">Đúng</span>
+              <div class="flex gap-3 items-center">
+                <span class="w-7 h-7 rounded-lg bg-indigo-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">D</span>
+                <input type="text" class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200" id="custom-opt-d" placeholder="Nhập đáp án D..." required>
+                <label class="flex items-center gap-1.5 cursor-pointer flex-shrink-0">
+                  <input type="radio" name="correct-option" value="3" class="w-5 h-5 accent-indigo-500 cursor-pointer" required>
+                  <span data-i18n="custom-lbl-correct" class="text-xs font-bold text-slate-600 dark:text-slate-300">Đúng</span>
                 </label>
               </div>
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="custom-explanation">Giải Thích Đáp Án (Không bắt buộc)</label>
-            <input type="text" class="form-input" id="custom-explanation" placeholder="Ví dụ: Vì căn bậc hai số học của 9 là một số không âm x sao cho x^2 = 9, do đó x = 3.">
+          <div class="flex flex-col gap-1.5">
+            <label data-i18n="custom-lbl-explanation" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="custom-explanation">Giải Thích Đáp Án (Không bắt buộc)</label>
+            <input type="text" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200" id="custom-explanation" placeholder="Ví dụ: Vì căn bậc hai số học của 9 là một số không âm x sao cho x^2 = 9, do đó x = 3.">
           </div>
 
-          <button type="submit" class="btn-action" style="width: 100%; justify-content: center; padding: 14px;">
-            <span>➕</span> Thêm Câu Hỏi Mới ➔
+          <button type="submit" class="w-full justify-center bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 active:scale-95 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md dark:shadow-indigo-500/20 hover:scale-[1.01] transition-all duration-200 cursor-pointer mt-2">
+            <span>➕</span> <span data-i18n="custom-btn-submit">Thêm Câu Hỏi Mới ➔</span>
           </button>
         </form>
       </div>
@@ -1703,107 +623,117 @@
     </div>
 
     <!-- VIEW 2: QUIZ ARENA (PLAYING STATE) -->
-    <div id="quiz-view" class="glass-card">
+    <div id="quiz-view" class="backdrop-blur-md bg-white/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/80 shadow-md rounded-3xl p-6 hidden flex-col gap-5 transition-all duration-300">
       
       <!-- Quiz Nav Header -->
-      <div class="quiz-navbar">
-        <button class="btn-back" onclick="quitQuiz()">⬅️ Về Dashboard</button>
-        <div class="quiz-subject-title" id="quiz-title-display">
+      <div class="flex justify-between items-center border-b border-slate-200/60 dark:border-slate-800/80 pb-4 mb-2">
+        <button data-i18n="btn-back" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer flex items-center gap-1.5" onclick="quitQuiz()">⬅️ Về Dashboard</button>
+        <div class="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2" id="quiz-title-display">
           <span>📐</span> <span>Toán Học 8</span>
         </div>
       </div>
 
       <!-- Progress bar inside quiz -->
-      <div class="quiz-progress-section">
-        <div class="quiz-progress-text">
-          <span id="quiz-progress-label">Tiến trình học kỳ</span>
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
+          <span id="quiz-progress-label" data-i18n="progress-label">Tiến trình học kỳ</span>
           <span id="quiz-progress-fraction">Câu 1 / 4</span>
         </div>
-        <div class="quiz-progress-bar-bg">
-          <div class="quiz-progress-bar-fill" id="quiz-progress-fill"></div>
+        <div class="w-full h-2 bg-slate-200/60 dark:bg-slate-800/80 rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-300" id="quiz-progress-fill" style="width: 0%;"></div>
         </div>
       </div>
 
       <!-- Active Question Container -->
-      <div class="question-card">
+      <div class="flex flex-col gap-4">
         <div id="q-type-badge" class="question-type-badge multiple-choice">Trắc nghiệm</div>
-        <div class="question-text" id="question-text-content">
+        
+        <!-- Bộ đếm thời gian trắc nghiệm -->
+        <div class="quiz-timer-container w-full items-center gap-3 bg-slate-50/50 dark:bg-slate-900/30 border border-slate-200/50 dark:border-slate-800/80 px-4 py-2.5 rounded-2xl mb-4 shadow-sm" id="quiz-timer-container" style="display: none;">
+          <span class="timer-icon text-xl animate-rotate-shake">⏳</span>
+          <div class="timer-progress-bg flex-grow h-2.5 bg-slate-200/60 dark:bg-slate-800/80 rounded-full overflow-hidden relative">
+            <div class="timer-progress-fill h-full bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full transition-all duration-100" id="timer-progress-fill" style="width: 100%;"></div>
+          </div>
+          <span class="timer-text text-sm font-bold min-w-[32px] text-right text-slate-800 dark:text-slate-100" id="timer-text">15s</span>
+        </div>
+
+        <div class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100 leading-relaxed py-1" id="question-text-content">
           Đang tải câu hỏi...
         </div>
 
         <!-- Dynamic Area for Multiple Choice -->
-        <div class="options-grid" id="options-container">
+        <div class="options-grid grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2" id="options-container">
           <!-- Populated by JS -->
         </div>
 
         <!-- Dynamic Area for Essay -->
-        <div class="essay-container" id="essay-container">
-          <textarea class="essay-textarea" id="essay-input" placeholder="Hãy viết câu trả lời chi tiết của bạn tại đây..."></textarea>
-          <div class="essay-controls">
-            <button class="btn-action" id="btn-submit-essay" onclick="submitEssay()">
-              <span>📝</span> Nộp Bài & Đối Chiếu
+        <div class="essay-container hidden flex-col gap-3" id="essay-container">
+          <textarea class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200 min-h-[120px]" id="essay-input" data-i18n="essay-placeholder" placeholder="Hãy viết câu trả lời chi tiết của bạn tại đây..."></textarea>
+          <div class="flex justify-end mt-1">
+            <button class="bg-indigo-500 hover:bg-indigo-600 active:scale-95 text-white font-bold py-2.5 px-5 rounded-xl text-xs flex items-center gap-2 transition-all duration-200 shadow-md shadow-indigo-500/10 cursor-pointer" id="btn-submit-essay" onclick="submitEssay()">
+              <span>📝</span> <span data-i18n="essay-btn-submit">Nộp Bài & Đối Chiếu</span>
             </button>
           </div>
         </div>
 
         <!-- Keyword Detector & Standard Answer Comparison -->
-        <div class="essay-eval-panel" id="essay-eval-panel">
+        <div class="essay-eval-panel hidden flex-col gap-5 border-t border-slate-200/50 dark:border-slate-800/80 pt-5 mt-4" id="essay-eval-panel">
           <div class="keyword-detector">
-            <div class="keyword-detector-title">
-              <span>🔍</span> Phát hiện từ khóa cốt lõi trong câu trả lời của bạn:
+            <div class="text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+              <span>🔍</span> <span data-i18n="essay-keywords-title">Phát hiện từ khóa cốt lõi trong câu trả lời của bạn:</span>
             </div>
-            <div class="keyword-pills" id="keyword-pills-box">
+            <div class="flex flex-wrap gap-2 mt-2.5" id="keyword-pills-box">
               <!-- Keyword badges highlighted -->
             </div>
           </div>
 
-          <div class="answer-compare">
-            <div class="compare-box">
-              <div class="compare-box-title">Bài làm của bạn</div>
-              <div class="compare-box-content" id="student-rendered-answer">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/50">
+              <div data-i18n="essay-student-title" class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Bài làm của bạn</div>
+              <div class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-medium whitespace-pre-line" id="student-rendered-answer">
                 <!-- User text with matched words highlighted -->
               </div>
             </div>
-            <div class="compare-box">
-              <div class="compare-box-title">Đáp án mẫu chi tiết</div>
-              <div class="compare-box-content" id="model-answer-content" style="color: var(--accent); font-weight: 500;">
+            <div class="p-4 rounded-2xl bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/50">
+              <div data-i18n="essay-model-title" class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Đáp án mẫu chi tiết</div>
+              <div class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-medium whitespace-pre-line" id="model-answer-content" style="color: var(--accent); font-weight: 600;">
                 <!-- Model answer text -->
               </div>
             </div>
           </div>
 
-          <div class="self-eval-section">
-            <div class="self-eval-title">Bạn tự đánh giá bài làm của mình ở mức độ nào?</div>
-            <div class="eval-buttons">
-              <button class="btn-eval perfect" onclick="rateEssay('perfect')">
-                <span>🏆</span>
-                <strong>Hoàn hảo</strong>
-                <span style="font-size: 11px; opacity: 0.8; font-weight: 500;">+20 XP</span>
+          <div class="self-eval-section flex flex-col gap-3 mt-4 border-t border-slate-200/50 dark:border-slate-800/80 pt-4">
+            <div data-i18n="essay-eval-title" class="text-xs font-bold text-slate-600 dark:text-slate-300 text-center md:text-left">Bạn tự đánh giá bài làm của mình ở mức độ nào?</div>
+            <div class="grid grid-cols-3 gap-3">
+              <button class="btn-eval flex flex-col items-center gap-1.5 p-3.5 rounded-2xl border text-center transition-all duration-200 hover:-translate-y-1 active:translate-y-0 cursor-pointer border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/20 dark:bg-emerald-950/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10" onclick="rateEssay('perfect')">
+                <span class="text-xl">🏆</span>
+                <strong data-i18n="eval-perfect" class="text-xs">Hoàn hảo</strong>
+                <span style="font-size: 10px; opacity: 0.8; font-weight: 600;">+20 XP</span>
               </button>
-              <button class="btn-eval good" onclick="rateEssay('good')">
-                <span>👍</span>
-                <strong>Đạt ý chính</strong>
-                <span style="font-size: 11px; opacity: 0.8; font-weight: 500;">+12 XP</span>
+              <button class="btn-eval flex flex-col items-center gap-1.5 p-3.5 rounded-2xl border text-center transition-all duration-200 hover:-translate-y-1 active:translate-y-0 cursor-pointer border-amber-200 dark:border-amber-900/50 bg-amber-50/20 dark:bg-amber-950/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10" onclick="rateEssay('good')">
+                <span class="text-xl">👍</span>
+                <strong data-i18n="eval-good" class="text-xs">Đạt ý chính</strong>
+                <span style="font-size: 10px; opacity: 0.8; font-weight: 600;">+12 XP</span>
               </button>
-              <button class="btn-eval try-hard" onclick="rateEssay('try')">
-                <span>🔄</span>
-                <strong>Cần cố gắng</strong>
-                <span style="font-size: 11px; opacity: 0.8; font-weight: 500;">+2 XP</span>
+              <button class="btn-eval flex flex-col items-center gap-1.5 p-3.5 rounded-2xl border text-center transition-all duration-200 hover:-translate-y-1 active:translate-y-0 cursor-pointer border-slate-200 dark:border-slate-800 bg-slate-50/20 dark:bg-slate-900/10 text-slate-600 dark:text-slate-400 hover:bg-slate-500/10" onclick="rateEssay('try')">
+                <span class="text-xl">🔄</span>
+                <strong data-i18n="eval-try" class="text-xs">Cần cố gắng</strong>
+                <span style="font-size: 10px; opacity: 0.8; font-weight: 600;">+2 XP</span>
               </button>
             </div>
           </div>
         </div>
 
         <!-- Explanation Block (MCQ only) -->
-        <div class="explanation-panel" id="explanation-box">
-          <strong>💡 Giải thích chi tiết:</strong>
+        <div class="explanation-panel hidden mt-4 p-4 rounded-2xl bg-indigo-50/40 dark:bg-indigo-950/10 border border-indigo-100/50 dark:border-indigo-900/30 text-sm text-slate-700 dark:text-slate-300 leading-relaxed" id="explanation-box">
+          <strong data-i18n="explanation-title">💡 Giải thích chi tiết:</strong>
           <span id="explanation-text">Giải thích đáp án...</span>
         </div>
 
         <!-- Next / Continue Navigation bar -->
-        <div class="quiz-navigation" id="quiz-nav-footer">
-          <button class="btn-action" id="btn-next-question" onclick="nextQuestion()">
-            <span>Tiếp Tục</span> ➔
+        <div class="hidden justify-end mt-4 border-t border-slate-200/50 dark:border-slate-800/80 pt-4" id="quiz-nav-footer">
+          <button class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 active:scale-95 text-white font-bold py-3 px-6 rounded-xl text-xs transition-all duration-200 shadow-md shadow-indigo-500/10 cursor-pointer flex items-center gap-1" id="btn-next-question" onclick="nextQuestion()">
+            <span data-i18n="btn-next">Tiếp Tục</span> ➔
           </button>
         </div>
 
@@ -1812,27 +742,27 @@
     </div>
 
     <!-- VIEW 3: END SUBJECT RESULT PANEL -->
-    <div id="result-view" class="glass-card">
-      <div class="congrats-emoji" id="result-emoji">🎉</div>
-      <h2 class="result-title" id="result-congrats-title">Chinh Phục Thành Công!</h2>
-      <p id="result-message" style="color: var(--text-muted); font-size: 15px; max-width: 500px;">
+    <div id="result-view" class="backdrop-blur-md bg-white/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/80 shadow-md rounded-3xl p-8 hidden flex-col items-center text-center gap-5 transition-all duration-300">
+      <div class="text-6xl animate-float" id="result-emoji">🎉</div>
+      <h2 data-i18n="result-title" class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent" id="result-congrats-title">Chinh Phục Thành Công!</h2>
+      <p id="result-message" data-i18n="result-msg" class="text-sm text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
         Tuyệt vời! Bạn vừa hoàn thành thử thách học kỳ của môn học này. Hãy xem thành tích đạt được:
       </p>
 
-      <div class="stats-card-grid">
-        <div class="result-stat-box">
-          <div class="result-stat-val" id="result-score">0/4</div>
-          <div class="result-stat-lbl">Số Câu Trả Lời</div>
+      <div class="grid grid-cols-2 gap-4 w-full max-w-sm mt-2">
+        <div class="p-4 rounded-2xl border border-slate-200/60 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-950/20 flex flex-col items-center gap-1">
+          <div class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="result-score">0/4</div>
+          <div data-i18n="result-score-lbl" class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Số Câu Trả Lời Đúng</div>
         </div>
-        <div class="result-stat-box" style="border-color: var(--color-purple);">
-          <div class="result-stat-val" id="result-xp" style="color: var(--color-purple);">+0 XP</div>
-          <div class="result-stat-lbl">XP Tích Lũy</div>
+        <div class="p-4 rounded-2xl border border-slate-200/60 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-950/20 flex flex-col items-center gap-1" style="border-color: var(--color-purple);">
+          <div class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="result-xp" style="color: var(--color-purple);">+0 XP</div>
+          <div data-i18n="result-xp-lbl" class="text-xs text-slate-500 dark:text-slate-400 font-semibold">XP Tích Lũy</div>
         </div>
       </div>
 
-      <div class="result-actions">
-        <button class="btn-action" onclick="quitQuiz()">Trở Về Dashboard</button>
-        <button class="btn-secondary" onclick="restartCurrentSubject()">Làm Lại Lượt Này</button>
+      <div class="flex gap-4 flex-wrap justify-center mt-2">
+        <button data-i18n="result-btn-dash" class="bg-indigo-500 hover:bg-indigo-600 active:scale-95 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition-all duration-200 shadow-md shadow-indigo-500/10 cursor-pointer" onclick="quitQuiz()">Trở Về Dashboard</button>
+        <button data-i18n="result-btn-again" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 text-slate-700 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50 py-2.5 px-5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer" onclick="restartCurrentSubject()">Làm Lại Lượt Này</button>
       </div>
     </div>
 
@@ -1840,64 +770,64 @@
 
   <!-- MODAL: SEMESTER SELECTION -->
   <div class="modal-overlay" id="semester-modal">
-    <div class="modal-content">
-      <div class="modal-header-title">
-        <span>📖</span> Chọn Học Kỳ Ôn Tập
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-3xl p-6 w-full max-w-md flex flex-col gap-4 modal-content-animate max-h-[90vh] overflow-y-auto">
+      <div class="text-base font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100">
+        <span>📖</span> <span data-i18n="sem-modal-title">Chọn Học Kỳ Ôn Tập</span>
       </div>
-      <div class="semester-selection-box">
-        <div class="semester-select-card" onclick="selectSemester('hk1')">
-          <div class="semester-select-icon" style="color: var(--color-blue); background: rgba(14, 165, 233, 0.1);">🌟</div>
-          <div class="semester-select-title">Học Kỳ 1</div>
-          <div class="semester-select-desc">Nửa đầu năm học: Các khái niệm nền tảng & bài đọc cốt lõi.</div>
-          <div class="semester-select-progress" id="progress-detail-hk1">Hoàn thành: 0/4</div>
+      <div class="flex flex-col gap-4">
+        <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-800/50 hover:border-indigo-300 dark:hover:border-indigo-700/50 hover:scale-[1.01] transition-all duration-200 cursor-pointer flex flex-col gap-1.5" onclick="selectSemester('hk1')">
+          <div class="text-2xl bg-sky-50 dark:bg-sky-950/40 w-10 h-10 rounded-xl flex items-center justify-center border border-sky-100 dark:border-sky-900/50" style="color: var(--color-blue);">🌟</div>
+          <div data-i18n="sem-modal-hk1" class="text-sm font-bold text-slate-800 dark:text-slate-100">Học Kỳ 1</div>
+          <div data-i18n="sem-modal-hk1-desc" class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-medium">Nửa đầu năm học: Các khái niệm nền tảng & bài đọc cốt lõi.</div>
+          <div class="text-[10px] font-bold text-indigo-500 dark:text-indigo-400 mt-1" id="progress-detail-hk1">Hoàn thành: 0/4</div>
         </div>
-        <div class="semester-select-card" onclick="selectSemester('hk2')">
-          <div class="semester-select-icon" style="color: var(--color-purple); background: rgba(139, 92, 246, 0.1);">🚀</div>
-          <div class="semester-select-title">Học Kỳ 2</div>
-          <div class="semester-select-desc">Nửa cuối năm học: Kiến thức nâng cao, ứng dụng tổng kết.</div>
-          <div class="semester-select-progress" id="progress-detail-hk2">Hoàn thành: 0/4</div>
+        <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-800/50 hover:border-indigo-300 dark:hover:border-indigo-700/50 hover:scale-[1.01] transition-all duration-200 cursor-pointer flex flex-col gap-1.5" onclick="selectSemester('hk2')">
+          <div class="text-2xl bg-purple-50 dark:bg-purple-950/40 w-10 h-10 rounded-xl flex items-center justify-center border border-purple-100 dark:border-purple-900/50" style="color: var(--color-purple);">🚀</div>
+          <div data-i18n="sem-modal-hk2" class="text-sm font-bold text-slate-800 dark:text-slate-100">Học Kỳ 2</div>
+          <div data-i18n="sem-modal-hk2-desc" class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-medium">Nửa cuối năm học: Kiến thức nâng cao, ứng dụng tổng kết.</div>
+          <div class="text-[10px] font-bold text-indigo-500 dark:text-indigo-400 mt-1" id="progress-detail-hk2">Hoàn thành: 0/4</div>
         </div>
       </div>
-      <div class="modal-footer" style="margin-top: 18px; padding-top: 14px;">
-        <button class="btn-secondary" onclick="closeSemesterModal()" style="padding: 8px 16px; font-size: 13px;">Hủy bỏ</button>
+      <div class="flex justify-end border-t border-slate-100 dark:border-slate-800/60 pt-4 mt-1">
+        <button data-i18n="sem-modal-cancel" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50 py-2 px-4 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer" onclick="closeSemesterModal()">Hủy bỏ</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL: PROFILE EDITOR -->
   <div class="modal-overlay" id="profile-modal">
-    <div class="modal-content">
-      <div class="modal-header-title">
-        <span>👤</span> Chỉnh Sửa Hồ Sơ Học Sinh
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-3xl p-6 w-full max-w-md flex flex-col gap-4 modal-content-animate max-h-[90vh] overflow-y-auto">
+      <div class="text-base font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100">
+        <span>👤</span> <span data-i18n="profile-modal-title">Chỉnh Sửa Hồ Sơ Học Sinh</span>
       </div>
       
-      <div class="form-group">
-        <label class="form-label">Chọn Linh Vật Avatar</label>
-        <div class="avatar-picker-grid">
-          <button class="avatar-option-btn" onclick="selectAvatarOption('🦁')">🦁</button>
-          <button class="avatar-option-btn" onclick="selectAvatarOption('🦊')">🦊</button>
-          <button class="avatar-option-btn" onclick="selectAvatarOption('🐼')">🐼</button>
-          <button class="avatar-option-btn" onclick="selectAvatarOption('🐨')">🐨</button>
-          <button class="avatar-option-btn" onclick="selectAvatarOption('🐰')">🐰</button>
-          <button class="avatar-option-btn" onclick="selectAvatarOption('🐯')">🐯</button>
-          <button class="avatar-option-btn" onclick="selectAvatarOption('🐸')">🐸</button>
-          <button class="avatar-option-btn" onclick="selectAvatarOption('🐙')">🐙</button>
+      <div class="flex flex-col gap-2">
+        <label data-i18n="profile-lbl-avatar" class="text-xs font-bold text-slate-600 dark:text-slate-300">Chọn Linh Vật Avatar</label>
+        <div class="grid grid-cols-4 gap-2">
+          <button class="text-2xl p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-800 active:scale-95 transition-all duration-200 cursor-pointer" onclick="selectAvatarOption('🦁')">🦁</button>
+          <button class="text-2xl p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-800 active:scale-95 transition-all duration-200 cursor-pointer" onclick="selectAvatarOption('🦊')">🦊</button>
+          <button class="text-2xl p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-800 active:scale-95 transition-all duration-200 cursor-pointer" onclick="selectAvatarOption('🐼')">🐼</button>
+          <button class="text-2xl p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-800 active:scale-95 transition-all duration-200 cursor-pointer" onclick="selectAvatarOption('🐨')">🐨</button>
+          <button class="text-2xl p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-800 active:scale-95 transition-all duration-200 cursor-pointer" onclick="selectAvatarOption('🐰')">🐰</button>
+          <button class="text-2xl p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-800 active:scale-95 transition-all duration-200 cursor-pointer" onclick="selectAvatarOption('🐯')">🐯</button>
+          <button class="text-2xl p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-800 active:scale-95 transition-all duration-200 cursor-pointer" onclick="selectAvatarOption('🐸')">🐸</button>
+          <button class="text-2xl p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-800 active:scale-95 transition-all duration-200 cursor-pointer" onclick="selectAvatarOption('🐙')">🐙</button>
         </div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label" for="profile-name-input">Tên hiển thị</label>
-        <input type="text" class="form-input" id="profile-name-input" placeholder="Nhập tên của bạn...">
+      <div class="flex flex-col gap-1.5">
+        <label data-i18n="profile-lbl-name" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="profile-name-input">Tên hiển thị</label>
+        <input type="text" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200" id="profile-name-input" placeholder="Nhập tên của bạn...">
       </div>
 
-      <div class="form-group">
-        <label class="form-label" for="profile-school-input">Trường Học</label>
-        <input type="text" class="form-input" id="profile-school-input" placeholder="Tên trường THCS...">
+      <div class="flex flex-col gap-1.5">
+        <label data-i18n="profile-lbl-school" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="profile-school-input">Trường Học</label>
+        <input type="text" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200" id="profile-school-input" placeholder="Tên trường THCS...">
       </div>
 
-      <div class="form-group">
-        <label class="form-label" for="profile-goal-input">Mục Tiêu Ôn Tập</label>
-        <select class="form-input" id="profile-goal-input">
+      <div class="flex flex-col gap-1.5">
+        <label data-i18n="profile-lbl-goal" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="profile-goal-input">Mục Tiêu Ôn Tập</label>
+        <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200 cursor-pointer" id="profile-goal-input">
           <option value="🎯 Mục tiêu: Ôn tập hiệu quả">🎯 Ôn tập củng cố kiến thức cơ bản</option>
           <option value="🎯 Mục tiêu: Đạt điểm 9+">🎯 Đạt điểm 9+ Học sinh Giỏi</option>
           <option value="🎯 Mục tiêu: Chinh phục điểm 10">🎯 Chinh phục điểm 10 các môn thi</option>
@@ -1905,36 +835,36 @@
         </select>
       </div>
 
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeProfileModal()">Hủy bỏ</button>
-        <button class="btn-action" onclick="saveProfileData()">Lưu hồ sơ ➔</button>
+      <div class="flex justify-end gap-3 border-t border-slate-100 dark:border-slate-800/60 pt-4 mt-1">
+        <button class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50 py-2.5 px-5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer" onclick="closeProfileModal()">Hủy bỏ</button>
+        <button data-i18n="profile-btn-save" class="bg-indigo-500 hover:bg-indigo-600 active:scale-95 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition-all duration-200 shadow-md shadow-indigo-500/10 cursor-pointer" onclick="saveProfileData()">Lưu hồ sơ ➔</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL: SETTINGS SYSTEM -->
   <div class="modal-overlay" id="settings-modal">
-    <div class="modal-content">
-      <div class="modal-header-title">
-        <span>⚙️</span> Cấu Hình Ứng Dụng & Giao Diện
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-3xl p-6 w-full max-w-md flex flex-col gap-4 modal-content-animate max-h-[90vh] overflow-y-auto">
+      <div class="text-base font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100">
+        <span>⚙️</span> <span data-i18n="settings-modal-title">Cấu Hình Ứng Dụng & Giao Diện</span>
       </div>
 
       <!-- Theme Accent Picker -->
-      <div class="form-group">
-        <label class="form-label">Màu Sắc Chủ Đạo (Theme Color)</label>
-        <div class="color-picker-row">
-          <div class="color-dot selected" style="background-color: #6366f1; --theme-color: #6366f1;" onclick="setThemeAccentColor('indigo', '#6366f1', '#4f46e5')"></div>
-          <div class="color-dot" style="background-color: #10b981; --theme-color: #10b981;" onclick="setThemeAccentColor('emerald', '#10b981', '#059669')"></div>
-          <div class="color-dot" style="background-color: #f43f5e; --theme-color: #f43f5e;" onclick="setThemeAccentColor('ruby', '#f43f5e', '#e11d48')"></div>
-          <div class="color-dot" style="background-color: #f59e0b; --theme-color: #f59e0b;" onclick="setThemeAccentColor('amber', '#f59e0b', '#d97706')"></div>
-          <div class="color-dot" style="background-color: #0ea5e9; --theme-color: #0ea5e9;" onclick="setThemeAccentColor('sky', '#0ea5e9', '#0284c7')"></div>
+      <div class="flex flex-col gap-1.5">
+        <label data-i18n="settings-lbl-theme" class="text-xs font-bold text-slate-600 dark:text-slate-300">Màu Sắc Chủ Đạo (Theme Color)</label>
+        <div class="flex items-center gap-3 py-1">
+          <div class="w-8 h-8 rounded-full cursor-pointer border-2 border-white dark:border-slate-900 shadow-md hover:scale-110 active:scale-95 transition-all duration-150" style="background-color: #6366f1; --theme-color: #6366f1;" onclick="setThemeAccentColor('indigo', '#6366f1', '#4f46e5')"></div>
+          <div class="w-8 h-8 rounded-full cursor-pointer border-2 border-white dark:border-slate-900 shadow-md hover:scale-110 active:scale-95 transition-all duration-150" style="background-color: #10b981; --theme-color: #10b981;" onclick="setThemeAccentColor('emerald', '#10b981', '#059669')"></div>
+          <div class="w-8 h-8 rounded-full cursor-pointer border-2 border-white dark:border-slate-900 shadow-md hover:scale-110 active:scale-95 transition-all duration-150" style="background-color: #f43f5e; --theme-color: #f43f5e;" onclick="setThemeAccentColor('ruby', '#f43f5e', '#e11d48')"></div>
+          <div class="w-8 h-8 rounded-full cursor-pointer border-2 border-white dark:border-slate-900 shadow-md hover:scale-110 active:scale-95 transition-all duration-150" style="background-color: #f59e0b; --theme-color: #f59e0b;" onclick="setThemeAccentColor('amber', '#f59e0b', '#d97706')"></div>
+          <div class="w-8 h-8 rounded-full cursor-pointer border-2 border-white dark:border-slate-900 shadow-md hover:scale-110 active:scale-95 transition-all duration-150" style="background-color: #0ea5e9; --theme-color: #0ea5e9;" onclick="setThemeAccentColor('sky', '#0ea5e9', '#0284c7')"></div>
         </div>
       </div>
 
       <!-- Background Style Selection -->
-      <div class="form-group">
-        <label class="form-label" for="settings-bg-input">Kiểu Nền Ứng Dụng</label>
-        <select class="form-input" id="settings-bg-input" onchange="changeBackgroundStyle(this.value)">
+      <div class="flex flex-col gap-1.5">
+        <label data-i18n="settings-lbl-bg" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="settings-bg-input">Kiểu Nền Ứng Dụng</label>
+        <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200 cursor-pointer" id="settings-bg-input" onchange="changeBackgroundStyle(this.value)">
           <option value="gradient">🌈 Nền Gradient Mềm (Mặc định)</option>
           <option value="solid">⬜ Nền Đơn Sắc Tối Giản</option>
           <option value="animated">✨ Nền Hạt Động Lơ Lửng (Cao cấp)</option>
@@ -1942,9 +872,9 @@
       </div>
 
       <!-- Sound Waveform Type -->
-      <div class="form-group">
-        <label class="form-label" for="settings-sound-type">Thể Loại Âm Tổng Hợp</label>
-        <select class="form-input" id="settings-sound-type" onchange="changeSoundWaveType(this.value)">
+      <div class="flex flex-col gap-1.5">
+        <label data-i18n="settings-lbl-sound" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="settings-sound-type">Thể Loại Âm Tổng Hợp</label>
+        <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200 cursor-pointer" id="settings-sound-type" onchange="changeSoundWaveType(this.value)">
           <option value="sine">🎵 Clean Tone (Sóng Sine - êm dịu)</option>
           <option value="square">👾 Retro 8-bit (Sóng Square - ngộ nghĩnh)</option>
           <option value="triangle">🎹 Soft Synth (Sóng Triangle - trầm ấm)</option>
@@ -1952,18 +882,18 @@
       </div>
 
       <!-- Sound Volume Slider -->
-      <div class="form-group">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <label class="form-label" id="volume-label">Âm Lượng: 60%</label>
-          <button id="btn-sound-test" onclick="testSoundSynth()" style="background:none; border:none; color:var(--accent); font-size:12px; font-weight:700; cursor:pointer;">🔊 Thử âm</button>
+      <div class="flex flex-col gap-1.5">
+        <div class="flex justify-between items-center">
+          <label class="text-xs font-bold text-slate-600 dark:text-slate-300" id="volume-label">Âm Lượng: 60%</label>
+          <button id="btn-sound-test" data-i18n="settings-test-sound" onclick="testSoundSynth()" class="text-xs font-bold text-indigo-500 dark:text-indigo-400 bg-transparent border-none cursor-pointer">🔊 Thử âm</button>
         </div>
-        <input type="range" min="0" max="100" value="60" class="form-input" style="padding: 0; cursor: pointer;" id="settings-volume-slider" oninput="changeSoundVolume(this.value)">
+        <input type="range" min="0" max="100" value="60" class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500" id="settings-volume-slider" oninput="changeSoundVolume(this.value)">
       </div>
 
       <!-- Confetti Amount -->
-      <div class="form-group">
-        <label class="form-label" for="settings-confetti-input">Mật Độ Pháo Hoa Ăn Mừng</label>
-        <select class="form-input" id="settings-confetti-input">
+      <div class="flex flex-col gap-1.5">
+        <label data-i18n="settings-confetti" class="text-xs font-bold text-slate-600 dark:text-slate-300" for="settings-confetti-input">Mật Độ Pháo Hoa Ăn Mừng</label>
+        <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/10 transition-all duration-200 cursor-pointer" id="settings-confetti-input">
           <option value="50">🎉 Nhẹ Nhàng (50 hạt)</option>
           <option value="100" selected>🎉 Tiêu Chuẩn (100 hạt)</option>
           <option value="250">🎉 Hoành Tráng (250 hạt)</option>
@@ -1971,30 +901,29 @@
       </div>
 
       <!-- Danger Zone -->
-      <div class="form-group" style="margin-top: 10px; border-top: 1px solid var(--card-border); padding-top: 14px;">
-        <label class="form-label" style="color: var(--color-red);">Danger Zone</label>
-        <button class="btn-secondary" onclick="resetAllProgress()" style="color: var(--color-red); border-color: rgba(239, 68, 68, 0.4); text-align: center; width: 100%; justify-content: center;">
+      <div class="flex flex-col gap-3 mt-2 border-t border-slate-200 dark:border-slate-800 pt-4">
+        <label class="text-xs font-bold text-red-500">Danger Zone</label>
+        <button data-i18n="settings-reset-btn" class="w-full bg-transparent hover:bg-red-500/10 active:scale-95 text-red-500 border border-red-500/40 hover:border-red-500 py-2.5 px-4 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer flex items-center justify-center" onclick="resetAllProgress()">
           Đặt Lại Toàn Bộ Tiến Trình Học Tập 🔄
         </button>
       </div>
 
-      <div class="modal-footer">
-        <button class="btn-action" style="width: 100%; justify-content: center;" onclick="closeSettingsModal()">Đóng Cài Đặt</button>
+      <div class="modal-footer border-t border-slate-100 dark:border-slate-800/60 pt-4 mt-2">
+        <button data-i18n="settings-close" class="w-full bg-indigo-500 hover:bg-indigo-600 active:scale-95 text-white font-bold py-3 px-4 rounded-xl text-xs transition-all duration-200 shadow-md shadow-indigo-500/10 cursor-pointer flex items-center justify-center" onclick="closeSettingsModal()">Đóng Cài Đặt</button>
       </div>
     </div>
   </div>
 
   <!-- NOTIFICATION BADGE MODAL -->
   <div class="badge-modal" id="badge-alert-modal">
-    <div class="badge-modal-content">
-      <div class="badge-modal-icon" id="modal-badge-icon">🏆</div>
-      <div class="badge-modal-title">DANH HIỆU MỚI!</div>
-      <div class="badge-modal-name" id="modal-badge-name">Học giả thông thái</div>
-      <div class="badge-modal-desc" id="modal-badge-desc">Đã hoàn thành toàn bộ thử thách lớp 8 xuất sắc.</div>
-      <button class="btn-action" style="width: 100%; justify-content: center;" onclick="closeBadgeModal()">Nhận Ngay! ⚡</button>
+    <div class="badge-modal-content bg-white dark:bg-slate-900 border-2 border-indigo-500 dark:border-indigo-400 rounded-3xl p-8 max-w-sm w-[90%] text-center flex flex-col items-center gap-4 shadow-2xl">
+      <div class="badge-modal-icon text-6xl animate-float" id="modal-badge-icon">🏆</div>
+      <div data-i18n="badge-modal-title" class="badge-modal-title text-[10px] font-bold text-indigo-500 dark:text-indigo-400 tracking-widest">DANH HIỆU MỚI!</div>
+      <div class="badge-modal-name text-lg font-bold text-slate-800 dark:text-slate-100" id="modal-badge-name">Học giả thông thái</div>
+      <div class="badge-modal-desc text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-medium" id="modal-badge-desc">Đã hoàn thành toàn bộ thử thách lớp 8 xuất sắc.</div>
+      <button data-i18n="badge-modal-btn" class="w-full justify-center bg-indigo-500 hover:bg-indigo-600 active:scale-95 text-white font-bold py-3.5 px-4 rounded-xl text-xs transition-all duration-200 shadow-md shadow-indigo-500/10 cursor-pointer flex items-center mt-2" onclick="closeBadgeModal()">Nhận Ngay! ⚡</button>
     </div>
   </div>
-
   <!-- SCRIPTS SECTION: APP CONTROLLERS -->
   <script>
     /* ==========================================================================
@@ -2255,6 +1184,495 @@
     /* ==========================================================================
        4. QUIZ QUESTIONS DATABASE (Divided by semesters)
        ========================================================================== */
+    const quizDatabaseEn = {
+      toan: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: 'What is the correct expansion of the algebraic identity (A + B)²?',
+            options: [
+              '(A + B)² = A² + B²',
+              '(A + B)² = A² + 2AB + B²',
+              '(A + B)² = A² - 2AB + B²',
+              '(A + B)² = A² + AB + B²'
+            ],
+            correct: 1,
+            explanation: 'Square of a sum formula: (A + B)² = A² + 2AB + B².'
+          },
+          {
+            type: 'mcq',
+            question: 'For a right-angled triangle with two legs of 6cm and 8cm, how long is the hypotenuse?',
+            options: [
+              '10 cm',
+              '14 cm',
+              '12 cm',
+              '100 cm'
+            ],
+            correct: 0,
+            explanation: 'According to the Pythagorean theorem: Hypotenuse = √(6² + 8²) = √100 = 10 cm.'
+          },
+          {
+            type: 'mcq',
+            question: 'What is the sum of the four interior angles in a convex quadrilateral?',
+            options: [
+              '180 degrees',
+              '360 degrees',
+              '540 degrees',
+              '90 degrees'
+            ],
+            correct: 1,
+            explanation: 'The sum of the interior angles of a quadrilateral is always 360 degrees.'
+          },
+          {
+            type: 'essay',
+            question: 'State the Pythagorean theorem in right-angled triangle geometry and write its corresponding equation.',
+            keywords: ['right triangle', 'square of the hypotenuse', 'sum of the squares', 'legs', 'a^2', 'b^2', 'c^2'],
+            modelAnswer: 'In a right-angled triangle, the square of the length of the hypotenuse is equal to the sum of the squares of the lengths of the other two legs. Equation: c² = a² + b² (where c is the hypotenuse, a and b are the two legs).'
+          },
+          {
+            type: 'mcq',
+            question: 'The result of the polynomial multiplication (x - 2)(x + 2) is:',
+            options: [
+              'x² - 4',
+              'x² + 4',
+              'x² - 4x + 4',
+              'x² + 4x + 4'
+            ],
+            correct: 0,
+            explanation: 'Correct! Apply the difference of squares identity: (A - B)(A + B) = A² - B². We have (x - 2)(x + 2) = x² - 2² = x² - 4.'
+          },
+          {
+            type: 'mcq',
+            question: 'A trapezoid has two bases of 6cm and 10cm respectively. The length of its median is:',
+            options: [
+              '8 cm',
+              '16 cm',
+              '4 cm',
+              '12 cm'
+            ],
+            correct: 0,
+            explanation: 'Correct! The length of the median of a trapezoid is equal to half the sum of its bases: (6 + 10) / 2 = 8 cm.'
+          },
+          {
+            type: 'mcq',
+            question: 'In triangle ABC, AB = 6cm, AC = 9cm. A point D is on side AB such that AD = 2cm. A line parallel to BC is drawn cutting AC at E. What is the length of segment AE?',
+            options: [
+              '3 cm',
+              '4 cm',
+              '4.5 cm',
+              '2.5 cm'
+            ],
+            correct: 0,
+            explanation: "Correct! Apply Thales's theorem in triangle ABC with DE // BC: AD/AB = AE/AC. Substituting the values: 2/6 = AE/9 => AE = (2 * 9) / 6 = 3 cm."
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'Which of the following equations is a linear equation in one variable?',
+            options: [
+              '2x - 3 = 0',
+              'x² - 4 = 0',
+              '0x + 5 = 0',
+              '1/x - 2 = 0'
+            ],
+            correct: 0,
+            explanation: 'A linear equation in one variable has the form ax + b = 0 with a != 0. Therefore, 2x - 3 = 0 is correct.'
+          },
+          {
+            type: 'mcq',
+            question: 'What shape is the base of a regular triangular pyramid?',
+            options: [
+              'Isosceles triangle',
+              'Right-angled triangle',
+              'Equilateral triangle',
+              'Square'
+            ],
+            correct: 2,
+            explanation: 'A regular triangular pyramid has an equilateral triangle as its base and equal isosceles triangles as its lateral faces.'
+          },
+          {
+            type: 'mcq',
+            question: 'If triangle ABC is similar to triangle DEF with a scale factor k = 2, then the ratio of their areas S(ABC)/S(DEF) is:',
+            options: [
+              '2',
+              '4',
+              '1/2',
+              '8'
+            ],
+            correct: 1,
+            explanation: 'The ratio of the areas of two similar triangles is equal to the square of the similarity scale factor: k² = 2² = 4.'
+          },
+          {
+            type: 'essay',
+            question: "State Thales's theorem in a triangle (forward theorem).",
+            keywords: ['parallel', 'side', 'cut', 'segments are proportional'],
+            modelAnswer: 'If a line is parallel to one side of a triangle and intersects the other two sides, it divides those two sides into proportional segments.'
+          }
+        ]
+      },
+      van: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: "Which author wrote the short story 'Lao Hac'?",
+            options: [
+              'Nam Cao',
+              'Ngo Tat To',
+              'Nguyen Hong',
+              'Thach Lam'
+            ],
+            correct: 0,
+            explanation: "'Lao Hac' is a representative work of realist writer Nam Cao, written in 1943."
+          },
+          {
+            type: 'mcq',
+            question: 'Which character does the stanza "Giay do buon khong tham / Muc dong trong nghien sau..." refer to?',
+            options: [
+              'The soldier',
+              'The old Confucian scholar (Ong do)',
+              'The poor mother',
+              'The lottery child'
+            ],
+            correct: 1,
+            explanation: 'This stanza is excerpted from the poem "Ong do" by Vu Dinh Lien, depicting the decline of Confucian education.'
+          },
+          {
+            type: 'mcq',
+            question: 'In the short story "Tôi đi học" by Thanh Tinh, what was the boy\'s state of mind on his first day of school?',
+            options: [
+              'Fearful, crying and hating school',
+              'Anxious, surprised, yet excited and strangely confused',
+              'Confident, proud, not needing his mother\'s hand',
+              'Joyful, laughing and playing with friends'
+            ],
+            correct: 1,
+            explanation: 'The work reflects the pure, innocent, and solemn emotions of the character "I" when going to school for the first time.'
+          },
+          {
+            type: 'essay',
+            question: 'Briefly state the profound humanitarian value of the work "Lao Hac" through the sacrifice of the character Lao Hac.',
+            keywords: ['humanitarian', 'Lao Hac', 'self-respect', 'fatherly love', 'poverty', 'dignity'],
+            modelAnswer: 'The work shows sincere compassion for the miserable fate of farmers before the Revolution. Through Lao Hac\'s death, Nam Cao praises noble self-respect (choosing to die rather than spending his son\'s savings or bothering neighbors) and deep fatherly love.'
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'What does the caged tiger metaphor in the poem "Nho rung" by The Lu represent?',
+            options: [
+              'Fear of the outside world',
+              'Love for wild nature of animals',
+              'A fierce desire for freedom and a covert love for the country under foreign occupation',
+              'Resentment towards zookeepers'
+            ],
+            correct: 2,
+            explanation: 'The caged tiger represents the melancholic mood and thirst for freedom of the contemporary patriotic intellectuals.'
+          },
+          {
+            type: 'mcq',
+            question: 'What was the main purpose of the text "Chieu doi do" (Royal Decree on Transferring the Capital) written by Ly Cong Uan?',
+            options: [
+              'To call on people to fight foreign invaders',
+              'To express the intention to move the capital from Hoa Lu to Dai La (Thang Long)',
+              'To announce the victory over the Song dynasty',
+              'To establish new laws for the Ly dynasty'
+            ],
+            correct: 1,
+            explanation: 'Ly Cong Uan wrote Chieu doi do in 1010 to persuade court officials and announce the relocation of the capital to Đại La.'
+          },
+          {
+            type: 'mcq',
+            question: 'In the text "Nuoc Dai Viet ta" (Our Great Viet Nation), which factor does Nguyen Trai rely on first to assert national sovereignty?',
+            options: [
+              'A powerful army',
+              'A long-standing culture and civilization',
+              'Formidable borders of mountains and rivers',
+              'A large force of talented heroes'
+            ],
+            correct: 1,
+            explanation: 'Nguyen Trai asserted: "As Our Great Viet Nation in the past / Had established its long-standing culture". Civilization is the ultimate measure of sovereignty.'
+          },
+          {
+            type: 'essay',
+            question: "Write a short paragraph describing your feelings about the tiger's desire for freedom through the wild and majestic forest scene in the poem 'Nho rung'.",
+            keywords: ['forest scene', 'majestic', 'desire for freedom', 'melancholic'],
+            modelAnswer: 'The stanza recreates the majestic forest scene with ancient trees, mountain winds, and forest rains. It is the free and authoritative world of the king of the jungle, expressing deep regret for the glorious free past and bitterness when living in confinement.'
+          }
+        ]
+      },
+      anh: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: 'Choose the word that has a different stress pattern.',
+            options: [
+              "pre'vent",
+              "'cultural",
+              "pre'serve",
+              "pro'nounce"
+            ],
+            correct: 1,
+            explanation: "cultural has stress on 1st syllable; prevent, preserve, and pronounce have stress on the 2nd syllable."
+          },
+          {
+            type: 'mcq',
+            question: 'If you study hard, you _______ pass the final exam.',
+            options: [
+              'would',
+              'will',
+              'passed',
+              'are passing'
+            ],
+            correct: 1,
+            explanation: 'Conditional sentence type 1: If + S + V(simple present), S + will + V-infinitive.'
+          },
+          {
+            type: 'mcq',
+            question: 'Which word is CLOSEST in meaning to the word "hospitable"?',
+            options: [
+              'friendly and welcoming',
+              'unfriendly',
+              'cold and quiet',
+              'selfish'
+            ],
+            correct: 0,
+            explanation: 'Hospitable means being warm, friendly, and welcoming to guests or strangers.'
+          },
+          {
+            type: 'essay',
+            question: 'Write a short paragraph (3-4 sentences) describing your favorite hobby in your free time.',
+            keywords: ['hobby', 'free time', 'relax', 'leisure', 'because'],
+            modelAnswer: 'My favorite hobby is reading books in my free time. I enjoy it because it helps me relax after class and expands my knowledge. I usually read novels for 30 minutes before bed.'
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'Complete the sentence: "While we _______ along the street, it started to rain."',
+            options: [
+              'walked',
+              'were walking',
+              'are walking',
+              'have walked'
+            ],
+            correct: 1,
+            explanation: 'We use past continuous (were walking) for the ongoing background action interrupted by a shorter action in past simple (started).'
+          },
+          {
+            type: 'mcq',
+            question: 'Choose the correct reported speech: Nam said: "I want to study abroad next year."',
+            options: [
+              'Nam said he wants to study abroad next year.',
+              'Nam said that he wanted to study abroad the following year.',
+              'Nam said that I wanted to study abroad next year.',
+              'Nam said that he would want to study abroad next year.'
+            ],
+            correct: 1,
+            explanation: 'In reported speech: tense backs (want -> wanted), pronoun changes (I -> he), and time expression changes (next year -> the following year).'
+          },
+          {
+            type: 'mcq',
+            question: 'If I _______ you, I would take that science course.',
+            options: [
+              'am',
+              'was',
+              'were',
+              'would be'
+            ],
+            correct: 2,
+            explanation: 'Conditional type 2 (unreal present condition): "If I were you..." is standard subjunctive form.'
+          },
+          {
+            type: 'essay',
+            question: 'Rewrite the following sentence using Passive Voice: "The wind blew away many houses last night."',
+            keywords: ['Many houses', 'were blown away', 'by the wind', 'last night'],
+            modelAnswer: 'Many houses were blown away by the wind last night.\n(Passive voice past simple: S + was/were + V-ed/3 + by O).'
+          }
+        ]
+      },
+      khtn: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: 'Which of the following substances turns litmus paper red?',
+            options: [
+              'NaOH',
+              'HCl',
+              'NaCl',
+              'Ca(OH)₂'
+            ],
+            correct: 1,
+            explanation: 'HCl is a strong acid, which turns litmus solution red. NaOH and Ca(OH)2 turn litmus blue.'
+          },
+          {
+            type: 'mcq',
+            question: 'The key indicator that a chemical reaction has occurred is:',
+            options: [
+              'A change in temperature',
+              'The formation of a new substance with different properties from the original ones',
+              'The evaporation of water',
+              'A change in the size of the solid'
+            ],
+            correct: 1,
+            explanation: 'The essence of a chemical reaction is the transformation of one substance into another (forming new substances).'
+          },
+          {
+            type: 'mcq',
+            question: 'How many elementary entities (atoms or molecules) are contained in one mole of a substance?',
+            options: [
+              '6.022 * 10²³ particles',
+              '6.022 * 10²² particles',
+              '6.022 * 10²⁴ particles',
+              '1.66 * 10⁻²⁴ particles'
+            ],
+            correct: 0,
+            explanation: "One mole of any substance contains Avogadro's number of entities: N = 6.022 x 10²³."
+          },
+          {
+            type: 'essay',
+            question: 'Present the difference between physical and chemical phenomena. Give specific examples.',
+            keywords: ['new substance', 'physical', 'chemical', 'transformation', 'example', 'ice melting', 'burning'],
+            modelAnswer: 'A physical phenomenon only changes state or shape without producing new substances (e.g., ice melting). A chemical phenomenon involves the transformation of old substances into new ones (e.g., burning paper into ash).'
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'What is the standard unit of pressure in the International System of Units (SI)?',
+            options: [
+              'Newton (N)',
+              'Pascal (Pa)',
+              'Joule (J)',
+              'Celsius (C)'
+            ],
+            correct: 1,
+            explanation: 'Pascal (symbol Pa), equivalent to 1 N/m², is the SI unit of pressure.'
+          },
+          {
+            type: 'mcq',
+            question: 'The main organ responsible for blood filtration and urine excretion in humans is:',
+            options: [
+              'Kidneys',
+              'Heart',
+              'Liver',
+              'Small intestine'
+            ],
+            correct: 0,
+            explanation: 'The kidneys filter toxins out of the blood and form urine to be excreted.'
+          },
+          {
+            type: 'mcq',
+            question: "What is the direction of the Archimedes' buoyant force acting on an object submerged in a liquid?",
+            options: [
+              'Vertically downwards',
+              'Vertically upwards',
+              'Obliquely depending on the shape',
+              'To both sides'
+            ],
+            correct: 1,
+            explanation: "Archimedes' force always acts vertically upwards."
+          },
+          {
+            type: 'essay',
+            question: 'Explain why airplane passengers often experience ear-clogging (ear-barotrauma) during rapid takeoff.',
+            keywords: ['atmospheric pressure', 'decrease', 'altitude', 'difference', 'eardrum'],
+            modelAnswer: 'During a rapid takeoff, atmospheric pressure decreases quickly. The air pressure difference between the middle ear and the outside environment causes the eardrum to stretch outwards, leading to ear-clogging.'
+          }
+        ]
+      },
+      sudia: {
+        hk1: [
+          {
+            type: 'mcq',
+            question: 'Which event marked the official outbreak of the French Bourgeois Revolution (1789)?',
+            options: [
+              'The French King convening the Estates-General',
+              'The storming of the Bastille prison on July 14, 1789',
+              'The establishment of a republic',
+              'The declaration of human rights'
+            ],
+            correct: 1,
+            explanation: 'The attack on the Bastille, a state prison holding political prisoners, marked the beginning of the French Revolution.'
+          },
+          {
+            type: 'mcq',
+            question: 'The territory of Vietnam lies entirely within which characteristic climate zone?',
+            options: [
+              'Temperate oceanic climate',
+              'Tropical monsoon climate',
+              'Equatorial monsoon climate',
+              'Subtropical monsoon climate'
+            ],
+            correct: 1,
+            explanation: 'Vietnam is located in the northern hemisphere tropics and is strongly influenced by the Asian monsoon and the East Sea, resulting in a tropical monsoon climate.'
+          },
+          {
+            type: 'mcq',
+            question: "At what latitude is the northernmost point of Vietnam's mainland located, and in which province?",
+            options: [
+              'Ha Giang',
+              'Lao Cai',
+              'Cao Bằng',
+              'Lai Châu'
+            ],
+            correct: 0,
+            explanation: 'The northernmost point is at 23 degrees 23 minutes North latitude in Lung Cu commune, Dong Van district, Ha Giang province.'
+          },
+          {
+            type: 'essay',
+            question: 'Present the profound historical significance of the French Bourgeois Revolution at the end of the 18th century.',
+            keywords: ['feudalism', 'capitalism', 'liberation', 'masses', 'global impact'],
+            modelAnswer: 'The French Revolution thoroughly overthrew absolute feudalism, paving the way for capitalist development. It liberated the productivity and human rights of the masses, while profoundly awakening global democratic movements.'
+          }
+        ],
+        hk2: [
+          {
+            type: 'mcq',
+            question: 'Where and when did the French colonists start firing to invade Vietnam?',
+            options: [
+              'Son Tay in 1873',
+              'Son Tra Peninsula (Da Nang) on September 1, 1858',
+              'Gia Dinh in 1859',
+              'Thuan An in 1883'
+            ],
+            correct: 1,
+            explanation: 'On September 1, 1858, French forces fired on Da Nang, starting the colonization and invasion of Vietnam.'
+          },
+          {
+            type: 'mcq',
+            question: 'The Northeast monsoon blowing into Vietnam operates mainly during which period?',
+            options: [
+              'From May to October',
+              'From November to April of the following year',
+              'All year round',
+              'Only during summer'
+            ],
+            correct: 1,
+            explanation: 'The Northeast monsoon operates from November to April, causing cold dry weather in early winter and cold wet weather in late winter in the North.'
+          },
+          {
+            type: 'mcq',
+            question: 'For which type of crop is the feralite soil in the mountainous areas of Vietnam best suited?',
+            options: [
+              'Wet rice and short-term crops',
+              'Perennial industrial crops (tea, coffee) and fruit trees',
+              'Mangrove forests',
+              'Cold-temperate crops'
+            ],
+            correct: 1,
+            explanation: 'Deep, aerated feralite soil is suitable for deep-rooted drought-resistant industrial crops like tea and coffee.'
+          },
+          {
+            type: 'essay',
+            question: "Explain the positive impact of the East Sea on the tropical monsoon characteristics of Vietnam's climate.",
+            keywords: ['East Sea', 'water vapor', 'precipitation', 'humidity', 'arid desertification'],
+            modelAnswer: 'The vast East Sea provides abundant heat and humidity to air currents. Consequently, Vietnam experiences high rainfall (1500-2000mm/year), high humidity (over 80%), and a milder climate, avoiding desertification seen in other regions at similar latitudes in West Asia.'
+          }
+        ]
+      }
+    };
+
     const quizDatabase = {
       toan: {
         hk1: [
@@ -2299,6 +1717,42 @@
             question: 'Hãy phát biểu Định lý Pythagore trong hình học tam giác vuông và viết hệ thức tương ứng.',
             keywords: ['tam giác vuông', 'bình phương cạnh huyền', 'tổng bình phương', 'cạnh góc vuông', 'a^2', 'b^2', 'c^2'],
             modelAnswer: 'Trong một tam giác vuông, bình phương độ dài cạnh huyền bằng tổng các bình phương độ dài của hai cạnh góc vuông. Hệ thức: c² = a² + b² (với c là cạnh huyền, a và b là hai cạnh góc vuông).'
+          },
+          {
+            type: 'mcq',
+            question: 'Kết quả của phép nhân đa thức (x - 2)(x + 2) là:',
+            options: [
+              'x² - 4',
+              'x² + 4',
+              'x² - 4x + 4',
+              'x² + 4x + 4'
+            ],
+            correct: 0,
+            explanation: 'Đúng rồi! Áp dụng hằng đẳng thức hiệu hai bình phương: (A - B)(A + B) = A² - B². Ta có (x - 2)(x + 2) = x² - 2² = x² - 4.'
+          },
+          {
+            type: 'mcq',
+            question: 'Một hình thang có hai cạnh đáy lần lượt là 6cm và 10cm. Độ dài đường trung bình của hình thang đó là:',
+            options: [
+              '8 cm',
+              '16 cm',
+              '4 cm',
+              '12 cm'
+            ],
+            correct: 0,
+            explanation: 'Đúng rồi! Độ dài đường trung bình của hình thang bằng nửa tổng hai đáy: (6 + 10) / 2 = 8 cm.'
+          },
+          {
+            type: 'mcq',
+            question: 'Cho tam giác ABC có AB = 6cm, AC = 9cm. Trên cạnh AB lấy điểm D sao cho AD = 2cm, vẽ đường thẳng song song với BC cắt AC tại E. Độ dài đoạn thẳng AE là bao nhiêu?',
+            options: [
+              '3 cm',
+              '4 cm',
+              '4.5 cm',
+              '2.5 cm'
+            ],
+            correct: 0,
+            explanation: 'Đúng rồi! Áp dụng định lí Thalès trong tam giác ABC với DE // BC ta có: AD/AB = AE/AC. Thay số vào: 2/6 = AE/9 => AE = (2 * 9) / 6 = 3 cm.'
           }
         ],
         hk2: [
@@ -2770,6 +2224,12 @@
     // Temp profile selection before saving
     let selectedAvatarTemp = '🦁';
 
+    // Countdown Timer Variables
+    let quizTimer = null;
+    let timerRemaining = 15000;
+    const timerDuration = 15000;
+    const timerTickRate = 100;
+
     // Load initial user stats & custom settings from localStorage
     function loadUserData() {
       const saved = localStorage.getItem('ducbao_quiz_stats_v2');
@@ -2840,6 +2300,284 @@
     }
 
     // Level Titles
+    // ==========================================================================
+    // MULTILINGUAL I18N DICTIONARY & CONTROLLER
+    // ==========================================================================
+    const translations = {
+      vi: {
+        'app-title': 'Đấu Trường Lớp 8',
+        'app-subtitle': 'Chinh Phục Tri Thức - Bứt Phá Điểm Số',
+        'score-label': '🏆 Đúng:',
+        'edit-profile': '✏️ Chỉnh sửa hồ sơ',
+        'xp-ratio': ' XP',
+        'subj-title': 'Chọn Môn Học Ôn Tập',
+        'badge-title': 'Tủ Huy Hiệu Danh Hiệu',
+        'custom-form-title': 'Tự Tạo Câu Hỏi Trắc Nghiệm Mới',
+        'custom-success-msg': '🎉 Thêm câu hỏi thành công! Hãy vào môn học để trải nghiệm ngay.',
+        'custom-lbl-subject': 'Chọn Môn Học',
+        'custom-lbl-semester': 'Chọn Học Kỳ',
+        'custom-lbl-question': 'Nội Dung Câu Hỏi',
+        'custom-lbl-options': 'Nhập 4 Đáp Án và chọn đáp án Đúng',
+        'custom-lbl-correct': 'Đúng',
+        'custom-lbl-explanation': 'Giải Thích Đáp Án (Không bắt buộc)',
+        'custom-btn-submit': 'Thêm Câu Hỏi Mới ➔',
+        'btn-back': '⬅️ Về Dashboard',
+        'progress-label': 'Tiến trình học kỳ',
+        'essay-placeholder': 'Hãy viết câu trả lời chi tiết của bạn tại đây...',
+        'essay-btn-submit': 'Nộp Bài & Đối Chiếu',
+        'essay-keywords-title': 'Phát hiện từ khóa cốt lõi trong câu trả lời của bạn:',
+        'essay-student-title': 'Bài làm của bạn',
+        'essay-model-title': 'Đáp án mẫu chi tiết',
+        'essay-eval-title': 'Bạn tự đánh giá bài làm của mình ở mức độ nào?',
+        'eval-perfect': 'Hoàn hảo',
+        'eval-good': 'Đạt ý chính',
+        'eval-try': 'Cần cố gắng',
+        'explanation-title': '💡 Giải thích chi tiết:',
+        'btn-next': 'Tiếp Tục',
+        'result-title': 'Chinh Phục Thành Công!',
+        'result-msg': 'Tuyệt vời! Bạn vừa hoàn thành thử thách học kỳ của môn học này. Hãy xem thành tích đạt được:',
+        'result-score-lbl': 'Số Câu Trả Lời Đúng',
+        'result-xp-lbl': 'XP Tích Lũy',
+        'result-btn-dash': 'Trở Về Dashboard',
+        'result-btn-again': 'Làm Lại Lượt Này',
+        'sem-modal-title': 'Chọn Học Kỳ Ôn Tập',
+        'sem-modal-hk1': 'Học Kỳ 1',
+        'sem-modal-hk1-desc': 'Nửa đầu năm học: Các khái niệm nền tảng & bài đọc cốt lõi.',
+        'sem-modal-hk2': 'Học Kỳ 2',
+        'sem-modal-hk2-desc': 'Nửa cuối năm học: Kiến thức nâng cao, ứng dụng tổng kết.',
+        'sem-modal-cancel': 'Hủy bỏ',
+        'profile-modal-title': '👤 Chỉnh Sửa Hồ Sơ Học Sinh',
+        'profile-lbl-avatar': 'Chọn Linh Vật Avatar',
+        'profile-lbl-name': 'Tên hiển thị',
+        'profile-lbl-school': 'Trường Học',
+        'profile-lbl-goal': 'Mục Tiêu Ôn Tập',
+        'profile-btn-save': 'Lưu hồ sơ ➔',
+        'settings-modal-title': '⚙️ Cấu Hình Ứng Dụng & Giao Diện',
+        'settings-lbl-theme': 'Màu Sắc Chủ Đạo (Theme Color)',
+        'settings-lbl-bg': 'Kiểu Nền Ứng Dụng',
+        'settings-lbl-sound': 'Thể Loại Âm Tổng Hợp',
+        'settings-volume': 'Âm Lượng: ',
+        'settings-test-sound': '🔊 Thử âm',
+        'settings-confetti': 'Mật Độ Pháo Hoa Ăn Mừng',
+        'settings-reset-btn': 'Đặt Lại Toàn Bộ Tiến Trình Học Tập 🔄',
+        'settings-close': 'Đóng Cài Đặt',
+        'badge-modal-title': 'DANH HIỆU MỚI!',
+        'badge-modal-btn': 'Nhận Ngay! ⚡',
+        'stat-answered': 'Câu Đã Làm',
+        'stat-accuracy': 'Tỷ Lệ Đúng',
+        'stat-xp': 'Tổng XP'
+      },
+      en: {
+        'app-title': 'Grade 8 Arena',
+        'app-subtitle': 'Conquer Knowledge - Boost Your Scores',
+        'score-label': '🏆 Correct:',
+        'edit-profile': '✏️ Edit Profile',
+        'xp-ratio': ' XP',
+        'subj-title': 'Select Subject to Study',
+        'badge-title': 'Badges Cabinet',
+        'custom-form-title': 'Create New Multiple-Choice Question',
+        'custom-success-msg': '🎉 Question added successfully! Start the subject to practice it now.',
+        'custom-lbl-subject': 'Select Subject',
+        'custom-lbl-semester': 'Select Semester',
+        'custom-lbl-question': 'Question Content',
+        'custom-lbl-options': 'Enter 4 options and check the Correct one',
+        'custom-lbl-correct': 'Correct',
+        'custom-lbl-explanation': 'Explanation (Optional)',
+        'custom-btn-submit': 'Add New Question ➔',
+        'btn-back': '⬅️ Back to Dashboard',
+        'progress-label': 'Semester Progress',
+        'essay-placeholder': 'Write your detailed answer here...',
+        'essay-btn-submit': 'Submit & Compare',
+        'essay-keywords-title': 'Core keywords detected in your answer:',
+        'essay-student-title': 'Your Answer',
+        'essay-model-title': 'Model Answer',
+        'essay-eval-title': 'How do you rate your answer?',
+        'eval-perfect': 'Perfect',
+        'eval-good': 'Good Attempt',
+        'eval-try': 'Need Practice',
+        'explanation-title': '💡 Detailed Explanation:',
+        'btn-next': 'Continue',
+        'result-title': 'Conquered Successfully!',
+        'result-msg': 'Wonderful! You have completed this subject\'s semester challenge. Here is your achievement:',
+        'result-score-lbl': 'Correct Answers',
+        'result-xp-lbl': 'Earned XP',
+        'result-btn-dash': 'Back to Dashboard',
+        'result-btn-again': 'Restart This Round',
+        'sem-modal-title': 'Select Semester',
+        'sem-modal-hk1': 'Semester 1',
+        'sem-modal-hk1-desc': 'First half: Fundamental concepts & core readings.',
+        'sem-modal-hk2': 'Semester 2',
+        'sem-modal-hk2-desc': 'Second half: Advanced knowledge & summary application.',
+        'sem-modal-cancel': 'Cancel',
+        'profile-modal-title': '👤 Edit Student Profile',
+        'profile-lbl-avatar': 'Select Avatar Mascot',
+        'profile-lbl-name': 'Display Name',
+        'profile-lbl-school': 'School Name',
+        'profile-lbl-goal': 'Learning Goal',
+        'profile-btn-save': 'Save Profile ➔',
+        'settings-modal-title': '⚙️ App Configurations & UI',
+        'settings-lbl-theme': 'Theme Color',
+        'settings-lbl-bg': 'App Background Style',
+        'settings-lbl-sound': 'Synthesizer Waveform',
+        'settings-volume': 'Volume: ',
+        'settings-test-sound': '🔊 Test sound',
+        'settings-confetti': 'Celebration Confetti Density',
+        'settings-reset-btn': 'Reset All Learning Progress 🔄',
+        'settings-close': 'Close Settings',
+        'badge-modal-title': 'NEW BADGE UNLOCKED!',
+        'badge-modal-btn': 'Claim Now! ⚡',
+        'stat-answered': 'Questions Done',
+        'stat-accuracy': 'Accuracy',
+        'stat-xp': 'Total XP'
+      }
+    };
+
+    const badgeTranslations = {
+      vi: {
+        rookie: { name: 'Tân Binh Tự Học', desc: 'Đúng câu đầu tiên' },
+        streak5: { name: 'Chuỗi Siêu Cấp', desc: 'Đúng 5 câu trắc nghiệm liên tiếp' },
+        essay_pro: { name: 'Bút Thần Tự Luận', desc: 'Tự chấm "Hoàn hảo" 3 lần' },
+        complete_subject: { name: 'Chinh Phục Môn', desc: 'Hoàn thành kì học của môn' },
+        level5: { name: 'Nhà Thông Thái', desc: 'Đạt Cấp độ 5 trở lên' }
+      },
+      en: {
+        rookie: { name: 'Self-Study Rookie', desc: 'Correct on the first question' },
+        streak5: { name: 'Super Streak', desc: 'Correct 5 multiple-choice questions in a row' },
+        essay_pro: { name: 'Essay Master', desc: 'Self-assessed "Perfect" 3 times' },
+        complete_subject: { name: 'Subject Conqueror', desc: 'Complete a subject\'s semester' },
+        level5: { name: 'Wise Scholar', desc: 'Reach Level 5 or higher' }
+      }
+    };
+
+    function toggleLanguage() {
+      sound.playClick();
+      state.language = (state.language === 'vi') ? 'en' : 'vi';
+      localStorage.setItem('ducbao_quiz_lang', state.language);
+      updateLanguageUI();
+    }
+
+    function updateLanguageUI() {
+      const lang = state.language || 'vi';
+      
+      const langBtn = document.getElementById('toggle-lang');
+      if (langBtn) {
+        langBtn.innerHTML = lang === 'vi' 
+          ? '<span>🇻🇳</span> <span id="lang-label">VI</span>' 
+          : '<span>🇬🇧</span> <span id="lang-label">EN</span>';
+      }
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.setAttribute('placeholder', translations[lang][key]);
+          } else {
+            // Keep inner spans or icons if they are structural and only translate textual children
+            el.innerHTML = translations[lang][key];
+          }
+        }
+      });
+
+      updateSubjectsTranslation();
+      updateUIElements();
+      
+      // If we are currently in quiz, update title label
+      if (state.activeSubject && state.activeSemester) {
+        const info = getSubjectDetails(state.activeSubject);
+        const semLabel = lang === 'vi' 
+          ? (state.activeSemester === 'hk1' ? 'Học Kỳ 1' : 'Học Kỳ 2')
+          : (state.activeSemester === 'hk1' ? 'Semester 1' : 'Semester 2');
+        const subjectTranslation = {
+          vi: { toan: 'Toán Học 8', van: 'Ngữ Văn 8', anh: 'Tiếng Anh 8', khtn: 'Khoa Học Tự Nhiên', sudia: 'Lịch Sử & Địa Lí' },
+          en: { toan: 'Math 8', van: 'Literature 8', anh: 'English 8', khtn: 'Science 8', sudia: 'History & Geography' }
+        };
+        const titleDisplay = document.getElementById('quiz-title-display');
+        if (titleDisplay) {
+          titleDisplay.innerHTML = `<span>${info.icon}</span> <span>${subjectTranslation[lang][state.activeSubject]} (${semLabel})</span>`;
+        }
+      }
+    }
+
+    function updateSubjectsTranslation() {
+      const lang = state.language || 'vi';
+      const subjectTranslation = {
+        vi: {
+          toan: { title: 'Toán Học 8', desc: 'Hằng đẳng thức, tứ giác, phương trình bậc nhất, định lí Thalès & Pythagore.', btn: 'Chơi ➔' },
+          van: { title: 'Ngữ Văn 8', desc: 'Tác phẩm Lão Hạc, Tôi đi học, Ông đồ, Nhớ rừng, Chiếu dời đô & Cảm thụ văn học.', btn: 'Chơi ➔' },
+          anh: { title: 'Tiếng Anh 8', desc: 'Trọng âm, Câu điều kiện (loại 1, 2), Thì quá khứ tiếp diễn, Câu gián tiếp & Bị động.', btn: 'Chơi ➔' },
+          khtn: { title: 'Khoa Học Tự Nhiên', desc: 'Acid-Base, bảo toàn khối lượng, mol, áp suất, lực đẩy Ác-si-mét & sinh lý người.', btn: 'Chơi ➔' },
+          sudia: { title: 'Lịch Sử & Địa Lí', desc: 'Cách mạng tư sản Pháp, vị trí & địa hình Việt Nam, thực dân Pháp & gió mùa feralit.', btn: 'Chơi ➔' }
+        },
+        en: {
+          toan: { title: 'Math 8', desc: 'Algebraic identities, quadrilaterals, linear equations, Thales & Pythagorean theorems.', btn: 'Play ➔' },
+          van: { title: 'Literature 8', desc: 'Lao Hac, Toi di hoc, Ong do, Nho rung, Chieu doi do & literary appreciation.', btn: 'Play ➔' },
+          anh: { title: 'English 8', desc: 'Stress patterns, conditionals, past continuous, reported & passive voice.', btn: 'Play ➔' },
+          khtn: { title: 'Science 8', desc: 'Acid-Base, conservation of mass, moles, pressure, Archimedes force & physiology.', btn: 'Play ➔' },
+          sudia: { title: 'History & Geography', desc: 'French Revolution, Vietnam geography, French colonization & monsoons.', btn: 'Play ➔' }
+        }
+      };
+
+      Object.keys(subjectTranslation[lang]).forEach(subj => {
+        const card = document.querySelector(`[onclick="clickSubject('${subj}')"]`);
+        if (card) {
+          const titleEl = card.querySelector('h3');
+          const descEl = card.querySelector('p');
+          const btnEl = card.querySelector('button');
+          
+          if (titleEl) titleEl.innerText = subjectTranslation[lang][subj].title;
+          if (descEl) descEl.innerText = subjectTranslation[lang][subj].desc;
+          if (btnEl) btnEl.innerText = subjectTranslation[lang][subj].btn;
+        }
+      });
+
+      const goalInput = document.getElementById('profile-goal-input');
+      if (goalInput) {
+        const options = goalInput.querySelectorAll('option');
+        if (lang === 'en') {
+          options[0].text = '🎯 Basic review of fundamental knowledge';
+          options[0].value = '🎯 Goal: Effective review';
+          options[1].text = '🎯 Aiming for 9+ (Excellent Student)';
+          options[1].value = '🎯 Goal: Score 9+';
+          options[2].text = '🎯 Perfect 10 on all exams';
+          options[2].value = '🎯 Goal: Perfect 10';
+          options[3].text = '🎯 Specialized high school preparation';
+          options[3].value = '🎯 Goal: Specialized prep';
+        } else {
+          options[0].text = '🎯 Ôn tập củng cố kiến thức cơ bản';
+          options[0].value = '🎯 Mục tiêu: Ôn tập hiệu quả';
+          options[1].text = '🎯 Đạt điểm 9+ Học sinh Giỏi';
+          options[1].value = '🎯 Mục tiêu: Đạt điểm 9+';
+          options[2].text = '🎯 Chinh phục điểm 10 các môn thi';
+          options[2].value = '🎯 Mục tiêu: Chinh phục điểm 10';
+          options[3].text = '🎯 Học tốt lớp 8, định hướng thi chuyên';
+          options[3].value = '🎯 Mục tiêu: Chuẩn bị thi chuyên';
+        }
+      }
+      
+      // Update custom question dropdowns
+      const customSubj = document.getElementById('custom-subject');
+      if (customSubj) {
+        const optValues = {
+          toan: lang === 'vi' ? '📐 Toán Học 8' : '📐 Math 8',
+          van: lang === 'vi' ? '✍️ Ngữ Văn 8' : '✍️ Literature 8',
+          anh: lang === 'vi' ? '🇬🇧 Tiếng Anh 8' : '🇬🇧 English 8',
+          khtn: lang === 'vi' ? '🧪 Khoa Học Tự Nhiên' : '🧪 Science 8',
+          sudia: lang === 'vi' ? '🌍 Lịch Sử & Địa Lí' : '🌍 History & Geography'
+        };
+        customSubj.querySelectorAll('option').forEach(opt => {
+          if (optValues[opt.value]) opt.text = optValues[opt.value];
+        });
+      }
+      
+      const customSem = document.getElementById('custom-semester');
+      if (customSem) {
+        customSem.querySelectorAll('option').forEach(opt => {
+          if (opt.value === 'hk1') opt.text = lang === 'vi' ? '🌟 Học Kỳ 1' : '🌟 Semester 1';
+          if (opt.value === 'hk2') opt.text = lang === 'vi' ? '🚀 Học Kỳ 2' : '🚀 Semester 2';
+        });
+      }
+    }
+
     function getLevelTitle(lvl) {
       if (lvl >= 10) return "Đại Hiền Triết";
       if (lvl >= 7) return "Bậc Thầy Học Thuật";
@@ -2888,12 +2626,38 @@
     }
 
     // UI Updates
+    function translateGoal(goalText, lang) {
+      if (!goalText) return '';
+      const goalMap = {
+        vi: {
+          '🎯 Goal: Effective review': '🎯 Mục tiêu: Ôn tập hiệu quả',
+          '🎯 Goal: Score 9+': '🎯 Mục tiêu: Đạt điểm 9+',
+          '🎯 Goal: Perfect 10': '🎯 Mục tiêu: Chinh phục điểm 10',
+          '🎯 Goal: Specialized prep': '🎯 Mục tiêu: Chuẩn bị thi chuyên'
+        },
+        en: {
+          '🎯 Mục tiêu: Ôn tập hiệu quả': '🎯 Goal: Effective review',
+          '🎯 Mục tiêu: Đạt điểm 9+': '🎯 Goal: Score 9+',
+          '🎯 Mục tiêu: Chinh phục điểm 10': '🎯 Goal: Perfect 10',
+          '🎯 Mục tiêu: Chuẩn bị thi chuyên': '🎯 Goal: Specialized prep'
+        }
+      };
+      
+      const targetMap = goalMap[lang];
+      for (const [k, v] of Object.entries(targetMap)) {
+        if (goalText === k || goalText.includes(k)) return v;
+      }
+      return goalText;
+    }
+
     function updateUIElements() {
+      const lang = state.language || 'vi';
+
       // Profile Display Card UI
       document.getElementById('display-profile-avatar').innerText = state.profile.avatar;
       document.getElementById('display-profile-name').innerText = state.profile.name;
       document.getElementById('display-profile-school').innerText = state.profile.school;
-      document.getElementById('display-profile-goal').innerText = state.profile.goal;
+      document.getElementById('display-profile-goal').innerText = translateGoal(state.profile.goal, lang);
       
       // XP & Level UI
       document.getElementById('player-level').innerText = state.level;
@@ -2922,7 +2686,10 @@
         if (state.subjectCompleted[subj].hk1) count += quizDatabase[subj].hk1.length;
         if (state.subjectCompleted[subj].hk2) count += quizDatabase[subj].hk2.length;
         
-        const completedText = count === total ? `Hoàn thành: ${total}/${total}` : `Đang ôn tập: ${count}/${total}`;
+        const completedText = lang === 'vi'
+          ? (count === total ? `Hoàn thành: ${total}/${total}` : `Đang ôn tập: ${count}/${total}`)
+          : (count === total ? `Completed: ${total}/${total}` : `Reviewing: ${count}/${total}`);
+        
         const progressEl = document.getElementById(`progress-${subj}`);
         if (progressEl) {
           progressEl.innerText = completedText;
@@ -2934,14 +2701,22 @@
           const allQs = [...quizDatabase[subj].hk1, ...quizDatabase[subj].hk2];
           const mcqCount = allQs.filter(q => q.type === 'mcq').length;
           const essayCount = allQs.filter(q => q.type === 'essay').length;
-          infoEl.innerText = `${total} câu hỏi (${mcqCount} Trắc nghiệm, ${essayCount} Tự luận)`;
+          infoEl.innerText = lang === 'vi'
+            ? `${total} câu hỏi (${mcqCount} Trắc nghiệm, ${essayCount} Tự luận)`
+            : `${total} questions (${mcqCount} MCQ, ${essayCount} Essay)`;
         }
       });
 
-      // Render Badge Cabinets (unlocked state)
+      // Render Badge Cabinets (unlocked state & translations)
       Object.keys(BADGES).forEach(badgeId => {
         const badgeEl = document.getElementById(`badge-${badgeId}`);
         if (badgeEl) {
+          const nameEl = badgeEl.querySelector('.text-xs');
+          const descEl = badgeEl.querySelector('.text-\\[10px\\]');
+          
+          if (nameEl) nameEl.innerText = badgeTranslations[lang][badgeId].name;
+          if (descEl) descEl.innerText = badgeTranslations[lang][badgeId].desc;
+          
           if (state.unlockedBadges.includes(badgeId)) {
             badgeEl.classList.add('unlocked');
           } else {
@@ -2949,6 +2724,14 @@
           }
         }
       });
+      
+      // Update Volume Slider Label
+      const volSlider = document.getElementById('settings-volume-slider');
+      const volLabel = document.getElementById('volume-label');
+      if (volSlider && volLabel) {
+        const textPre = lang === 'vi' ? 'Âm Lượng: ' : 'Volume: ';
+        volLabel.innerText = `${textPre}${volSlider.value}%`;
+      }
     }
 
     // Badge Unlocking Logic
@@ -3034,15 +2817,21 @@
       document.documentElement.style.setProperty('--accent-hover', settings.themeHover);
 
       // Handle Background Style
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const solidColor = isDark ? '#0f172a' : '#f1f5f9';
+      const gradientVal = isDark 
+        ? 'linear-gradient(135deg, #0f172a, #1e1b4b, #111827)' 
+        : 'linear-gradient(135deg, #f0f4ff, #e0e7ff, #f3e8ff)';
+
       if (settings.backgroundStyle === 'solid') {
-        document.documentElement.style.setProperty('--bg-gradient', 'var(--bg-color-solid)');
+        document.body.style.background = solidColor;
         if (particleBg) particleBg.stop();
       } else if (settings.backgroundStyle === 'animated') {
-        document.documentElement.style.setProperty('--bg-gradient', 'var(--bg-color-solid)');
+        document.body.style.background = solidColor;
         if (particleBg) particleBg.start();
       } else {
         // default gradient
-        document.documentElement.style.setProperty('--bg-gradient', 'var(--bg-gradient-default)');
+        document.body.style.background = gradientVal;
         if (particleBg) particleBg.stop();
       }
 
@@ -3187,9 +2976,15 @@
       const hk2Completed = state.subjectCompleted[subjId].hk2;
       const lenHk1 = quizDatabase[subjId].hk1.length;
       const lenHk2 = quizDatabase[subjId].hk2.length;
+      const lang = state.language || 'vi';
 
-      document.getElementById('progress-detail-hk1').innerText = hk1Completed ? `Hoàn thành: ${lenHk1}/${lenHk1}` : `Đang ôn tập: 0/${lenHk1}`;
-      document.getElementById('progress-detail-hk2').innerText = hk2Completed ? `Hoàn thành: ${lenHk2}/${lenHk2}` : `Đang ôn tập: 0/${lenHk2}`;
+      document.getElementById('progress-detail-hk1').innerText = lang === 'vi'
+        ? (hk1Completed ? `Hoàn thành: ${lenHk1}/${lenHk1}` : `Đang ôn tập: 0/${lenHk1}`)
+        : (hk1Completed ? `Completed: ${lenHk1}/${lenHk1}` : `Reviewing: 0/${lenHk1}`);
+        
+      document.getElementById('progress-detail-hk2').innerText = lang === 'vi'
+        ? (hk2Completed ? `Hoàn thành: ${lenHk2}/${lenHk2}` : `Đang ôn tập: 0/${lenHk2}`)
+        : (hk2Completed ? `Completed: ${lenHk2}/${lenHk2}` : `Reviewing: 0/${lenHk2}`);
 
       // Show modal
       document.getElementById('semester-modal').classList.add('show');
@@ -3251,9 +3046,16 @@
 
       // Set Subject header UI
       const info = getSubjectDetails(subjId);
-      const semLabel = semesterId === 'hk1' ? 'Học Kỳ 1' : 'Học Kỳ 2';
+      const lang = state.language || 'vi';
+      const semLabel = lang === 'vi' 
+        ? (semesterId === 'hk1' ? 'Học Kỳ 1' : 'Học Kỳ 2')
+        : (semesterId === 'hk1' ? 'Semester 1' : 'Semester 2');
+      const subjectTranslation = {
+        vi: { toan: 'Toán Học 8', van: 'Ngữ Văn 8', anh: 'Tiếng Anh 8', khtn: 'Khoa Học Tự Nhiên', sudia: 'Lịch Sử & Địa Lí' },
+        en: { toan: 'Math 8', van: 'Literature 8', anh: 'English 8', khtn: 'Science 8', sudia: 'History & Geography' }
+      };
       const titleDisplay = document.getElementById('quiz-title-display');
-      titleDisplay.innerHTML = `<span>${info.icon}</span> <span>${info.title} (${semLabel})</span>`;
+      titleDisplay.innerHTML = `<span>${info.icon}</span> <span>${subjectTranslation[lang][subjId]} (${semLabel})</span>`;
       
       const quizViewEl = document.getElementById('quiz-view');
       quizViewEl.style.setProperty('--sub-color', info.color);
@@ -3262,10 +3064,114 @@
       loadQuestion();
     }
 
+    // --- COUNTDOWN TIMER LOGIC ---
+    function startQuestionTimer() {
+      clearInterval(quizTimer);
+      timerRemaining = timerDuration;
+      
+      const timerContainer = document.getElementById('quiz-timer-container');
+      const timerFill = document.getElementById('timer-progress-fill');
+      const timerText = document.getElementById('timer-text');
+      
+      if (!timerContainer || !timerFill || !timerText) return;
+
+      // Reset UI state
+      timerContainer.style.display = 'flex';
+      timerFill.style.width = '100%';
+      timerFill.style.background = 'linear-gradient(to right, var(--color-blue), var(--accent))';
+      timerText.innerText = '15s';
+      timerText.classList.remove('time-warning');
+
+      quizTimer = setInterval(() => {
+        timerRemaining -= timerTickRate;
+        
+        const percentage = (timerRemaining / timerDuration) * 100;
+        timerFill.style.width = `${percentage}%`;
+        
+        const secondsDisplay = Math.ceil(timerRemaining / 1000);
+        timerText.innerText = `${secondsDisplay}s`;
+
+        if (timerRemaining <= 5000) {
+          timerFill.style.background = 'var(--color-red)';
+          timerText.classList.add('time-warning');
+        }
+
+        if (timerRemaining <= 0) {
+          clearInterval(quizTimer);
+          handleQuestionTimeout();
+        }
+      }, timerTickRate);
+    }
+
+    function stopQuestionTimer() {
+      if (quizTimer) {
+        clearInterval(quizTimer);
+        quizTimer = null;
+      }
+    }
+
+    function handleQuestionTimeout() {
+      stopQuestionTimer();
+
+      const qOriginal = state.shuffledQuestions[state.currentQuestionIndex];
+      const lang = state.language || 'vi';
+      let q = qOriginal;
+      if (lang === 'en') {
+        const subjList = quizDatabase[state.activeSubject][state.activeSemester];
+        const idxInOriginal = subjList.findIndex(item => item.question === qOriginal.question);
+        if (idxInOriginal !== -1 && quizDatabaseEn[state.activeSubject] && quizDatabaseEn[state.activeSubject][state.activeSemester]) {
+          q = quizDatabaseEn[state.activeSubject][state.activeSemester][idxInOriginal] || qOriginal;
+        }
+      }
+      
+      const buttons = document.querySelectorAll('#options-container .option-btn');
+      
+      // Disable all options
+      buttons.forEach(btn => btn.disabled = true);
+
+      state.totalAnswered++;
+      state.currentStreak = 0; // Reset streak
+      sound.playWrong();
+
+      // Highlight correct answer in green
+      if (buttons[q.correct]) {
+        buttons[q.correct].classList.add('correct');
+      }
+      
+      const timerText = document.getElementById('timer-text');
+      if (timerText) {
+        timerText.innerText = "Hết giờ! ⏰";
+        timerText.classList.add('time-warning');
+      }
+
+      // Display Explanation with timeout indicator
+      const explanationText = document.getElementById('explanation-text');
+      if (explanationText) {
+        explanationText.innerHTML = `<span style="color: var(--color-red); font-weight: bold; display: block; margin-bottom: 8px;">⏰ Đã hết 15 giây! Bạn đã không đưa ra câu trả lời kịp thời.</span>${q.explanation}`;
+      }
+      document.getElementById('explanation-box').style.display = 'block';
+
+      // Show Next button
+      document.getElementById('quiz-nav-footer').style.display = 'flex';
+      
+      saveUserData();
+      updateUIElements();
+    }
+
     // Load active question
     function loadQuestion() {
-      const q = state.shuffledQuestions[state.currentQuestionIndex];
+      const qOriginal = state.shuffledQuestions[state.currentQuestionIndex];
       const totalQ = state.shuffledQuestions.length;
+      
+      const lang = state.language || 'vi';
+      let q = qOriginal;
+      if (lang === 'en') {
+        const subjList = quizDatabase[state.activeSubject][state.activeSemester];
+        const idxInOriginal = subjList.findIndex(item => item.question === qOriginal.question);
+        if (idxInOriginal !== -1 && quizDatabaseEn[state.activeSubject] && quizDatabaseEn[state.activeSubject][state.activeSemester]) {
+          q = quizDatabaseEn[state.activeSubject][state.activeSemester][idxInOriginal] || qOriginal;
+        }
+      }
 
       // Reset panels
       document.getElementById('explanation-box').style.display = 'none';
@@ -3275,7 +3181,7 @@
       document.getElementById('options-container').style.display = 'none';
 
       // Update question index labels
-      document.getElementById('quiz-progress-fraction').innerText = `Câu ${state.currentQuestionIndex + 1} / ${totalQ}`;
+      document.getElementById('quiz-progress-fraction').innerText = lang === 'vi' ? `Câu ${state.currentQuestionIndex + 1} / ${totalQ}` : `Question ${state.currentQuestionIndex + 1} / ${totalQ}`;
       const progressPct = ((state.currentQuestionIndex) / totalQ) * 100;
       document.getElementById('quiz-progress-fill').style.width = `${progressPct}%`;
 
@@ -3285,12 +3191,16 @@
       const badgeEl = document.getElementById('q-type-badge');
       if (q.type === 'mcq') {
         badgeEl.className = "question-type-badge multiple-choice";
-        badgeEl.innerText = "Trắc nghiệm";
+        badgeEl.innerText = lang === 'vi' ? "Trắc nghiệm" : "Multiple Choice";
         renderMultipleChoice(q);
+        startQuestionTimer();
       } else {
         badgeEl.className = "question-type-badge essay";
-        badgeEl.innerText = "Tự luận";
+        badgeEl.innerText = lang === 'vi' ? "Tự luận" : "Essay";
         renderEssay();
+        stopQuestionTimer();
+        const timerContainer = document.getElementById('quiz-timer-container');
+        if (timerContainer) timerContainer.style.display = 'none';
       }
     }
 
@@ -3303,10 +3213,11 @@
       q.options.forEach((optText, index) => {
         const letter = String.fromCharCode(65 + index); // A, B, C, D
         const button = document.createElement('button');
-        button.className = 'option-btn';
+        button.className = 'option-btn w-full text-left p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700 active:scale-[0.99] disabled:pointer-events-none transition-all duration-200 flex items-center gap-3.5 group';
+      container.className = 'options-grid grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2';
         button.innerHTML = `
-          <span class="option-letter">${letter}</span>
-          <span class="option-text">${optText}</span>
+          <span class="option-letter w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-sm flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-200">${letter}</span>
+          <span class="option-text text-sm font-semibold text-slate-700 dark:text-slate-200">${optText}</span>
         `;
         button.onclick = () => selectOption(index);
         container.appendChild(button);
@@ -3315,6 +3226,8 @@
 
     // Action MCQ Select Option
     function selectOption(selectedIndex) {
+      stopQuestionTimer();
+
       const q = state.shuffledQuestions[state.currentQuestionIndex];
       const buttons = document.querySelectorAll('#options-container .option-btn');
       
@@ -3371,8 +3284,9 @@
     // Action Essay Submission
     function submitEssay() {
       const userText = document.getElementById('essay-input').value.trim();
+      const lang = state.language || 'vi';
       if (!userText) {
-        alert("Vui lòng nhập câu trả lời trước khi nộp bài nhé!");
+        alert(lang === 'vi' ? "Vui lòng nhập câu trả lời trước khi nộp bài nhé!" : "Please enter your answer before submitting!");
         return;
       }
 
@@ -3381,7 +3295,15 @@
       document.getElementById('essay-input').disabled = true;
       document.getElementById('btn-submit-essay').disabled = true;
 
-      const q = state.shuffledQuestions[state.currentQuestionIndex];
+      const qOriginal = state.shuffledQuestions[state.currentQuestionIndex];
+      let q = qOriginal;
+      if (lang === 'en') {
+        const subjList = quizDatabase[state.activeSubject][state.activeSemester];
+        const idxInOriginal = subjList.findIndex(item => item.question === qOriginal.question);
+        if (idxInOriginal !== -1 && quizDatabaseEn[state.activeSubject] && quizDatabaseEn[state.activeSubject][state.activeSemester]) {
+          q = quizDatabaseEn[state.activeSubject][state.activeSemester][idxInOriginal] || qOriginal;
+        }
+      }
 
       // Highlight keywords in student answer representation
       let markedText = escapeHTML(userText);
@@ -3481,6 +3403,7 @@
 
     // Finish Subject Semester
     function finishQuizSubject() {
+      stopQuestionTimer();
       // Save semester completed status
       state.subjectCompleted[state.activeSubject][state.activeSemester] = true;
       saveUserData();
@@ -3493,9 +3416,19 @@
       document.getElementById('result-view').style.display = 'flex';
 
       const info = getSubjectDetails(state.activeSubject);
-      const semLabel = state.activeSemester === 'hk1' ? 'Học Kỳ 1' : 'Học Kỳ 2';
-      document.getElementById('result-congrats-title').innerText = `Chinh Phục ${info.title}!`;
-      document.getElementById('result-message').innerText = `Tuyệt vời! Bạn vừa hoàn thành xuất sắc các nội dung ôn tập của ${semLabel} môn ${info.title}.`;
+      const lang = state.language || 'vi';
+      const semLabel = lang === 'vi' 
+        ? (state.activeSemester === 'hk1' ? 'Học Kỳ 1' : 'Học Kỳ 2')
+        : (state.activeSemester === 'hk1' ? 'Semester 1' : 'Semester 2');
+      const subjectTranslation = {
+        vi: { toan: 'Toán Học 8', van: 'Ngữ Văn 8', anh: 'Tiếng Anh 8', khtn: 'Khoa Học Tự Nhiên', sudia: 'Lịch Sử & Địa Lí' },
+        en: { toan: 'Math 8', van: 'Literature 8', anh: 'English 8', khtn: 'Science 8', sudia: 'History & Geography' }
+      };
+      const subjTitle = subjectTranslation[lang][state.activeSubject];
+      document.getElementById('result-congrats-title').innerText = lang === 'vi' ? `Chinh Phục ${subjTitle}!` : `Conquered ${subjTitle}!`;
+      document.getElementById('result-message').innerText = lang === 'vi' 
+        ? `Tuyệt vời! Bạn vừa hoàn thành xuất sắc các nội dung ôn tập của ${semLabel} môn ${subjTitle}.`
+        : `Wonderful! You have successfully completed the ${semLabel} review contents of ${subjTitle}.`;
       const totalQ = state.shuffledQuestions.length;
       document.getElementById('result-score').innerText = `${state.quizCorrectInTurn} / ${totalQ}`;
       document.getElementById('result-xp').innerText = `+${state.quizXpEarnedInTurn} XP`;
@@ -3518,6 +3451,7 @@
     // Quit quiz to dashboard
     function quitQuiz() {
       sound.playClick();
+      stopQuestionTimer();
       state.activeSubject = null;
       state.activeSemester = null;
       document.getElementById('quiz-view').style.display = 'none';
@@ -3560,6 +3494,7 @@
         themeBtn.innerText = '☀️';
         localStorage.setItem('ducbao_quiz_theme', 'dark');
       }
+      applyThemeStyles();
     });
 
     /* ==========================================================================
@@ -3685,6 +3620,11 @@
         themeBtn.innerText = '🌙';
       }
 
+      // 1.5 Setup Language
+      const savedLang = localStorage.getItem('ducbao_quiz_lang') || 'vi';
+      state.language = savedLang;
+      updateLanguageUI();
+
       // 2. Setup engines
       confetti = new ConfettiEngine('confetti-canvas');
       particleBg = new ParticleBackground('bg-particle-canvas');
@@ -3694,6 +3634,9 @@
 
       // 3. Load user data
       loadUserData();
+      
+      // Update language elements again once user data is loaded (updates Level label, etc.)
+      updateLanguageUI();
     }
 
     window.addEventListener('load', initializeApp);
