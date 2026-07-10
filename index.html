@@ -935,6 +935,15 @@
         this.muted = false;
         this.volume = 0.6; // multiplier between 0 and 1
         this.waveType = 'sine'; // sine, square, triangle
+        
+        // MP3 Audio elements preload
+        this.correctAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+        this.wrongAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/951/951-preview.mp3');
+        this.tickingAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/1000/1000-preview.mp3');
+        
+        this.correctAudio.preload = 'auto';
+        this.wrongAudio.preload = 'auto';
+        this.tickingAudio.preload = 'auto';
       }
 
       init() {
@@ -948,6 +957,11 @@
 
       setVolume(val) {
         this.volume = parseFloat(val) / 100;
+        
+        // Update MP3 elements volume
+        if (this.correctAudio) this.correctAudio.volume = this.volume;
+        if (this.wrongAudio) this.wrongAudio.volume = this.volume;
+        if (this.tickingAudio) this.tickingAudio.volume = this.volume;
       }
 
       setWaveType(type) {
@@ -986,17 +1000,43 @@
       }
 
       playCorrect() {
-        // Joyful quick ascending arpeggio
-        this.playTone(523.25, this.waveType, 0.15, 0);     // C5
-        this.playTone(659.25, this.waveType, 0.15, 0.08);  // E5
-        this.playTone(783.99, this.waveType, 0.15, 0.16);  // G5
-        this.playTone(1046.50, this.waveType, 0.25, 0.24); // C6
+        if (this.volume <= 0) return;
+        try {
+          this.correctAudio.currentTime = 0;
+          this.correctAudio.play();
+        } catch (e) {
+          console.error("Error playing correct audio:", e);
+          // Fallback to arpeggio
+          this.playTone(523.25, this.waveType, 0.15, 0);     // C5
+          this.playTone(659.25, this.waveType, 0.15, 0.08);  // E5
+          this.playTone(783.99, this.waveType, 0.15, 0.16);  // G5
+          this.playTone(1046.50, this.waveType, 0.25, 0.24); // C6
+        }
       }
 
       playWrong() {
-        // Low flat descending buzz
-        this.playTone(180, 'sawtooth', 0.35, 0);
-        this.playTone(120, 'sawtooth', 0.4, 0.1);
+        if (this.volume <= 0) return;
+        try {
+          this.wrongAudio.currentTime = 0;
+          this.wrongAudio.play();
+        } catch (e) {
+          console.error("Error playing wrong audio:", e);
+          // Fallback to descending buzz
+          this.playTone(180, 'sawtooth', 0.35, 0);
+          this.playTone(120, 'sawtooth', 0.4, 0.1);
+        }
+      }
+
+      playTicking() {
+        if (this.volume <= 0) return;
+        try {
+          this.tickingAudio.currentTime = 0;
+          this.tickingAudio.play();
+        } catch (e) {
+          console.error("Error playing ticking audio:", e);
+          // Fallback click sound
+          this.playTone(800, 'triangle', 0.05);
+        }
       }
 
       playLevelUp() {
@@ -3068,6 +3108,7 @@
     function startQuestionTimer() {
       clearInterval(quizTimer);
       timerRemaining = timerDuration;
+      let lastSeconds = Math.ceil(timerRemaining / 1000);
       
       const timerContainer = document.getElementById('quiz-timer-container');
       const timerFill = document.getElementById('timer-progress-fill');
@@ -3091,6 +3132,12 @@
         const secondsDisplay = Math.ceil(timerRemaining / 1000);
         timerText.innerText = `${secondsDisplay}s`;
 
+        // Play ticking sound dồn dập ở 3 giây cuối cùng (giãn cách 1 giây/lần để tránh rè)
+        if (secondsDisplay <= 3 && secondsDisplay > 0 && secondsDisplay !== lastSeconds) {
+          sound.playTicking();
+        }
+        lastSeconds = secondsDisplay;
+
         if (timerRemaining <= 5000) {
           timerFill.style.background = 'var(--color-red)';
           timerText.classList.add('time-warning');
@@ -3107,6 +3154,13 @@
       if (quizTimer) {
         clearInterval(quizTimer);
         quizTimer = null;
+      }
+      // Dừng âm thanh tích tắc ngay lập tức
+      if (sound && sound.tickingAudio) {
+        try {
+          sound.tickingAudio.pause();
+          sound.tickingAudio.currentTime = 0;
+        } catch(e) {}
       }
     }
 
