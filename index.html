@@ -323,6 +323,20 @@
       color: var(--color-purple);
     }
   </style>
+  <!-- Firebase SDK Compat -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase Configuration -->
+  <script src="firebase-config.js"></script>
+  <!-- Initialize Firebase -->
+  <script>
+    if (typeof firebaseConfig !== 'undefined') {
+      firebase.initializeApp(firebaseConfig);
+      var db = firebase.firestore();
+    } else {
+      console.error("Firebase config is missing. Make sure firebase-config.js is loaded.");
+    }
+  </script>
 </head>
 <body>
 
@@ -758,6 +772,16 @@
           <div class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="result-xp" style="color: var(--color-purple);">+0 XP</div>
           <div data-i18n="result-xp-lbl" class="text-xs text-slate-500 dark:text-slate-400 font-semibold">XP Tích Lũy</div>
         </div>
+      </div>
+
+      <!-- Firebase Score Saving Section -->
+      <div id="firebase-save-section" class="w-full max-w-sm mt-3 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-950/20 flex flex-col gap-3">
+        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400" data-i18n="firebase-save-title">Lưu thành tích lên Bảng xếp hạng</div>
+        <div class="flex gap-2">
+          <input type="text" id="player-name-input" placeholder="Nhập tên của bạn (vd: Đức Bảo)" class="flex-1 px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500" value="Đức Bảo" />
+          <button id="save-score-btn" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold py-2 px-4 rounded-xl text-xs transition-all duration-200 shadow-md shadow-emerald-500/10 cursor-pointer" onclick="saveScoreToFirebase()">Lưu điểm</button>
+        </div>
+        <div id="save-status-msg" class="text-xs font-medium text-emerald-600 dark:text-emerald-400 hidden"></div>
       </div>
 
       <div class="flex gap-4 flex-wrap justify-center mt-2">
@@ -3463,6 +3487,20 @@
       saveUserData();
       updateUIElements();
 
+      // Reset Firebase save section
+      const statusMsg = document.getElementById('save-status-msg');
+      if (statusMsg) {
+        statusMsg.classList.add('hidden');
+        statusMsg.innerText = '';
+      }
+      const saveBtn = document.getElementById('save-score-btn');
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerText = state.language === 'vi' ? 'Lưu điểm' : 'Save Score';
+        saveBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-slate-400', 'dark:bg-slate-700');
+        saveBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+      }
+
       checkBadgeUnlock('complete_subject');
 
       // Setup Results view
@@ -3691,6 +3729,58 @@
       
       // Update language elements again once user data is loaded (updates Level label, etc.)
       updateLanguageUI();
+    }
+
+    // Save score to Firebase Firestore
+    async function saveScoreToFirebase() {
+      const nameInput = document.getElementById('player-name-input');
+      const saveBtn = document.getElementById('save-score-btn');
+      const statusMsg = document.getElementById('save-status-msg');
+      
+      const username = nameInput ? nameInput.value.trim() : '';
+      if (!username) {
+        alert(state.language === 'vi' ? 'Vui lòng nhập tên của bạn!' : 'Please enter your name!');
+        return;
+      }
+      
+      if (typeof db === 'undefined') {
+        alert(state.language === 'vi' ? 'Lỗi: Firebase chưa được khởi tạo!' : 'Error: Firebase is not initialized!');
+        return;
+      }
+      
+      saveBtn.disabled = true;
+      saveBtn.innerText = state.language === 'vi' ? 'Đang lưu...' : 'Saving...';
+      saveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      
+      const totalQ = state.shuffledQuestions.length;
+      
+      try {
+        await db.collection('scores').add({
+          username: username,
+          score: state.quizCorrectInTurn,
+          totalQuestions: totalQ,
+          subject: state.activeSubject,
+          semester: state.activeSemester,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        statusMsg.innerText = state.language === 'vi' ? 'Đã lưu điểm thành công lên hệ thống!' : 'Score saved successfully!';
+        statusMsg.classList.remove('hidden', 'text-red-500');
+        statusMsg.classList.add('text-emerald-500');
+        
+        saveBtn.innerText = state.language === 'vi' ? 'Đã lưu ✓' : 'Saved ✓';
+        saveBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
+        saveBtn.classList.add('bg-slate-400', 'dark:bg-slate-700');
+      } catch (error) {
+        console.error("Error saving score: ", error);
+        saveBtn.disabled = false;
+        saveBtn.innerText = state.language === 'vi' ? 'Thử lại' : 'Retry';
+        saveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        
+        statusMsg.innerText = state.language === 'vi' ? 'Lỗi khi lưu điểm: ' + error.message : 'Error saving score: ' + error.message;
+        statusMsg.classList.remove('hidden', 'text-emerald-500');
+        statusMsg.classList.add('text-red-500');
+      }
     }
 
     window.addEventListener('load', initializeApp);
