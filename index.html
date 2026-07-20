@@ -385,7 +385,10 @@
           <span class="text-xs text-slate-500 dark:text-slate-400 font-medium" id="display-profile-school">Trường THCS Lớp 8</span>
           <span class="text-xs text-purple-600 dark:text-purple-400 font-bold flex items-center gap-1" id="display-profile-goal">🎯 Mục tiêu: Ôn tập hiệu quả</span>
         </div>
-        <button data-i18n="edit-profile" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50 px-4 py-2 rounded-xl font-bold text-xs transition-all duration-200 ml-auto cursor-pointer flex items-center gap-1" onclick="openProfileModal()">✏️ Chỉnh sửa</button>
+        <div class="ml-auto flex gap-2 flex-wrap">
+          <button class="bg-indigo-500 hover:bg-indigo-600 active:scale-95 text-white border border-transparent px-4 py-2 rounded-xl font-bold text-xs transition-all duration-200 cursor-pointer flex items-center gap-1 shadow-md shadow-indigo-500/10" onclick="showLeaderboardView()" data-i18n="btn-leaderboard">🏆 Bảng Xếp Hạng</button>
+          <button data-i18n="edit-profile" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50 px-4 py-2 rounded-xl font-bold text-xs transition-all duration-200 cursor-pointer flex items-center gap-1" onclick="openProfileModal()">✏️ Chỉnh sửa</button>
+        </div>
       </div>
 
       <div class="flex flex-col gap-2">
@@ -784,9 +787,54 @@
         <div id="save-status-msg" class="text-xs font-medium text-emerald-600 dark:text-emerald-400 hidden"></div>
       </div>
 
+      <!-- Leaderboard Section -->
+      <div id="leaderboard-section" class="w-full max-w-sm mt-3 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-950/20 flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+          <div class="text-xs font-semibold text-slate-500 dark:text-slate-400" data-i18n="leaderboard-title">🏆 Bảng Xếp Hạng (Top 5)</div>
+          <button onclick="loadLeaderboard()" class="text-[10px] font-bold text-indigo-500 hover:text-indigo-600 transition-colors flex items-center gap-1 cursor-pointer">
+            <span>🔄</span> <span data-i18n="leaderboard-refresh">Tải lại</span>
+          </button>
+        </div>
+        <div id="leaderboard-loading" class="text-xs text-slate-400 py-2">Đang tải bảng xếp hạng...</div>
+        <div id="leaderboard-list" class="flex flex-col gap-2 hidden">
+          <!-- Leaderboard rows will be injected dynamically -->
+        </div>
+      </div>
+
       <div class="flex gap-4 flex-wrap justify-center mt-2">
         <button data-i18n="result-btn-dash" class="bg-indigo-500 hover:bg-indigo-600 active:scale-95 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition-all duration-200 shadow-md shadow-indigo-500/10 cursor-pointer" onclick="quitQuiz()">Trở Về Dashboard</button>
         <button data-i18n="result-btn-again" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 text-slate-700 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50 py-2.5 px-5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer" onclick="restartCurrentSubject()">Làm Lại Lượt Này</button>
+      </div>
+    </div>
+
+    <!-- VIEW 4: LEADERBOARD SCREEN -->
+    <div id="leaderboard-view" class="backdrop-blur-md bg-white/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/80 shadow-md rounded-3xl p-8 hidden flex-col gap-6 transition-all duration-300">
+      
+      <!-- Leaderboard Header -->
+      <div class="flex justify-between items-center border-b border-slate-200/60 dark:border-slate-800/60 pb-4 flex-wrap gap-4">
+        <div class="flex items-center gap-3">
+          <div class="text-3xl animate-float">🏆</div>
+          <div class="text-left">
+            <h2 class="text-xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent" data-i18n="leaderboard-view-title">Bảng Xếp Hạng Lớp 8</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="leaderboard-view-subtitle">Top 10 người chơi có thành tích xuất sắc nhất trên hệ thống</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <!-- Refresh Button -->
+          <button onclick="loadFullLeaderboard()" class="bg-white/80 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 px-3 py-2 rounded-xl text-xs font-bold shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center gap-1">
+            <span>🔄</span> <span data-i18n="leaderboard-refresh">Tải lại</span>
+          </button>
+          
+          <!-- Back to Dashboard Button -->
+          <button onclick="hideLeaderboardView()" class="bg-indigo-500 hover:bg-indigo-600 active:scale-95 text-white font-bold py-2 px-4 rounded-xl text-xs transition-all duration-200 shadow-md shadow-indigo-500/10 cursor-pointer" data-i18n="leaderboard-btn-back">Quay lại Dashboard</button>
+        </div>
+      </div>
+      
+      <!-- Leaderboard Table/List -->
+      <div id="full-leaderboard-loading" class="text-sm text-slate-400 py-10 text-center">Đang tải bảng xếp hạng...</div>
+      <div id="full-leaderboard-list" class="flex flex-col gap-3 hidden">
+        <!-- Render full leaderboard records -->
       </div>
     </div>
 
@@ -2373,6 +2421,10 @@
         'app-subtitle': 'Chinh Phục Tri Thức - Bứt Phá Điểm Số',
         'score-label': '🏆 Đúng:',
         'edit-profile': '✏️ Chỉnh sửa hồ sơ',
+        'btn-leaderboard': '🏆 Bảng Xếp Hạng',
+        'leaderboard-view-title': 'Bảng Xếp Hạng Lớp 8',
+        'leaderboard-view-subtitle': 'Top 10 người chơi có thành tích xuất sắc nhất trên hệ thống',
+        'leaderboard-btn-back': 'Quay lại Dashboard',
         'xp-ratio': ' XP',
         'subj-title': 'Chọn Môn Học Ôn Tập',
         'badge-title': 'Tủ Huy Hiệu Danh Hiệu',
@@ -2436,6 +2488,10 @@
         'app-subtitle': 'Conquer Knowledge - Boost Your Scores',
         'score-label': '🏆 Correct:',
         'edit-profile': '✏️ Edit Profile',
+        'btn-leaderboard': '🏆 Leaderboard',
+        'leaderboard-view-title': 'Grade 8 Leaderboard',
+        'leaderboard-view-subtitle': 'Top 10 players with outstanding achievements on system',
+        'leaderboard-btn-back': 'Back to Dashboard',
         'xp-ratio': ' XP',
         'subj-title': 'Select Subject to Study',
         'badge-title': 'Badges Cabinet',
@@ -3106,6 +3162,9 @@
       // Hide Dashboard & Results, show Quiz Arena
       document.getElementById('dashboard-view').style.display = 'none';
       document.getElementById('result-view').style.display = 'none';
+      if (document.getElementById('leaderboard-view')) {
+        document.getElementById('leaderboard-view').style.display = 'none';
+      }
       document.getElementById('quiz-view').style.display = 'flex';
 
       // Set Subject header UI
@@ -3501,11 +3560,19 @@
         saveBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
       }
 
+      // Load leaderboard automatically
+      if (typeof loadLeaderboard === 'function') {
+        loadLeaderboard();
+      }
+
       checkBadgeUnlock('complete_subject');
 
       // Setup Results view
       document.getElementById('quiz-view').style.display = 'none';
       document.getElementById('result-view').style.display = 'flex';
+      if (document.getElementById('leaderboard-view')) {
+        document.getElementById('leaderboard-view').style.display = 'none';
+      }
 
       const info = getSubjectDetails(state.activeSubject);
       const lang = state.language || 'vi';
@@ -3548,6 +3615,9 @@
       state.activeSemester = null;
       document.getElementById('quiz-view').style.display = 'none';
       document.getElementById('result-view').style.display = 'none';
+      if (document.getElementById('leaderboard-view')) {
+        document.getElementById('leaderboard-view').style.display = 'none';
+      }
       document.getElementById('dashboard-view').style.display = 'flex';
       updateUIElements();
     }
@@ -3771,6 +3841,11 @@
         saveBtn.innerText = state.language === 'vi' ? 'Đã lưu ✓' : 'Saved ✓';
         saveBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
         saveBtn.classList.add('bg-slate-400', 'dark:bg-slate-700');
+
+        // Tải lại bảng xếp hạng sau khi lưu điểm thành công
+        if (typeof loadLeaderboard === 'function') {
+          setTimeout(loadLeaderboard, 500);
+        }
       } catch (error) {
         console.error("Error saving score: ", error);
         saveBtn.disabled = false;
@@ -3781,6 +3856,206 @@
         statusMsg.classList.remove('hidden', 'text-emerald-500');
         statusMsg.classList.add('text-red-500');
       }
+    }
+
+    // Tải bảng xếp hạng từ Firestore
+    async function loadLeaderboard() {
+      const loadingEl = document.getElementById('leaderboard-loading');
+      const listEl = document.getElementById('leaderboard-list');
+      
+      if (!loadingEl || !listEl) return;
+      
+      loadingEl.innerText = state.language === 'vi' ? 'Đang tải bảng xếp hạng...' : 'Loading leaderboard...';
+      loadingEl.classList.remove('hidden');
+      listEl.classList.add('hidden');
+      
+      if (typeof db === 'undefined') {
+        loadingEl.innerText = state.language === 'vi' ? 'Lỗi: Firebase chưa được khởi tạo!' : 'Error: Firebase not initialized!';
+        return;
+      }
+      
+      try {
+        const querySnapshot = await db.collection('scores')
+          .orderBy('score', 'desc')
+          .limit(5)
+          .get();
+          
+        const scores = [];
+        querySnapshot.forEach((doc) => {
+          scores.push(doc.data());
+        });
+        
+        renderLeaderboard(scores);
+      } catch (error) {
+        console.error("Error loading leaderboard: ", error);
+        loadingEl.innerText = state.language === 'vi' 
+          ? 'Không thể tải bảng xếp hạng (Vui lòng kiểm tra Rules trên console).' 
+          : 'Could not load leaderboard.';
+      }
+    }
+    
+    // Render danh sách bảng xếp hạng lên giao diện
+    function renderLeaderboard(scores) {
+      const listEl = document.getElementById('leaderboard-list');
+      const loadingEl = document.getElementById('leaderboard-loading');
+      
+      if (scores.length === 0) {
+        loadingEl.innerText = state.language === 'vi' ? 'Chưa có thành tích nào.' : 'No scores yet.';
+        loadingEl.classList.remove('hidden');
+        listEl.classList.add('hidden');
+        return;
+      }
+      
+      loadingEl.classList.add('hidden');
+      listEl.classList.remove('hidden');
+      listEl.innerHTML = '';
+      
+      scores.forEach((item, index) => {
+        const rank = index + 1;
+        let rankBadge = '';
+        let rankColor = '';
+        
+        if (rank === 1) {
+          rankBadge = '🥇';
+          rankColor = 'text-amber-500 font-bold';
+        } else if (rank === 2) {
+          rankBadge = '🥈';
+          rankColor = 'text-slate-400 font-bold';
+        } else if (rank === 3) {
+          rankBadge = '🥉';
+          rankColor = 'text-amber-700 font-bold';
+        } else {
+          rankBadge = `<span class="w-5 h-5 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-500">${rank}</span>`;
+        }
+        
+        const row = document.createElement('div');
+        row.className = `flex justify-between items-center p-2.5 rounded-xl border border-slate-100/80 dark:border-slate-800/60 bg-white/50 dark:bg-slate-900/40 text-xs transition-all duration-200 hover:scale-[1.01]`;
+        
+        const displayScore = item.totalQuestions ? `${item.score}/${item.totalQuestions}` : `${item.score}`;
+        const subjLabel = item.subject ? item.subject.toUpperCase() : '';
+        
+        row.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="flex items-center justify-center w-6">${rankBadge}</div>
+            <div class="font-semibold text-slate-800 dark:text-slate-100 truncate max-w-[150px]">${escapeHTML(item.username)}</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider">${subjLabel}</span>
+            <span class="font-bold ${rank <= 3 ? rankColor : 'text-slate-700 dark:text-slate-300'}">${displayScore}</span>
+          </div>
+        `;
+        listEl.appendChild(row);
+      });
+    }
+
+    // Điều khiển ẩn/hiện Leaderboard View
+    function showLeaderboardView() {
+      sound.playClick();
+      document.getElementById('dashboard-view').style.display = 'none';
+      document.getElementById('quiz-view').style.display = 'none';
+      document.getElementById('result-view').style.display = 'none';
+      document.getElementById('leaderboard-view').style.display = 'flex';
+      loadFullLeaderboard();
+    }
+
+    function hideLeaderboardView() {
+      sound.playClick();
+      document.getElementById('leaderboard-view').style.display = 'none';
+      document.getElementById('dashboard-view').style.display = 'flex';
+      updateUIElements();
+    }
+
+    // Tải dữ liệu Top 10 từ Firestore
+    async function loadFullLeaderboard() {
+      const loadingEl = document.getElementById('full-leaderboard-loading');
+      const listEl = document.getElementById('full-leaderboard-list');
+      
+      if (!loadingEl || !listEl) return;
+      
+      loadingEl.innerText = state.language === 'vi' ? 'Đang tải bảng xếp hạng...' : 'Loading leaderboard...';
+      loadingEl.classList.remove('hidden');
+      listEl.classList.add('hidden');
+      
+      if (typeof db === 'undefined') {
+        loadingEl.innerText = state.language === 'vi' ? 'Lỗi: Firebase chưa được khởi tạo!' : 'Error: Firebase not initialized!';
+        return;
+      }
+      
+      try {
+        const querySnapshot = await db.collection('scores')
+          .orderBy('score', 'desc')
+          .limit(10)
+          .get();
+          
+        const scores = [];
+        querySnapshot.forEach((doc) => {
+          scores.push(doc.data());
+        });
+        
+        renderFullLeaderboard(scores);
+      } catch (error) {
+        console.error("Error loading full leaderboard: ", error);
+        loadingEl.innerText = state.language === 'vi' 
+          ? 'Không thể tải bảng xếp hạng (Vui lòng kiểm tra Rules trên console).' 
+          : 'Could not load leaderboard.';
+      }
+    }
+
+    // Vẽ danh sách Top 10 lên UI
+    function renderFullLeaderboard(scores) {
+      const listEl = document.getElementById('full-leaderboard-list');
+      const loadingEl = document.getElementById('full-leaderboard-loading');
+      
+      if (scores.length === 0) {
+        loadingEl.innerText = state.language === 'vi' ? 'Chưa có thành tích nào.' : 'No scores yet.';
+        loadingEl.classList.remove('hidden');
+        listEl.classList.add('hidden');
+        return;
+      }
+      
+      loadingEl.classList.add('hidden');
+      listEl.classList.remove('hidden');
+      listEl.innerHTML = '';
+      
+      scores.forEach((item, index) => {
+        const rank = index + 1;
+        let rankBadge = '';
+        let rankColor = '';
+        
+        if (rank === 1) {
+          rankBadge = '🥇';
+          rankColor = 'text-amber-500 font-bold';
+        } else if (rank === 2) {
+          rankBadge = '🥈';
+          rankColor = 'text-slate-400 font-bold';
+        } else if (rank === 3) {
+          rankBadge = '🥉';
+          rankColor = 'text-amber-700 font-bold';
+        } else {
+          rankBadge = `<span class="w-6 h-6 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-500">${rank}</span>`;
+        }
+        
+        const row = document.createElement('div');
+        row.className = `flex justify-between items-center p-3.5 rounded-2xl border border-slate-200/50 dark:border-slate-800/60 bg-white/40 dark:bg-slate-900/30 text-sm transition-all duration-200 hover:scale-[1.01]`;
+        
+        const displayScore = item.totalQuestions ? `${item.score}/${item.totalQuestions}` : `${item.score}`;
+        const subjLabel = item.subject ? item.subject.toUpperCase() : '';
+        const semLabel = item.semester ? item.semester.toUpperCase() : '';
+        
+        row.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="flex items-center justify-center w-8 text-lg">${rankBadge}</div>
+            <div class="text-left">
+              <div class="font-bold text-slate-800 dark:text-slate-100">${escapeHTML(item.username)}</div>
+              <div class="text-[10px] text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-wider">${subjLabel} - ${semLabel}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-extrabold text-base ${rank <= 3 ? rankColor : 'text-slate-700 dark:text-slate-300'}">${displayScore}</span>
+          </div>
+        `;
+        listEl.appendChild(row);
+      });
     }
 
     window.addEventListener('load', initializeApp);
